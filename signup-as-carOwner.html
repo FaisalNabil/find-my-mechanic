@@ -7,6 +7,7 @@
     <title>WebTechnology Final Project</title>
     <link href="assets/plugins/bootstrap/bootstrap.css" rel="stylesheet" />
     <link href="assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <link href="assets/css/jquery.datepick.css" rel="stylesheet" />
 
    <link href="assets/css/style.css" rel="stylesheet" />
    <link href="assets/css/main-style.css" rel="stylesheet" />
@@ -47,32 +48,20 @@
                               </div>
                               <div class="form-group">
                                 <label class="control-label col-sm-2" for="DOB">DOB:</label>
-                                <div class="col-sm-2">
-                                    <select>
-                                      <option value="Month">Month</option>
-                                      <option value="1">1</option>
-                                      <option value="2">2</option>
-                                      <option value="3">3</option>
-                                      <option value="4">4</option>
-                                    </select> 
+                                <div class="col-sm-10">
+                                  <input type="text" class="form-control" id="popupDatepicker" required="">
                                 </div>
-                                <div class="col-sm-2">
-                                    <select>
-                                      <option value="Day">Day</option>
-                                      <option value="1">1</option>
-                                      <option value="2">2</option>
-                                      <option value="3">3</option>
-                                      <option value="4">4</option>
-                                    </select> 
+                              </div>
+                              <div class="form-group">
+                                <label class="control-label col-sm-2" for="nid">NID:</label>
+                                <div class="col-sm-10">
+                                  <input type="number" class="form-control" id="nid" placeholder="Enter NID Number" required="">
                                 </div>
-                                <div class="col-sm-2">
-                                    <select>
-                                      <option value="Year">Year</option>
-                                      <option value="2017">2017</option>
-                                      <option value="2016">2016</option>
-                                      <option value="2015">2015</option>
-                                      <option value="2014">2014</option>
-                                    </select> 
+                              </div>
+                              <div class="form-group">
+                                <label class="control-label col-sm-2" for="dlc">Driving Licence:</label>
+                                <div class="col-sm-10">
+                                  <input type="text" class="form-control" id="dlc" placeholder="Enter Driving Licence" required="">
                                 </div>
                               </div>
                               <div class="form-group">
@@ -104,11 +93,24 @@
                 </div>
             </div>
         </div>
+
     </div>
+   
+    
+   
+    <script src="assets/plugins/jquery-1.12.0.min.js"></script>
+   	<script src="assets/plugins/jquery.plugin.min.js"></script>
+	 <script src="assets/plugins/jquery.datepick.js"></script>
 
-    <script src="assets/plugins/jquery-1.10.2.js"></script>
-    <script src="assets/plugins/bootstrap/bootstrap.min.js"></script>
+<script>
+$(function() {
+	$('#popupDatepicker').datepick({dateFormat: 'yyyy-mm-dd'});
+	$('#inlineDatepicker').datepick({onSelect: showDate});
+});
 
+
+</script>
+    
 </body>
 
 </html>
