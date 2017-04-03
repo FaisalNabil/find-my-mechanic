@@ -239,8 +239,18 @@
                  </div>
                  <div class="col-md-4">
                      <label class="control-label col-sm-6" for="user_name">Present Address: </label>
-                     <span class="col-md-6"><em>Uttara,Dhaka</em></span>
+                     <span class="col-md-4"><em>Uttara,Dhaka</em></span>
                  </div>
+
+                 <div class="col-md-4">
+                     <label class="control-label col-sm-6" for="nid">National Id: </label>
+                     <span class="col-md-4">1995374384347</span>
+                 </div>
+                 <div class="col-md-4">
+                     <label class="control-label col-sm-6" for="dlc">Driving Licence: </label>
+                     <span class="col-md-4">AB234C</span>
+                 </div>
+
                  <div class="pull-right" style="margin-top: 20px; margin-right: 30px;">
                      <a href="edit_profile.html"><button class="btn btn-info">Edit Details <i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></a>
                  </div>
