@@ -6,6 +6,7 @@
     <title>WebTechnology Final Project</title>
     <link href="../assets/plugins/bootstrap/bootstrap.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="../assets/css/jquery.datepick.css" rel="stylesheet" />
     <link href="../assets/css/style.css" rel="stylesheet" />
     <link href="../assets/css/main-style.css" rel="stylesheet" />
    </head>
@@ -241,33 +242,9 @@
                                         </div>
                                         <div class="form-group">
                                           <label class="control-label col-sm-2" for="reg_date">Registration Date:</label>
-                                            <div class="col-sm-1">
-                                                <select>
-                                                  <option value="Month" selected="selected">Month</option>
-                                                  <option value="1">1</option>
-                                                  <option value="2">2</option>
-                                                  <option value="3">3</option>
-                                                  <option value="4">4</option>
-                                                </select> 
-                                            </div>
-                                            <div class="col-sm-1">
-                                                    <select>
-                                                      <option value="Day" selected="selected">Day</option>
-                                                      <option value="1">1</option>
-                                                      <option value="2">2</option>
-                                                      <option value="3">3</option>
-                                                      <option value="4">4</option>
-                                                    </select> 
-                                                </div>
-                                                <div class="col-sm-1">
-                                                    <select>
-                                                      <option value="Year" selected="selected">Year</option>
-                                                      <option value="2017">2017</option>
-                                                      <option value="2016">2016</option>
-                                                      <option value="2015">2015</option>
-                                                      <option value="2014">2014</option>
-                                                    </select> 
-                                                </div>
+                                          <div class="col-sm-5">          
+                                            <input type="text" class="form-control" id="popupDatepicker" placeholder="Select Registration Date">
+                                          </div> 
                                         </div>
                                         <div class="form-group">
                                           <label class="control-label col-sm-2" for="insurance_no">Insurance Number:</label>
@@ -297,8 +274,17 @@
     </div>
     <!-- end wrapper -->
 
-    <script src="../assets/plugins/jquery-1.10.2.js"></script>
+    <script src="../assets/plugins/jquery-1.12.0.min.js"></script>
     <script src="../assets/plugins/bootstrap/bootstrap.min.js"></script>
+    <script src="../assets/plugins/jquery.plugin.min.js"></script>
+    <script src="../assets/plugins/jquery.datepick.js"></script>
+    <script>
+    $(function() {
+        $('#popupDatepicker').datepick({dateFormat: 'yyyy-mm-dd'});
+         
+    });
+    </script>
+
     
 </body>
 
