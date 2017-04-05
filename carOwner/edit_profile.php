@@ -1,3 +1,17 @@
+
+
+<?php 
+
+include("phpFiles/SelectProfileData.php"); 
+
+$jsonString = getJSONFromDB("select * from carowner where Email='nabilt59@gmail.com'");
+
+$carOwnerData = json_decode($jsonString);
+
+
+?>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,6 +21,7 @@
     <link href="../assets/plugins/bootstrap/bootstrap.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="../assets/css/jquery.datepick.css" rel="stylesheet" />
+    
     <link href="../assets/css/style.css" rel="stylesheet" />
     <link href="../assets/css/main-style.css" rel="stylesheet" />
    </head>
@@ -172,7 +187,7 @@
                     <li>
                         <a href="notification.html"><i class="fa fa-bell fa-fw"></i>Notification</a>
                     </li>
-                    <li class="selected">
+                    <li>
                         <a href="entry.html"><i class="fa fa-edit fa-fw"></i>Entry</a>
                     </li>
                 </ul>
@@ -182,43 +197,78 @@
         </nav>
         <!-- end navbar side -->
         <!--  page-wrapper -->
-        <div id="page-wrapper">
+         <div id="page-wrapper">
             <div class="row">
                 <!-- Page Header -->
                 <div class="col-lg-12">
-                    <h1 class="page-header">Entry</h1>
+                    <h1 class="page-header">Profile</h1>
                 </div>
                 <!--End Page Header -->
             </div>
             <div class="row">
-                  
-                 <div class="panel panel-primary">
+                <div class="col-lg-12">
+                    <!--Simple table example -->
+                    <div class="panel panel-primary">
                         <div class="panel-heading">
-                            <i class="fa fa-truck fa-fw"></i> General Information  
+                            <i class="fa fa-pencil-square-o fa-fw"></i> Edit Profile  
                         </div>
-
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-lg-12">
-                                     <form class="form-horizontal">
-                                        <div class="form-group">
-                                          <label class="control-label col-sm-2" for="vehicle_type">Vehicle Type:</label>
-                                          <div class="col-sm-5">
-                                            <select>
-                                              <option value="Micro Bus">Micro Bus</option>
-                                              <option value="Truck">Truck</option>
-                                              <option value="CNG">CNG</option>
-                                              <option value="Motor Cycle">Motor Cycle</option>
-                                            </select>
-                                          </div>
-                                        </div>
-                                        <div class="form-group">
-                                          <label class="control-label col-sm-2" for="model_name">Model Name:</label>
-                                          <div class="col-sm-5">          
-                                            <input type="text" class="form-control" id="model_name" placeholder="Enter Model Name">
-                                          </div>
-                                        </div>
-                                    </form>
+                                    <div class="table-responsive">
+                                         <form class="form-horizontal">
+                                              <div class="form-group">
+                                                <label class="control-label col-sm-2" for="email">Name:</label>
+                                                <div class="col-sm-5">
+                                                  <input type="text" class="form-control" id="name" placeholder="" value="<?php echo $carOwnerData[0]->Name ;?>">
+                                                </div>
+                                              </div>
+                                              <div class="form-group">
+                                                <label class="control-label col-sm-2" for="DOB">DOB:</label>
+                                                <div class="col-sm-5">
+                                                  <input type="text" class="form-control" id="popupDatepicker" placeholder="Please Select Your Date of Birth" value="<?php echo $carOwnerData[0]->DOB ;?>">
+                                                </div>
+                                              </div>
+
+                                              <div class="form-group">
+                                                <label class="control-label col-sm-2" for="email">Contact:</label>
+                                                <div class="col-sm-5">
+                                                  <input type="text" class="form-control" id="contact" placeholder="" value="<?php echo $carOwnerData[0]->Contact ;?>">
+                                                </div>
+                                              </div>
+
+                                              <div class="form-group">
+                                                <label class="control-label col-sm-2" for="nid">NID:</label>
+                                                <div class="col-sm-5">
+                                                  <input type="text" class="form-control" id="nid" value="<?php echo $carOwnerData[0]->NID ;?>">
+                                                </div>
+                                              </div>
+                                              <div class="form-group">
+                                                <label class="control-label col-sm-2" for="dlc">Driving Liscence:</label>
+                                                <div class="col-sm-5">
+                                                  <input type="text" class="form-control" id="dlc" value="<?php echo $carOwnerData[0]->{'Driving Licence'} ;?>">
+                                                </div>
+                                              </div>
+
+                                              <div class="form-group">
+                                                <label class="control-label col-sm-2" for="address">Present Address:</label>
+                                                <div class="col-sm-5">
+                                                   <textarea class="form-control" id="comment" required=""><?php echo $carOwnerData[0]->Address ;?></textarea>
+                                                </div>
+                                              </div>
+
+                                              <div class="form-group">
+                                                <div class="col-sm-offset-2 col-sm-2">
+                                                  <button type="submit" class="btn btn-primary">Save Changes</button>
+                                                </div>
+                                              </div>
+                                         </form>
+                                         <div class="col-sm-2">
+                                            <a href="profile.php"><button type="submit" class="btn btn-danger">Cancle</button></a>
+                                         </div>
+                                          
+                                    </div>
+
                                 </div>
 
                             </div>
@@ -226,48 +276,12 @@
                         </div>
                         <!-- panel-body -->
                     </div>
-                <div class="panel panel-primary">
-                        <div class="panel-heading">
-                            <i class="fa fa-truck fa-fw"></i> Registration Information  
-                        </div>
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-lg-12">
-                                     <form class="form-horizontal">
-                                        <div class="form-group">
-                                          <label class="control-label col-sm-2" for="reg_no">Registration No:</label>
-                                          <div class="col-sm-5">
-                                             <input type="text" class="form-control" id="reg_no" placeholder="Enter Registration No">
-                                          </div>
-                                        </div>
-                                        <div class="form-group">
-                                          <label class="control-label col-sm-2" for="reg_date">Registration Date:</label>
-                                          <div class="col-sm-5">          
-                                            <input type="text" class="form-control" id="popupDatepicker" placeholder="Select Registration Date">
-                                          </div> 
-                                        </div>
-                                        <div class="form-group">
-                                          <label class="control-label col-sm-2" for="insurance_no">Insurance Number:</label>
-                                          <div class="col-sm-5">          
-                                            <input type="text" class="form-control" id="insurance_no" placeholder="Enter Insurance Number">
-                                          </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <div class="col-sm-offset-2 col-sm-10">
-                                            <a href="profile.html">
-                                              <button type="submit" class="btn btn-primary">Submit</button>
-                                            </a>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-
-                            </div>
-                            <!-- row -->
-                        </div>
-                        <!-- panel-body -->
-                    </div>
+                    <!--End simple table example -->
+                </div>  
             </div>
+            
+             
+             
         </div>
         <!-- end page-wrapper -->
 
@@ -277,15 +291,15 @@
     <script src="../assets/plugins/jquery-1.12.0.min.js"></script>
     <script src="../assets/plugins/bootstrap/bootstrap.min.js"></script>
     <script src="../assets/plugins/jquery.plugin.min.js"></script>
-    <script src="../assets/plugins/jquery.datepick.js"></script>
+     <script src="../assets/plugins/jquery.datepick.js"></script>
+
     <script>
     $(function() {
         $('#popupDatepicker').datepick({dateFormat: 'yyyy-mm-dd'});
-         
+        $('#inlineDatepicker').datepick({onSelect: showDate});
     });
     </script>
-
-    
+     
 </body>
 
 </html>
