@@ -1,5 +1,16 @@
 <!DOCTYPE html>
 <html>
+<?php 
+    require("shopOwnerPHP/selectFromDatabase.php"); 
+
+    $jsonShopOwnerString = getJSONFromDB("select * from shopowner");
+
+    $shopOwnerData = json_decode($jsonShopOwnerString);
+
+    $jsonServiceString = getJSONFromDB("select * from availableservices");
+
+    $avilableserviceData = json_decode($jsonServiceString);
+?>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -194,16 +205,20 @@
                 <h3 class="alert alert-info">About</h3>
                  <div class="col-md-4">
                      <label class="control-label col-sm-2" for="user_name">Name:</label>
-                     <span class="col-sm-10"><em>Tuhin Enterprise</em></span>
+                     <span class="col-sm-10"><em><?php echo $shopOwnerData[0]->ShopName; ?></em></span>
                  </div>
                  
                  <div class="col-md-4">
                      <label class="control-label col-sm-2" for="user_name">Contact: </label>
-                     <span class="col-sm-9 col-md-offset-1"><em>01739-069751</em></span>
+                     <span class="col-sm-9 col-md-offset-1"><em><?php echo $shopOwnerData[0]->Contact; ?></em></span>
                  </div>
                  <div class="col-md-4">
-                     <label class="control-label col-sm-6" for="user_name">Location: </label>
-                     <span class="col-md-6"><em>Uttara,Dhaka</em></span>
+                     <label class="control-label col-sm-4" for="user_name">Location: </label>
+                     <span class="col-md-6"><em><?php echo $shopOwnerData[0]->Address; ?></em></span>
+                 </div>
+                 <div class="col-md-4">
+                     <label class="control-label col-sm-6" for="user_name">Trade Licence: </label>
+                     <span class="col-md-6"><em><?php echo $shopOwnerData[0]->ShopTradeLicence; ?></em></span>
                  </div>
                  <div class="pull-right" style="margin-top: 20px; margin-right: 30px;">
                      <a href="edit_profile.html"><button class="btn btn-info">Edit Details <i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></a>
@@ -236,63 +251,60 @@
                                               </tr>
                                             </thead>
                                             <tbody>
-                                              <tr>
-                                                <td>1</td>
-                                                <td>Oil & Filter Change</td>
-                                                 <td>1000tk</td>
-                                                <td><button class="btn btn-info" data-toggle="modal" data-target="#edit_service">Edit</button>
-                                                    <!-- Modal -->
-                                                    <div class="modal fade" id="edit_service" role="dialog">
-                                                        <div class="modal-dialog modal-lg">
-                                                          <div class="modal-content">
-                                                            <div class="modal-header">
-                                                              <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                              <h4 class="modal-title">Edit Service</h4>
+                                            <?php
+                                                for ($i=0;$i<sizeof($avilableserviceData);$i++) {
+                                                    # code...
+                                                ?>
+                                                <tr>
+                                                    <td> <?php echo $avilableserviceData[$i]->ServicesId; ?> </td>
+                                                    <td> <?php echo $avilableserviceData[$i]->ServiceName; ?> </td>
+                                                     <td> <?php echo $avilableserviceData[$i]->Cost; ?> </td>
+                                                    <td><button class="btn btn-info" data-toggle="modal" data-target="#edit_service">Edit</button>
+                                                        <!-- Modal -->
+                                                        <div class="modal fade" id="edit_service" role="dialog">
+                                                            <div class="modal-dialog modal-lg">
+                                                              <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                  <h4 class="modal-title">Edit Service</h4>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                      <form class="form-horizontal">
+                                                                          <div class="form-group">
+                                                                            <label class="control-label col-sm-2" for="service_name">Service Name:</label>
+                                                                            <div class="col-sm-5">
+                                                                              <input type="text" class="form-control" id="service_name" value="<?php echo $avilableserviceData[$i]->ServiceName; ?>">
+                                                                            </div>
+                                                                          </div>
+                                                                          <div class="form-group">
+                                                                            <label class="control-label col-sm-2" for="service_cost">Cost:</label>
+                                                                            <div class="col-sm-5">
+                                                                              <input type="text" class="form-control" id="service_cost" value="<?php echo $avilableserviceData[$i]->Cost; ?>">
+                                                                            </div>
+                                                                          </div>
+                                                                          
+                                                                          <div class="form-group">
+                                                                            <div class="col-sm-offset-2 col-sm-10">
+                                                                              <button type="submit" class="btn btn-primary">Submit</button>
+                                                                            </div>
+                                                                          </div>
+                                                                        </form>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                  <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                                                </div>
+                                                              </div>
                                                             </div>
-                                                            <div class="modal-body">
-                                                                  <form class="form-horizontal">
-                                                                      <div class="form-group">
-                                                                        <label class="control-label col-sm-2" for="service_name">Service Name:</label>
-                                                                        <div class="col-sm-5">
-                                                                          <input type="text" class="form-control" id="service_name" value="Oil & Filter Change">
-                                                                        </div>
-                                                                      </div>
-                                                                      <div class="form-group">
-                                                                        <label class="control-label col-sm-2" for="service_cost">Cost:</label>
-                                                                        <div class="col-sm-5">
-                                                                          <input type="text" class="form-control" id="service_cost" value="1000">
-                                                                        </div>
-                                                                      </div>
-                                                                      
-                                                                      <div class="form-group">
-                                                                        <div class="col-sm-offset-2 col-sm-10">
-                                                                          <button type="submit" class="btn btn-primary">Submit</button>
-                                                                        </div>
-                                                                      </div>
-                                                                    </form>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                              <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                                                            </div>
-                                                          </div>
-                                                        </div>
-                                                    </div><!-- End Modal -->
-                                                    <button class="btn btn-danger">Delete</button>
-                                                </td>
-                                              </tr>
-                                              <tr>
-                                                <td>2</td>
-                                                <td>Brakes, Power Steering</td>
-                                                <td>3000tk</td>
-                                                <td><button class="btn btn-info">Edit</button> <button class="btn btn-danger">Delete</button></td>
-                                              </tr>
-                                              <tr>
-                                                <td>3</td>
-                                                <td>Body & Paint Work</td>
-                                                <td>4000tk</td>
-                                                <td><button class="btn btn-info">Edit</button> <button class="btn btn-danger">Delete</button></td>
-                                              </tr>
-                                            </tbody>
+                                                        </div><!-- End Modal -->
+                                                        <button class="btn btn-danger">Delete</button>
+                                                    </td>
+                                                  </tr>
+                                                  <tr>
+                                                  <?php
+                                              }
+
+                                            ?>
+
                                           </table>
                                           
                                     </div>
