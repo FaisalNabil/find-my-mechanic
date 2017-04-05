@@ -1,3 +1,19 @@
+
+<?php 
+
+include("phpFiles/SelectProfileData.php"); 
+
+$jsonCarOwnerDataString = getJSONFromDB("select * from carowner where Email='nabilt59@gmail.com'");
+
+$carOwnerData = json_decode($jsonCarOwnerDataString);
+
+$jsonCarOwnerVehicleString = getJSONFromDB("select * from vehicle");
+
+$carOwnerVehicleData = json_decode($jsonCarOwnerVehicleString);
+
+
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,39 +25,6 @@
     <link href="../assets/css/style.css" rel="stylesheet" />
     <link href="../assets/css/main-style.css" rel="stylesheet" />
 
-    <script type="text/javascript"> 
-		var txt,jsonData,jsonDecoded,xmlhttp,x;
-        xmlhttp = new XMLHttpRequest();
-		
-        function generateData(){
-			//alert("working");
-            xmlhttp.onreadystatechange = function() {
-                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                    jsonData=xmlhttp.responseText;
-					
-					jsonDecoded=JSON.parse(jsonData);
-					
-					txt="<tbody>";
-					for (x in jsonDecoded) {
-						txt += "<tr><td>" + Number(x)+1 + "</td>";
-						txt += "<td>" + jsonDecoded[x].ModelName + "</td>";
-						txt += "<td>" + jsonDecoded[x].Type + "</td>";
-						txt += "<td>" + jsonDecoded[x].VehicleRegNo + "</td>";
-						txt += "<td>" + jsonDecoded[x].RegDate + "</td>";
-						txt += "<td>" + jsonDecoded[x].InsuranceNo + "</td></tr>";
-					}
-					txt+="</tbody>";
-					document.getElementById("rowGenerate").innerHTML = txt;
-                }
-            };
-            
-            var url="phpFiles/vehicleData.php";
-            xmlhttp.open("GET", url, true);
-            xmlhttp.send();      
-
-        } 
-        window.onload = generateData;
-    </script>
 </head>
 <body >
     <!--  wrapper -->
@@ -206,7 +189,7 @@
                         <a href="notification.html"><i class="fa fa-bell fa-fw"></i>Notification</a>
                     </li>
                     <li>
-                        <a href="entry.html"><i class="fa fa-edit fa-fw"></i>Entry</a>
+                        <a href="entry.php"><i class="fa fa-edit fa-fw"></i>Entry</a>
                     </li>
                 </ul>
                 <!-- end side-menu -->
@@ -216,43 +199,43 @@
         <!-- end navbar side -->
         <!--  page-wrapper -->
         <div id="page-wrapper">
-            <div class="row">
-                <!-- Page Header -->
+            <div class="row">                 
                 <div class="col-lg-12">
                     <h1 class="page-header">Profile</h1>
                 </div>
-                <!--End Page Header -->
+                 
             </div>
             <div class="row">
                 <h3 class="alert alert-info">About</h3>
                  <div class="col-md-4">
                      <label class="control-label col-sm-2" for="user_name">Name:</label>
-                     <span class="col-sm-10"><em>Faisal Nabil</em></span>
+                     <!-- <span class="col-sm-10"><em>Faisal Nabil</em></span> -->
+                     <span class="col-sm-10"><em><?php echo $carOwnerData[0]->Name ;?></em></span>
                  </div>
                  <div class="col-md-4">
                      <label class="control-label col-sm-2" for="user_name">DOB: </label>
-                     <span class="col-sm-10"><em>20-Nov-1994</em></span>
+                     <span class="col-sm-10"><em><?php echo $carOwnerData[0]->DOB ;?></em></span>
                  </div>
                  <div class="col-md-4">
                      <label class="control-label col-sm-2" for="user_name">Contact: </label>
-                     <span class="col-sm-9 col-md-offset-1"><em>01739-069751</em></span>
+                     <span class="col-sm-9 col-md-offset-1"><em><?php echo $carOwnerData[0]->Contact ;?></em></span>
                  </div>
                  <div class="col-md-4">
                      <label class="control-label col-sm-6" for="user_name">Present Address: </label>
-                     <span class="col-md-4"><em>Uttara,Dhaka</em></span>
+                     <span class="col-md-4"><em><?php echo $carOwnerData[0]->Address ;?></em></span>
                  </div>
 
                  <div class="col-md-4">
                      <label class="control-label col-sm-6" for="nid">National Id: </label>
-                     <span class="col-md-4">1995374384347</span>
+                     <span class="col-md-4"><?php echo $carOwnerData[0]->NID ;?></span>
                  </div>
                  <div class="col-md-4">
                      <label class="control-label col-sm-6" for="dlc">Driving Licence: </label>
-                     <span class="col-md-4">AB234C</span>
+                     <span class="col-md-4"><?php echo $carOwnerData[0]->{'Driving Licence'} ;?></span>
                  </div>
 
                  <div class="pull-right" style="margin-top: 20px; margin-right: 30px;">
-                     <a href="edit_profile.html"><button class="btn btn-info">Edit Details <i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></a>
+                     <a href="edit_profile.php"><button class="btn btn-info">Edit Details <i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></a>
                  </div>
             </div>
             <div class="row">
@@ -280,11 +263,28 @@
                                                     <th>Insurance NO</th>
                                                 </tr>
                                             </thead>
-                                            <tbody id="rowGenerate"></tbody>
+                                            <tbody id="rowGenerate">
+                                                 <?php 
+                                                 $i = 0;
+                                                   foreach ($carOwnerVehicleData as $value) {
+                                                    $i++;
+                                                  ?> 
+                                                <tr>
+                                                   <td><?php echo $i; ?></td>
+                                                   <td><?php echo $value->ModelName; ?></td>
+                                                   <td><?php echo $value->VehicleType; ?></td>
+                                                   <td><?php echo $value->VehicleRegNo; ?></td>
+                                                   <td><?php echo $value->RegistrationDate; ?></td>
+                                                   <td><?php echo $value->InsuranceNumber; ?></td>
+                                                </tr>
+                                                <?php 
+                                                   }
+                                                ?>
+                                            </tbody>
                                             
                                         </table>
                                     </div>
-                                    <a href="entry.html"><button class="btn btn-primary">Add Another</button></a>
+                                    <a href="entry.php"><button class="btn btn-primary">Add Another</button></a>
                                 </div>
 
                             </div>
