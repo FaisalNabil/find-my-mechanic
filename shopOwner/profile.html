@@ -231,6 +231,7 @@
                                               <tr>
                                                 <th>#</th>
                                                 <th>Service Available</th>
+                                                <th>Cost</th>
                                                 <th>Action</th>
                                               </tr>
                                             </thead>
@@ -238,7 +239,7 @@
                                               <tr>
                                                 <td>1</td>
                                                 <td>Oil & Filter Change</td>
-                                                 
+                                                 <td>1000tk</td>
                                                 <td><button class="btn btn-info" data-toggle="modal" data-target="#edit_service">Edit</button>
                                                     <!-- Modal -->
                                                     <div class="modal fade" id="edit_service" role="dialog">
@@ -256,7 +257,13 @@
                                                                           <input type="text" class="form-control" id="service_name" value="Oil & Filter Change">
                                                                         </div>
                                                                       </div>
-                                                                       
+                                                                      <div class="form-group">
+                                                                        <label class="control-label col-sm-2" for="service_cost">Cost:</label>
+                                                                        <div class="col-sm-5">
+                                                                          <input type="text" class="form-control" id="service_cost" value="1000">
+                                                                        </div>
+                                                                      </div>
+                                                                      
                                                                       <div class="form-group">
                                                                         <div class="col-sm-offset-2 col-sm-10">
                                                                           <button type="submit" class="btn btn-primary">Submit</button>
@@ -276,11 +283,13 @@
                                               <tr>
                                                 <td>2</td>
                                                 <td>Brakes, Power Steering</td>
+                                                <td>3000tk</td>
                                                 <td><button class="btn btn-info">Edit</button> <button class="btn btn-danger">Delete</button></td>
                                               </tr>
                                               <tr>
                                                 <td>3</td>
                                                 <td>Body & Paint Work</td>
+                                                <td>4000tk</td>
                                                 <td><button class="btn btn-info">Edit</button> <button class="btn btn-danger">Delete</button></td>
                                               </tr>
                                             </tbody>
@@ -307,6 +316,13 @@
                                                                         <label class="control-label col-sm-2" for="service_name">Service Name:</label>
                                                                         <div class="col-sm-5">
                                                                           <input type="text" class="form-control" id="service_name"  placeholder="Enter Service Name">
+                                                                        </div>
+                                                                      </div>
+
+                                                                      <div class="form-group">
+                                                                        <label class="control-label col-sm-2" for="service_cost">Cost:</label>
+                                                                        <div class="col-sm-5">
+                                                                          <input type="text" class="form-control" id="service_cost"  placeholder="Enter Service Cost">
                                                                         </div>
                                                                       </div>
                                                                       <div class="form-group">
