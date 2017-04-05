@@ -1,5 +1,12 @@
 <!DOCTYPE html>
 <html>
+<?php 
+    require("shopOwnerPHP/selectFromDatabase.php"); 
+
+    $jsonShopOwnerString = getJSONFromDB("select * from shopowner");
+
+    $shopOwnerData = json_decode($jsonShopOwnerString);
+?>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -123,7 +130,7 @@
                     </a>
                     <!-- dropdown user-->
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="profile.html"><i class="fa fa-user fa-fw"></i>User Profile</a>
+                        <li><a href="profile.php"><i class="fa fa-user fa-fw"></i>User Profile</a>
                         </li>
                         <li><a href="setting.html"><i class="fa fa-gear fa-fw"></i>Settings</a>
                         </li>
@@ -206,48 +213,48 @@
                                               <div class="form-group">
                                                 <label class="control-label col-sm-2" for="email">Shop Name:</label>
                                                 <div class="col-sm-5">
-                                                  <input type="text" class="form-control" id="name" placeholder="" value="Tuhin Enterprise">
+                                                  <input type="text" class="form-control" id="name" placeholder="" value="<?php echo $shopOwnerData[0]->ShopName; ?>">
                                                 </div>
                                               </div>
                                     
                                               <div class="form-group">
                                                 <label class="control-label col-sm-2" for="email">Contact:</label>
                                                 <div class="col-sm-5">
-                                                  <input type="text" class="form-control" id="contact" placeholder="" value="01739-069751">
+                                                  <input type="text" class="form-control" id="contact" placeholder="" value="<?php echo $shopOwnerData[0]->Contact; ?>">
                                                 </div>
                                               </div>
                                                 
                                               <div class="form-group">
                                                 <label class="control-label col-sm-2" for="email">Email:</label>
                                                 <div class="col-sm-10">
-                                                  <input type="email" class="form-control" id="email" placeholder="tuhinbhuiyan7@gmail.com" required="">
+                                                  <input type="email" class="form-control" id="email" placeholder="" value="<?php echo $shopOwnerData[0]->Email; ?>" required="">
                                                 </div>
                                               </div>
 
                                               <div class="form-group">
-                                                <label class="control-label col-sm-2" for="shoptradeLicence">Shop Trade Licence:</label>
+                                                <label class="control-label col-sm-2" for="email">Shop Trade Licence:</label>
                                                 <div class="col-sm-10">
-                                                  <input type="text" class="form-control" id="shoptradeLicence" placeholder="Enter Shop Trade Licence" required="">
+                                                  <input type="text" class="form-control" id="shoptradeLicence" placeholder="" value="<?php echo $shopOwnerData[0]->ShopTradeLicence; ?>" required="">
                                                 </div>
                                               </div>
 
                                               <div class="form-group">
-                                                <label class="control-label col-sm-2" for="maps-latitude">Google Maps Latitude:</label>
+                                                <label class="control-label col-sm-2" for="email">Google Maps Latitude:</label>
                                                 <div class="col-sm-10">
-                                                  <input type="text" class="form-control" id="maps-latitude" placeholder="Enter Google Maps Latitude" required="">
+                                                  <input type="text" class="form-control" id="maps-latitude" placeholder="" value="<?php echo $shopOwnerData[0]->Latitude; ?>" required="">
                                                 </div>
                                               </div>
                                               <div class="form-group">
-                                                <label class="control-label col-sm-2" for="maps-latitude">Google Maps Longitude:</label>
+                                                <label class="control-label col-sm-2" for="email">Google Maps Longitude:</label>
                                                 <div class="col-sm-10">
-                                                  <input type="text" class="form-control" id="maps-longitude" placeholder="Enter Google Maps Longitude" required="">
+                                                  <input type="text" class="form-control" id="maps-longitude" placeholder="" value="<?php echo $shopOwnerData[0]->Longitude; ?>" required="">
                                                 </div>
                                               </div>
 
                                               <div class="form-group">
                                                 <label class="control-label col-sm-2" for="email">Location:</label>
                                                 <div class="col-sm-5">
-                                                   <textarea class="form-control" id="comment" required="">Uttara,Dhaka</textarea>
+                                                   <textarea class="form-control" id="comment" required=""><?php echo $shopOwnerData[0]->Address; ?></textarea>
                                                 </div>
                                               </div>
 
@@ -256,7 +263,7 @@
                                                   <button type="submit" class="btn btn-primary">Save Changes</button>
                                                 </div>
                                                 <div class="col-sm-2">
-                                                  <a href="profile.html"><button type="submit" class="btn btn-danger">Cancle</button></a>
+                                                  <a href="profile.php"><button type="button" class="btn btn-danger">Cancel</button></a>
                                                 </div>
                                               </div>
                                          </form>
