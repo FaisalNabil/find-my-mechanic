@@ -16,10 +16,7 @@
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-    $conn = mysqli_connect("localhost", "root", "root", "find_My_Mechanic");
-    if (!$conn) {
-            die("Connection failed: " . mysqli_connect_error());
-    }
+    include 'phpFiles/Mysqldb.php';
 
    if (!empty($_POST['VehicleType']) && !empty($_POST['ModelName']) && !empty($_POST['RegNo']) && !empty($_POST['RegDate']) && !empty($_POST['InsuranceNo']))
 
@@ -30,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       $RegDate     = $_POST['RegDate'];  
       $InsuranceNo = $_POST['InsuranceNo'];   
     }
-    
+
        $sql = "insert into vehicle values('$RegNo','$RegDate','$InsuranceNo','$VehicleType','$ModelName')"; 
 
         if (mysqli_query($conn, $sql)) {
