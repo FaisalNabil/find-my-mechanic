@@ -1,5 +1,12 @@
 <!DOCTYPE html>
 <html>
+<?php 
+    require("shopOwnerPHP/selectFromDatabase.php"); 
+
+    $jsonShopOwnerString = getJSONFromDB("select * from message");
+
+    $messageData = json_decode($jsonShopOwnerString);
+?>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -167,7 +174,7 @@
                         <a href="index.html"><i class="fa fa-dashboard fa-fw"></i>Home</a>
                     </li>
                     <li class="selected">
-                        <a href="message.html"><i class="fa fa-comment fa-fw"></i>Messages</a>
+                        <a href="message.php"><i class="fa fa-comment fa-fw"></i>Messages</a>
                     </li>
                     <li>
                         <a href="entry.html"><i class="fa fa-bell fa-fw"></i>Notification</a>
@@ -200,58 +207,25 @@
                 <div class="col-md-12">
                       <table class="table table-inbox table-hover">
                             <tbody>
+                            <?php
+                                for($i=0;$i<sizeof($messageData);$i++){
+                                  ?>
                               <tr>
                                   <td class="inbox-small-cells">
                                       <input type="checkbox" class="mail-checkbox">
                                   </td>
                                   <td><i class="fa fa-star"></i></td>
-                                  <td class="from">Tuhin EnterPrise</td>
-                                  <td class="message-body">Car Washed Complete</td>
+                                  <td class="from"><?php echo $messageData[$i]->CarOwnerEmail; ?></td>
+                                  <td class="message-body"><?php echo $messageData[$i]->MessageBody; ?></td>
                                   <td></td>
-                                  <td class="text-right">9:27 AM</td>
+                                  <td class="text-right"><?php echo $messageData[$i]->Date; ?></td>
                                   <td class="pull-right"><a href="message-reply.html"><button class="btn btn-primary">Reply</button></a>
                                     <button class="btn btn-danger">Delete</button>
                                   </td>
                               </tr>
-                              <tr>
-                                  <td class="inbox-small-cells">
-                                      <input type="checkbox" class="mail-checkbox">
-                                  </td>
-                                  <td><i class="fa fa-star"></i></td>
-                                  <td class="from">Tuhin EnterPrise</td>
-                                  <td class="message-body">Car Washed Complete</td>
-                                  <td></td>
-                                  <td class="text-right">Mar 20 </td>
-                                  <td class="pull-right"><a href="message-reply.html"><button class="btn btn-primary">Reply</button></a>
-                                    <button class="btn btn-danger">Delete</button>
-                                  </td>
-                              </tr>
-                              <tr>
-                                  <td class="inbox-small-cells">
-                                      <input type="checkbox" class="mail-checkbox">
-                                  </td>
-                                  <td><i class="fa fa-star"></i></td>
-                                  <td class="from">Tuhin EnterPrise</td>
-                                  <td class="message-body">Car Washed Complete</td>
-                                  <td></td>
-                                  <td class="text-right">July 10</td>
-                                  <td class="pull-right"><a href="message-reply.html"><button class="btn btn-primary">Reply</button></a>
-                                    <button class="btn btn-danger">Delete</button>
-                                  </td>
-                              </tr>
-                              <tr>
-                                  <td class="inbox-small-cells">
-                                      <input type="checkbox" class="mail-checkbox">
-                                  </td>
-                                  <td><i class="fa fa-star"></i></td>
-                                  <td class="from">Tuhin EnterPrise</td>
-                                  <td class="message-body">Car Washed Complete</td>
-                                  <td></td>
-                                  <td class="text-right">Aug 20</td>
-                                  <td class="pull-right"><a href="message-reply.html"><button class="btn btn-primary">Reply</button></a>
-                                    <button class="btn btn-danger">Delete</button>
-                                  </td>
-                              </tr>
+                              <?php
+                                }
+                              ?>
                               
                                
                           </tbody>
