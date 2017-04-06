@@ -8,7 +8,6 @@ $jsonString = getJSONFromDB("select * from carowner where Email='nabilt59@gmail.
 
 $carOwnerData = json_decode($jsonString);
 
-
 ?>
 
 
@@ -286,7 +285,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                               <div class="form-group">
                                                 <label class="control-label col-sm-2" for="dlc">Driving Liscence:</label>
                                                 <div class="col-sm-5">
-                                                  <input type="text" class="form-control" name="DrivingLicence" id="dlc" value="<?php echo $carOwnerData[0]->{'Driving Licence'} ;?>">
+                                                  <input type="text" class="form-control" name="DrivingLicence" id="dlc" value="<?php echo $carOwnerData[0]->DrivingLicence ;?>">
                                                 </div>
                                               </div>
 
