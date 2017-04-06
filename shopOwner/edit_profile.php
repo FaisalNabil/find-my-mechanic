@@ -188,6 +188,44 @@
             <!-- end sidebar-collapse -->
         </nav>
         <!-- end navbar side -->
+        <?php 
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+            require("shopOwnerPHP/updateDatabase.php"); 
+
+           if (!empty($_POST['ShopName']) && !empty($_POST['Contact']) && !empty($_POST['Email']) && !empty($_POST['ShopTradeLicence']) && !empty($_POST['Latitude']) && !empty($_POST['Longitude']) && !empty($_POST['Location']))
+
+            {
+              $shopName         = $_POST['ShopName'];  
+              $contact          = $_POST['Contact'];    
+              $email            = $_POST['Email'];    
+              $shopTradeLicence = $_POST['ShopTradeLicence'];  
+              $latitude         = $_POST['Latitude'];   
+              $longitude        = $_POST['Longitude'];
+              $location         = $_POST['Location'];    
+            }
+               
+
+               $sql = "UPDATE shopowner SET ShopName ='".$shopName."',Email='".$email."',Contact='".$contact."',ShopTradeLicence='".$shopTradeLicence."',Latitude = '".$latitude."',Longitude='".$longitude."',Location='".$location."' WHERE Email='abc@gmail.com'"; 
+
+                if (updateDB($sql)==1) {
+                    $info = 
+                    '<div class="alert alert-success alert-dismissable">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Success!</strong> The Value Supdated Successfully.
+                     </div>';
+                } else {
+                    $info = 
+                    '<div class="alert alert-info alert-dismissable">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Info!</strong> Updated Failed.
+                     </div>';
+                }
+
+        }
+
+        ?>
         <!--  page-wrapper -->
         <div id="page-wrapper">
             <div class="row">
@@ -196,6 +234,11 @@
                     <h1 class="page-header">Profile</h1>
                 </div>
                 <!--End Page Header -->
+            </div>
+            <div class="cow">
+                <div class="col-lg-12">
+                    <?php echo $info; ?>
+                </div>
             </div>
             <div class="row">
                 <div class="col-lg-12">
@@ -209,52 +252,52 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="table-responsive">
-                                         <form class="form-horizontal">
+                                         <form class="form-horizontal" action="" method="post">
                                               <div class="form-group">
                                                 <label class="control-label col-sm-2" for="email">Shop Name:</label>
                                                 <div class="col-sm-5">
-                                                  <input type="text" class="form-control" id="name" placeholder="" value="<?php echo $shopOwnerData[0]->ShopName; ?>">
+                                                  <input type="text" class="form-control" id="name" name="ShopName" placeholder="" value="<?php echo $shopOwnerData[0]->ShopName; ?>">
                                                 </div>
                                               </div>
                                     
                                               <div class="form-group">
                                                 <label class="control-label col-sm-2" for="email">Contact:</label>
                                                 <div class="col-sm-5">
-                                                  <input type="text" class="form-control" id="contact" placeholder="" value="<?php echo $shopOwnerData[0]->Contact; ?>">
+                                                  <input type="text" class="form-control" id="contact" name="Contact" placeholder="" value="<?php echo $shopOwnerData[0]->Contact; ?>">
                                                 </div>
                                               </div>
                                                 
                                               <div class="form-group">
                                                 <label class="control-label col-sm-2" for="email">Email:</label>
                                                 <div class="col-sm-10">
-                                                  <input type="email" class="form-control" id="email" placeholder="" value="<?php echo $shopOwnerData[0]->Email; ?>" required="">
+                                                  <input type="email" class="form-control" id="email" name="Email" placeholder="" value="<?php echo $shopOwnerData[0]->Email; ?>" required="">
                                                 </div>
                                               </div>
 
                                               <div class="form-group">
                                                 <label class="control-label col-sm-2" for="email">Shop Trade Licence:</label>
                                                 <div class="col-sm-10">
-                                                  <input type="text" class="form-control" id="shoptradeLicence" placeholder="" value="<?php echo $shopOwnerData[0]->ShopTradeLicence; ?>" required="">
+                                                  <input type="text" class="form-control" id="shoptradeLicence" name="ShopTradeLicence" placeholder="" value="<?php echo $shopOwnerData[0]->ShopTradeLicence; ?>" required="">
                                                 </div>
                                               </div>
 
                                               <div class="form-group">
                                                 <label class="control-label col-sm-2" for="email">Google Maps Latitude:</label>
                                                 <div class="col-sm-10">
-                                                  <input type="text" class="form-control" id="maps-latitude" placeholder="" value="<?php echo $shopOwnerData[0]->Latitude; ?>" required="">
+                                                  <input type="text" class="form-control" id="maps-latitude" name="Latitude" placeholder="" value="<?php echo $shopOwnerData[0]->Latitude; ?>" required="">
                                                 </div>
                                               </div>
                                               <div class="form-group">
                                                 <label class="control-label col-sm-2" for="email">Google Maps Longitude:</label>
                                                 <div class="col-sm-10">
-                                                  <input type="text" class="form-control" id="maps-longitude" placeholder="" value="<?php echo $shopOwnerData[0]->Longitude; ?>" required="">
+                                                  <input type="text" class="form-control" id="maps-longitude" name="Longitude" placeholder="" value="<?php echo $shopOwnerData[0]->Longitude; ?>" required="">
                                                 </div>
                                               </div>
 
                                               <div class="form-group">
                                                 <label class="control-label col-sm-2" for="email">Location:</label>
                                                 <div class="col-sm-5">
-                                                   <textarea class="form-control" id="comment" required=""><?php echo $shopOwnerData[0]->Address; ?></textarea>
+                                                   <textarea class="form-control" id="comment" name="Location" required=""><?php echo $shopOwnerData[0]->Address; ?></textarea>
                                                 </div>
                                               </div>
 
@@ -267,7 +310,7 @@
                                                 </div>
                                               </div>
                                          </form>
-                                          
+                                         
                                     </div>
 
                                 </div>
