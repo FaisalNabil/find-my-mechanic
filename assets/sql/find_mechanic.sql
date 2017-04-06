@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 05, 2017 at 06:49 AM
+-- Generation Time: Apr 06, 2017 at 04:16 PM
 -- Server version: 10.1.21-MariaDB
--- PHP Version: 5.6.30
+-- PHP Version: 7.1.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -17,10 +17,9 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `find my mechanic`
+-- Database: `find_my_mechanic`
 --
-CREATE DATABASE IF NOT EXISTS `find_My_Mechanic` DEFAULT CHARACTER SET = 'utf8' COLLATE utf8_general_ci;
-USE `find_My_Mechanic`;
+
 -- --------------------------------------------------------
 
 --
@@ -52,7 +51,7 @@ CREATE TABLE `carowner` (
   `Contact` varchar(16) NOT NULL,
   `DOB` date NOT NULL,
   `NID` varchar(20) NOT NULL,
-  `Driving Licence` varchar(20) NOT NULL,
+  `DrivingLicence` varchar(20) NOT NULL,
   `Password` varchar(20) NOT NULL,
   `Address` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -61,7 +60,7 @@ CREATE TABLE `carowner` (
 -- Dumping data for table `carowner`
 --
 
-INSERT INTO `carowner` (`Name`, `Email`, `Contact`, `DOB`, `NID`, `Driving Licence`, `Password`, `Address`) VALUES
+INSERT INTO `carowner` (`Name`, `Email`, `Contact`, `DOB`, `NID`, `DrivingLicence`, `Password`, `Address`) VALUES
 ('Nabil', 'nabilt59@gmail.com', '01521480480', '1994-11-20', '199646896557', '46788065', '12345', 'nikunja-2');
 
 -- --------------------------------------------------------
