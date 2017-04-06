@@ -1,12 +1,13 @@
-<!DOCTYPE html>
-<html>
 <?php 
-    require("shopOwnerPHP/selectFromDatabase.php"); 
+    include "shopOwnerPHP/selectFromDatabase.php"; 
 
     $jsonShopOwnerString = getJSONFromDB("select * from shopowner");
 
     $shopOwnerData = json_decode($jsonShopOwnerString);
 ?>
+
+<!DOCTYPE html>
+<html>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -188,44 +189,47 @@
             <!-- end sidebar-collapse -->
         </nav>
         <!-- end navbar side -->
-        <?php 
+         <?php 
+            if ($_SERVER['REQUEST_METHOD'] == 'POST')
+            {
+                
+                $conn = mysqli_connect("localhost", "root", "root", "find_My_Mechanic");
+            if (!$conn) {
+                    die("Connection failed: " . mysqli_connect_error());
+            }
 
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-            require("shopOwnerPHP/updateDatabase.php"); 
-
-           if (!empty($_POST['ShopName']) && !empty($_POST['Contact']) && !empty($_POST['Email']) && !empty($_POST['ShopTradeLicence']) && !empty($_POST['Latitude']) && !empty($_POST['Longitude']) && !empty($_POST['Location']))
+                if (!empty($_POST['ShopName']) && !empty($_POST['Contact']) && !empty($_POST['ShopTradeLicence']) && !empty($_POST['Latitude']) && !empty($_POST['Longitude']) && !empty($_POST['Location']))
 
             {
               $shopName         = $_POST['ShopName'];  
               $contact          = $_POST['Contact'];    
-              $email            = $_POST['Email'];    
               $shopTradeLicence = $_POST['ShopTradeLicence'];  
               $latitude         = $_POST['Latitude'];   
               $longitude        = $_POST['Longitude'];
-              $location         = $_POST['Location'];    
+              $location         = $_POST['Location'];
+
+
             }
-               
+           
 
-               $sql = "UPDATE shopowner SET ShopName ='".$shopName."',Email='".$email."',Contact='".$contact."',ShopTradeLicence='".$shopTradeLicence."',Latitude = '".$latitude."',Longitude='".$longitude."',Location='".$location."' WHERE Email='abc@gmail.com'"; 
-
-                if (updateDB($sql)==1) {
-                    $info = 
-                    '<div class="alert alert-success alert-dismissable">
-                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                        <strong>Success!</strong> The Value Supdated Successfully.
-                     </div>';
-                } else {
-                    $info = 
-                    '<div class="alert alert-info alert-dismissable">
-                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                        <strong>Info!</strong> Updated Failed.
-                     </div>';
+            $sql = "UPDATE shopowner SET ShopName ='".$shopName."',Contact='".$contact."',Latitude = '".$latitude."',Longitude='".$longitude."',Address ='".$location."',ShopTradeLicence='".$shopTradeLicence."' WHERE Email='abc@gmail.com'";
+            
+            if (mysqli_query($conn, $sql)) {
+            $info = 
+            '<div class="alert alert-success alert-dismissable">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Success!</strong> The Value Supdated Successfully.
+             </div>';
+            } else {
+                $info = 
+                '<div class="alert alert-info alert-dismissable">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>Info!</strong> Updated Failed.
+                 </div>';
+            }
                 }
 
-        }
-
-        ?>
+         ?>
         <!--  page-wrapper -->
         <div id="page-wrapper">
             <div class="row">
@@ -237,7 +241,7 @@
             </div>
             <div class="cow">
                 <div class="col-lg-12">
-                    <?php echo $info; ?>
+                     <?php echo $info ; ?>
                 </div>
             </div>
             <div class="row">
@@ -266,14 +270,6 @@
                                                   <input type="text" class="form-control" id="contact" name="Contact" placeholder="" value="<?php echo $shopOwnerData[0]->Contact; ?>">
                                                 </div>
                                               </div>
-                                                
-                                              <div class="form-group">
-                                                <label class="control-label col-sm-2" for="email">Email:</label>
-                                                <div class="col-sm-10">
-                                                  <input type="email" class="form-control" id="email" name="Email" placeholder="" value="<?php echo $shopOwnerData[0]->Email; ?>" required="">
-                                                </div>
-                                              </div>
-
                                               <div class="form-group">
                                                 <label class="control-label col-sm-2" for="email">Shop Trade Licence:</label>
                                                 <div class="col-sm-10">
@@ -305,11 +301,11 @@
                                                 <div class="col-sm-offset-2 col-sm-2">
                                                   <button type="submit" class="btn btn-primary">Save Changes</button>
                                                 </div>
-                                                <div class="col-sm-2">
-                                                  <a href="profile.php"><button type="button" class="btn btn-danger">Cancel</button></a>
-                                                </div>
                                               </div>
                                          </form>
+                                         <div class="col-sm-2">
+                                                  <a href="profile.php"><button type="button" class="btn btn-danger">Cancel</button></a>
+                                         </div>
                                          
                                     </div>
 
