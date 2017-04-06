@@ -231,7 +231,7 @@ $carOwnerVehicleData = json_decode($jsonCarOwnerVehicleString);
                  </div>
                  <div class="col-md-4">
                      <label class="control-label col-sm-6" for="dlc">Driving Licence: </label>
-                     <span class="col-md-4"><?php echo $carOwnerData[0]->{'Driving Licence'} ;?></span>
+                     <span class="col-md-4"><?php echo $carOwnerData[0]->DrivingLicence ;?></span>
                  </div>
 
                  <div class="pull-right" style="margin-top: 20px; margin-right: 30px;">
