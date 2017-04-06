@@ -193,8 +193,6 @@ $carOwnerPassword = json_decode($jsonCarOwnerDataString);
             <!-- end sidebar-collapse -->
         </nav>
          <?php 
-		 $successes='';
-		 $error='';
            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                include("phpFiles/Mysqldb.php"); 
