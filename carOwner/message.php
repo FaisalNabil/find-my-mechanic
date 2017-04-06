@@ -1,3 +1,19 @@
+<?php 
+
+include("phpFiles/SelectProfileData.php");
+
+$jsonMessageDataString = getJSONFromDB("select * from message");
+
+$MessageData = json_decode($jsonMessageDataString);
+
+
+   $jsonCarOwnerDataString = getJSONFromDB("select ShopName from shopowner where Email='".$MessageData[$i]->ShopOwnerEmail."'");
+
+$ShopOwnerData = json_decode($jsonCarOwnerDataString);
+  
+?>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -122,9 +138,9 @@
                     </a>
                     <!-- dropdown user-->
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="profile.html"><i class="fa fa-user fa-fw"></i>User Profile</a>
+                        <li><a href="profile.php"><i class="fa fa-user fa-fw"></i>User Profile</a>
                         </li>
-                        <li><a href="setting.html"><i class="fa fa-gear fa-fw"></i>Settings</a>
+                        <li><a href="setting.php"><i class="fa fa-gear fa-fw"></i>Settings</a>
                         </li>
                         <li class="divider"></li>
                         <li><a href="../login.html"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
@@ -163,13 +179,13 @@
                     <hr>
 
                     <li>
-                        <a href="index.html"><i class="fa fa-dashboard fa-fw"></i>Home</a>
+                        <a href="index.php"><i class="fa fa-dashboard fa-fw"></i>Home</a>
                     </li>
                     <li class="selected">
-                        <a href="message.html"><i class="fa fa-comment fa-fw"></i>Messages</a>
+                        <a href="message.php"><i class="fa fa-comment fa-fw"></i>Messages</a>
                     </li>
                     <li>
-                        <a href="entry.html"><i class="fa fa-bell fa-fw"></i>Notification</a>
+                        <a href="notification.html"><i class="fa fa-bell fa-fw"></i>Notification</a>
                     </li>
                     <li>
                         <a href="entry.php"><i class="fa fa-edit fa-fw"></i>Entry</a>
@@ -188,7 +204,9 @@
                 <div class="col-lg-12">
                     <h1 class="page-header">Message</h1>
                 </div>
-                <!--End Page Header -->
+
+                  
+                <h3><?php   ?></h3>
             </div>
             <div class="row">
                 <div class="col-md-12">
@@ -199,20 +217,38 @@
                 <div class="col-md-12">
                       <table class="table table-inbox table-hover">
                             <tbody>
+                                <?php 
+                                   foreach ($MessageData as $value) {
+                                ?>  
+                                        
                               <tr>
                                   <td class="inbox-small-cells">
                                       <input type="checkbox" class="mail-checkbox">
                                   </td>
                                   <td><i class="fa fa-star"></i></td>
-                                  <td class="from">Tuhin EnterPrise</td>
-                                  <td class="message-body">Car Washed Complete</td>
+                                  <td class="from">
+
+                                  <?php
+                                   for($i = 0; $i < sizeof($ShopOwnerData); $i++){
+                                     echo $ShopOwnerData[$i]->ShopName ; 
+                                   } 
+                                   
+                                  ?>
+                                    
+                                  </td>
+                                  <td class="message-body"><?php echo $value->MessageBody ; ?></td>
                                   <td></td>
                                   <td class="text-right">9:27 AM</td>
                                   <td class="pull-right"><a href="message-reply.html"><button class="btn btn-primary">Reply</button></a>
                                     <button class="btn btn-danger">Delete</button>
                                   </td>
                               </tr>
-                              <tr>
+
+                                <?php 
+                                  }   
+                                ?>
+
+                              <!-- <tr>
                                   <td class="inbox-small-cells">
                                       <input type="checkbox" class="mail-checkbox">
                                   </td>
@@ -250,7 +286,7 @@
                                   <td class="pull-right"><a href="message-reply.html"><button class="btn btn-primary">Reply</button></a>
                                     <button class="btn btn-danger">Delete</button>
                                   </td>
-                              </tr>
+                              </tr> -->
                               
                                
                           </tbody>
