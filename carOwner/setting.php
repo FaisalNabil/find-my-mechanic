@@ -1,3 +1,16 @@
+<?php 
+
+include("phpFiles/SelectProfileData.php"); 
+
+$jsonCarOwnerDataString = getJSONFromDB("select Password from carowner where Email='nabilt59@gmail.com'");
+
+$carOwnerPassword = json_decode($jsonCarOwnerDataString);
+
+
+
+?>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -122,9 +135,9 @@
                     </a>
                     <!-- dropdown user-->
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="profile.html"><i class="fa fa-user fa-fw"></i>User Profile</a>
+                        <li><a href="profile.php"><i class="fa fa-user fa-fw"></i>User Profile</a>
                         </li>
-                        <li><a href="#"><i class="fa fa-gear fa-fw"></i>Settings</a>
+                        <li><a href="setting.php"><i class="fa fa-gear fa-fw"></i>Settings</a>
                         </li>
                         <li class="divider"></li>
                         <li><a href="../login.html"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
@@ -179,14 +192,70 @@
             </div>
             <!-- end sidebar-collapse -->
         </nav>
-        <!-- end navbar side -->
-        <!--  page-wrapper -->
+         <?php 
+           if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+               include("phpFiles/Mysqldb.php"); 
+
+               if (!empty($_POST['newPassowrd']) && !empty($_POST['ConfirmPassword']) && ($_POST["newPassowrd"] == $_POST["ConfirmPassword"])) {
+
+                     $newPassowrd     = $_POST['newPassowrd'];
+                     $ConfirmPassword = $_POST['ConfirmPassword'];                     
+                    if (preg_match("/^.*(?=.{5,})(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).*$/", $_POST["newPassowrd"]) === 0) {
+                        $error = 
+                         '<div class="alert alert-danger alert-dismissable">
+                           <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                           <strong>Worning!</strong> Password must be at least 5 characters and must contain at least one lower case letter, one upper case letter and one digit!.  
+                         </div>';
+                    }else{
+                           $welcome =  "Welcome";
+                        $sql = "UPDATE carowner SET Password ='".$newPassowrd."' WHERE Email='nabilt59@gmail.com'"; 
+
+                            if (mysqli_query($conn, $sql)) {
+                                $successes = 
+                                '<div class="alert alert-success alert-dismissable">
+                                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                    <strong>Success!</strong> Password Updated Successfully.
+                                 </div>';
+                            }
+                        }
+                }else{
+                    $error = 
+                         '<div class="alert alert-danger alert-dismissable">
+                           <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                           <strong>Worning!</strong> Please Check You\'ve Entered Or Confirmed Your Password!.  
+                         </div>';
+                }
+            } 
+         ?>
         <div id="page-wrapper">
             <div class="row">
                 <!-- Page Header -->
                 <div class="col-lg-12">
                     <h1 class="page-header">Settings</h1>
                 </div>
+
+                <div class="cow">
+                    <div class="col-lg-12">
+                         <div class="alert alert-info alert-dismissable">
+                           <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                           <strong>Info!</strong> Password must be at least 5 characters and must contain at least one lower case letter, one upper case letter and one digit!.  
+                         </div>
+                    </div>
+               </div>
+
+                <div class="cow">
+                    <div class="col-lg-12">
+                        <?php echo $successes; ?>
+                    </div>
+               </div>
+               <div class="cow">
+                    <div class="col-lg-12">
+                        <?php echo $error; 
+                              
+                        ?>
+                    </div>
+               </div>
                 <!--End Page Header -->
                 <div class="col-lg-12">
                     <div class="panel panel-primary">
@@ -197,23 +266,23 @@
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-lg-12">
-                                     <form class="form-horizontal">
+                                     <form class="form-horizontal" action="" method="post">
                                           <div class="form-group">
                                             <label class="control-label col-sm-2" for="old-password">Old Password:</label>
                                             <div class="col-sm-5">
-                                              <input type="password" class="form-control" id="email" placeholder="Enter Old Password">
+                                              <input type="password" class="form-control" id="email"  value="<?php echo $carOwnerPassword[0]->Password ;?>" placeholder="Enter Old Password">
                                             </div>
                                           </div>
                                           <div class="form-group">
-                                            <label class="control-label col-sm-2" for="old-password">New Password:</label>
+                                            <label class="control-label col-sm-2" for="new-password">New Password:</label>
                                             <div class="col-sm-5">
-                                              <input type="password" class="form-control" id="email" placeholder="Enter New Password">
+                                              <input type="password" class="form-control" name="newPassowrd" placeholder="Enter New Password">
                                             </div>
                                           </div>
                                           <div class="form-group">
                                             <label class="control-label col-sm-2" for="old-password">New Password Again:</label>
                                             <div class="col-sm-5">
-                                              <input type="password" class="form-control" id="email" placeholder="Enter New Password Again">
+                                              <input type="password" class="form-control" name="ConfirmPassword" placeholder="Enter New Password Again">
                                             </div>
                                           </div>
                                            
