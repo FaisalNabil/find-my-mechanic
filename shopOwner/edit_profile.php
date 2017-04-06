@@ -1,5 +1,5 @@
 <?php 
-    include "shopOwnerPHP/selectFromDatabase.php"; 
+    require "shopOwnerPHP/selectFromDatabase.php"; 
 
     $jsonShopOwnerString = getJSONFromDB("select * from shopowner");
 
@@ -193,40 +193,37 @@
             if ($_SERVER['REQUEST_METHOD'] == 'POST')
             {
                 
-                $conn = mysqli_connect("localhost", "root", "root", "find_My_Mechanic");
-            if (!$conn) {
-                    die("Connection failed: " . mysqli_connect_error());
-            }
+                require "shopOwnerPHP/updateDatabase.php";
 
                 if (!empty($_POST['ShopName']) && !empty($_POST['Contact']) && !empty($_POST['ShopTradeLicence']) && !empty($_POST['Latitude']) && !empty($_POST['Longitude']) && !empty($_POST['Location']))
 
-            {
-              $shopName         = $_POST['ShopName'];  
-              $contact          = $_POST['Contact'];    
-              $shopTradeLicence = $_POST['ShopTradeLicence'];  
-              $latitude         = $_POST['Latitude'];   
-              $longitude        = $_POST['Longitude'];
-              $location         = $_POST['Location'];
+                {
+                  $shopName         = $_POST['ShopName'];  
+                  $contact          = $_POST['Contact'];    
+                  $shopTradeLicence = $_POST['ShopTradeLicence'];  
+                  $latitude         = $_POST['Latitude'];   
+                  $longitude        = $_POST['Longitude'];
+                  $location         = $_POST['Location'];
 
 
-            }
-           
+                }
+               
 
-            $sql = "UPDATE shopowner SET ShopName ='".$shopName."',Contact='".$contact."',Latitude = '".$latitude."',Longitude='".$longitude."',Address ='".$location."',ShopTradeLicence='".$shopTradeLicence."' WHERE Email='abc@gmail.com'";
-            
-            if (mysqli_query($conn, $sql)) {
-            $info = 
-            '<div class="alert alert-success alert-dismissable">
-                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                <strong>Success!</strong> The Value Supdated Successfully.
-             </div>';
-            } else {
+                $sql = "UPDATE shopowner SET ShopName ='".$shopName."',Contact='".$contact."',Latitude = '".$latitude."',Longitude='".$longitude."',Address ='".$location."',ShopTradeLicence='".$shopTradeLicence."' WHERE Email='abc@gmail.com'";
+                
+                if (updateDB($sql)) {
                 $info = 
-                '<div class="alert alert-info alert-dismissable">
+                '<div class="alert alert-success alert-dismissable">
                     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                    <strong>Info!</strong> Updated Failed.
+                    <strong>Success!</strong> The Value Supdated Successfully.
                  </div>';
-            }
+                } else {
+                    $info = 
+                    '<div class="alert alert-info alert-dismissable">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Info!</strong> Updated Failed.
+                     </div>';
+                }
                 }
 
          ?>

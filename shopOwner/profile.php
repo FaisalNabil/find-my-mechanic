@@ -178,13 +178,13 @@
                         <a href="index.html"><i class="fa fa-dashboard fa-fw"></i>Home</a>
                     </li>
                     <li>
-                        <a href="message.html"><i class="fa fa-comment fa-fw"></i>Messages</a>
+                        <a href="message.php"><i class="fa fa-comment fa-fw"></i>Messages</a>
                     </li>
                     <li>
                         <a href="notification.html"><i class="fa fa-bell fa-fw"></i>Notification</a>
                     </li>
                     <li>
-                        <a href="entry.html"><i class="fa fa-edit fa-fw"></i>Available Stock</a>
+                        <a href="entry.php"><i class="fa fa-edit fa-fw"></i>Available Stock</a>
                     </li>
                 </ul>
                 <!-- end side-menu -->
@@ -221,7 +221,7 @@
                      <span class="col-md-6"><em><?php echo $shopOwnerData[0]->ShopTradeLicence; ?></em></span>
                  </div>
                  <div class="pull-right" style="margin-top: 20px; margin-right: 30px;">
-                     <a href="edit_profile.html"><button class="btn btn-info">Edit Details <i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></a>
+                     <a href="edit_profile.php"><button class="btn btn-info">Edit Details <i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></a>
                  </div>
             </div>
             <div class="row">
