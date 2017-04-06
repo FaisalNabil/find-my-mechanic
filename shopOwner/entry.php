@@ -1,5 +1,12 @@
 <!DOCTYPE html>
 <html>
+<?php 
+    require("shopOwnerPHP/selectFromDatabase.php"); 
+
+    $jsonShopOwnerString = getJSONFromDB("select * from stock");
+
+    $stockDetailData = json_decode($jsonShopOwnerString);
+?>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -123,7 +130,7 @@
                     </a>
                     <!-- dropdown user-->
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="profile.html"><i class="fa fa-user fa-fw"></i>User Profile</a>
+                        <li><a href="profile.php"><i class="fa fa-user fa-fw"></i>User Profile</a>
                         </li>
                         <li><a href="setting.html"><i class="fa fa-gear fa-fw"></i>Settings</a>
                         </li>
@@ -209,10 +216,13 @@
                                               </tr>
                                             </thead>
                                             <tbody>
+                                            <?php 
+                                                for($i=0;$i<sizeof($stockDetailData);$i++){
+                                               ?>     
                                               <tr>
-                                                <td>Bumper</td>
-                                                <td>1000tk/=</td>
-                                                <td>50</td>
+                                                <td><?php echo $stockDetailData[$i]->PartsName ?></td>
+                                                <td><?php echo $stockDetailData[$i]->PricePerUnit ?></td>
+                                                <td><?php echo $stockDetailData[$i]->TotalUnit ?></td>
                                                 <td><button class="btn btn-info" data-toggle="modal" data-target="#myModal">Edit</button> 
                                                     <!-- Modal -->
                                                     <div class="modal fade" id="myModal" role="dialog">
@@ -227,19 +237,19 @@
                                                                       <div class="form-group">
                                                                         <label class="control-label col-sm-2" for="parts_name">Parts Name:</label>
                                                                         <div class="col-sm-5">
-                                                                          <input type="text" class="form-control" id="parts_name" value="Bumper">
+                                                                          <input type="text" class="form-control" id="parts_name" value="<?php echo $stockDetailData[$i]->PartsName ?>">
                                                                         </div>
                                                                       </div>
                                                                       <div class="form-group">
                                                                         <label class="control-label col-sm-2" for="Unit_price">Unit Price:</label>
                                                                         <div class="col-sm-5">
-                                                                          <input type="text" class="form-control" id="Unit_price" value="1000">
+                                                                          <input type="text" class="form-control" id="Unit_price" value="<?php echo $stockDetailData[$i]->PricePerUnit ?>">
                                                                         </div>
                                                                       </div>
                                                                       <div class="form-group">
                                                                         <label class="control-label col-sm-2" for="Unit">Total Unit Left:</label>
                                                                         <div class="col-sm-5">
-                                                                          <input type="text" class="form-control" id="Unit" value="50">
+                                                                          <input type="text" class="form-control" id="Unit" value="<?php echo $stockDetailData[$i]->TotalUnit ?>">
                                                                         </div>
                                                                       </div>
                                                                       <div class="form-group">
@@ -258,18 +268,9 @@
                                                     <button class="btn btn-danger">Delete</button>
                                                 </td>
                                               </tr>
-                                              <tr>
-                                                <td>Brakes, Power Steering</td>
-                                                <td>2000tk/=</td>
-                                                <td>10</td>
-                                                <td><a href="#"><button class="btn btn-info">Edit</button> <button class="btn btn-danger">Delete</button></a></td>
-                                              </tr>
-                                              <tr>
-                                                <td>Decklid</td>
-                                                <td>3000tk/=</td>
-                                                <td>30</td>
-                                                <td><a href="#"><button class="btn btn-info">Edit</button> <button class="btn btn-danger">Delete</button></a></td>
-                                              </tr>
+                                              <?php
+                                                    }
+                                              ?>
                                             </tbody>
                                           </table>
                                           
