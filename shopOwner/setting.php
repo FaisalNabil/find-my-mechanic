@@ -73,7 +73,7 @@
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a class="text-center" href="message.html">
+                            <a class="text-center" href="message.php">
                                 <strong>Read All Messages</strong>
                                 <i class="fa fa-angle-right"></i>
                             </a>
@@ -122,12 +122,12 @@
                     </a>
                     <!-- dropdown user-->
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="profile.html"><i class="fa fa-user fa-fw"></i>User Profile</a>
+                        <li><a href="profile.php"><i class="fa fa-user fa-fw"></i>User Profile</a>
                         </li>
                         <li><a href="#"><i class="fa fa-gear fa-fw"></i>Settings</a>
                         </li>
                         <li class="divider"></li>
-                        <li><a href="../login.html"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
+                        <li><a href="../login.php"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
                         </li>
                     </ul>
                     <!-- end dropdown-user -->
@@ -166,13 +166,13 @@
                         <a href="index.html"><i class="fa fa-dashboard fa-fw"></i>Home</a>
                     </li>
                     <li>
-                        <a href="message.html"><i class="fa fa-comment fa-fw"></i>Messages</a>
+                        <a href="message.php"><i class="fa fa-comment fa-fw"></i>Messages</a>
                     </li>
                     <li>
                         <a href="notification.html"><i class="fa fa-bell fa-fw"></i>Notification</a>
                     </li>
                     <li>
-                        <a href="entry.html"><i class="fa fa-edit fa-fw"></i>Entry</a>
+                        <a href="entry.php"><i class="fa fa-edit fa-fw"></i>Entry</a>
                     </li>
                 </ul>
                 <!-- end side-menu -->
