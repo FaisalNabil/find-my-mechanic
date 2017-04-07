@@ -41,7 +41,7 @@ $carOwnerVehicleData = json_decode($jsonCarOwnerVehicleString);
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand logo-color" href="index.php">
+                <a class="navbar-brand logo-color" href="index.html">
                     Logo Goes Here
                 </a>
             </div>
@@ -92,7 +92,7 @@ $carOwnerVehicleData = json_decode($jsonCarOwnerVehicleString);
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a class="text-center" href="message.php">
+                            <a class="text-center" href="message.html">
                                 <strong>Read All Messages</strong>
                                 <i class="fa fa-angle-right"></i>
                             </a>
@@ -143,10 +143,10 @@ $carOwnerVehicleData = json_decode($jsonCarOwnerVehicleString);
                     <ul class="dropdown-menu dropdown-user">
                         <li onclick="generateData()"><a href="#"><i class="fa fa-user fa-fw"></i>User Profile</a>
                         </li>
-                        <li><a href="setting.php"><i class="fa fa-gear fa-fw"></i>Settings</a>
+                        <li><a href="setting.html"><i class="fa fa-gear fa-fw"></i>Settings</a>
                         </li>
                         <li class="divider"></li>
-                        <li><a href="../login.php"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
+                        <li><a href="../login.html"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
                         </li>
                     </ul>
                     <!-- end dropdown-user -->
@@ -182,10 +182,10 @@ $carOwnerVehicleData = json_decode($jsonCarOwnerVehicleString);
                     <hr>
 
                     <li>
-                        <a href="index.php"><i class="fa fa-dashboard fa-fw"></i>Home</a>
+                        <a href="index.html"><i class="fa fa-dashboard fa-fw"></i>Home</a>
                     </li>
                     <li>
-                        <a href="message.php"><i class="fa fa-comment fa-fw"></i>Messages</a>
+                        <a href="message.html"><i class="fa fa-comment fa-fw"></i>Messages</a>
                     </li>
                     <li>
                         <a href="notification.html"><i class="fa fa-bell fa-fw"></i>Notification</a>
@@ -246,6 +246,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     include 'phpFiles/Mysqldb.php';
 
+
    if (!empty($_POST['vehivle_name']) && !empty($_POST['type']) && !empty($_POST['RegNo']) && !empty($_POST['RegDate']) && !empty($_POST['InsuranceNo']))
 
     {
@@ -254,17 +255,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       $RegNo          = $_POST['RegNo'];    
       $RegDate        = $_POST['RegDate'];  
       $InsuranceNo    = $_POST['InsuranceNo'];
-      $hiddenInsuranceNo    = $_POST['hiddenInsuranceNo'];
+      $hiddenRegNo    = $_POST['hiddenRegNo'];
        
     }                                          
        
-       $sql = "UPDATE vehicle SET VehicleRegNo ='".$RegNo."',RegistrationDate ='".$RegDate."',InsuranceNumber ='".$InsuranceNo."',VehicleType='".$type."',ModelName='".$vehivle_name."' WHERE VehicleRegNo='".$hiddenInsuranceNo."'";
+       $sql = "UPDATE vehicle SET VehicleRegNo ='".$RegNo."',RegistrationDate ='".$RegDate."',InsuranceNumber ='".$InsuranceNo."',VehicleType='".$type."',ModelName='".$vehivle_name."' WHERE VehicleRegNo='".$hiddenRegNo."'";
        
         if (mysqli_query($conn, $sql)) {
             $info = 
             '<div class="alert alert-success alert-dismissable notification">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                <strong>Success!</strong> The Value Supdated Successfully.
+                <strong>Success!</strong> The Value Updated Successfully.
              </div>';
         } else {
             $info = 
@@ -277,12 +278,38 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 ?>
+
+<?php 
+    if (isset($_POST['delete'])) {
+
+         $hiddenRegNo    = $_POST['hiddenRegNo'];
+
+         include 'phpFiles/Mysqldb.php';
+
+        $sql = "DELETE FROM vehicle WHERE VehicleRegNo='".$hiddenRegNo."'";
+
+        if (mysqli_query($conn, $sql)) {
+            $info = 
+            '<div class="alert alert-success alert-dismissable notification">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Success!</strong> The Value Deleted Successfully.
+             </div>';
+        } else {
+            $info = 
+            '<div class="alert alert-info alert-dismissable notification">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Info!</strong> Not Deleted Yet!.
+             </div>';
+        }
+    }
+
+?>
      
             <div class="row">
                 <h3 class="alert alert-info">Vehicles Details</h3>
 
-                   <?php //echo $sql;
-                        echo  $info;
+                   <?php 
+                      echo $info; 
                     ?>
                  <div class="row">
                 <div class="col-lg-12">
@@ -321,7 +348,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                                    <td><?php echo $value->VehicleRegNo; ?></td>
                                                    <td><?php echo $value->RegistrationDate; ?></td>
                                                    <td><?php echo $value->InsuranceNumber; ?></td>
-                                                   <td><button class="btn btn-info" data-toggle="modal" data-target="#edit_service<?php echo $i; ?>">Edit</button> 
+                                                   <td>
+                                                   <button class="btn btn-info" data-toggle="modal" data-target="#edit_service<?php echo $i; ?>">Edit</button> 
 
 <!-- Modal -->
 <div class="modal fade" id="edit_service<?php echo $i; ?>" role="dialog">
@@ -367,7 +395,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                       <input type="text" class="form-control" name="InsuranceNo" id="insoNo" value="<?php echo $value->InsuranceNumber; ?>">
                     </div>
                   </div>
-                  <input type="hidden" class="form-control" name="hiddenInsuranceNo" id="insoNo" value="<?php echo $value->VehicleRegNo; ?>">
+                  <input type="hidden" class="form-control" name="hiddenRegNo" id="insoNo" value="<?php echo $value->VehicleRegNo; ?>">
 
                   <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
@@ -382,8 +410,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
       </div>
     </div>
-</div><!-- End Modal -->
-                                                   <button class="btn btn-danger">Delete</button></td>
+</div><!-- End Modal -->                    
+    <form action="" method="post" class="vehicleDeleteBtn">
+       <input type="hidden" class="form-control" name="hiddenRegNo" id="insoNo" value="<?php echo $value->VehicleRegNo; ?>">
+      <button class="btn btn-danger" name="delete" >Delete</button>
+    </form>
+
+                                                    </td>
                                                 </tr>
                                                 <?php 
                                                    }

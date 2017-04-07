@@ -37,7 +37,7 @@ $carOwnerPassword = json_decode($jsonCarOwnerDataString);
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand logo-color" href="index.php">
+                <a class="navbar-brand logo-color" href="index.html">
                     Logo Goes Here
                 </a>
             </div>
@@ -88,7 +88,7 @@ $carOwnerPassword = json_decode($jsonCarOwnerDataString);
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a class="text-center" href="message.php">
+                            <a class="text-center" href="message.html">
                                 <strong>Read All Messages</strong>
                                 <i class="fa fa-angle-right"></i>
                             </a>
@@ -142,7 +142,7 @@ $carOwnerPassword = json_decode($jsonCarOwnerDataString);
                         <li><a href="setting.php"><i class="fa fa-gear fa-fw"></i>Settings</a>
                         </li>
                         <li class="divider"></li>
-                        <li><a href="../login.php"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
+                        <li><a href="../login.html"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
                         </li>
                     </ul>
                     <!-- end dropdown-user -->
@@ -178,10 +178,10 @@ $carOwnerPassword = json_decode($jsonCarOwnerDataString);
                     <hr>
 
                     <li>
-                        <a href="index.php"><i class="fa fa-dashboard fa-fw"></i>Home</a>
+                        <a href="index.html"><i class="fa fa-dashboard fa-fw"></i>Home</a>
                     </li>
                     <li>
-                        <a href="message.php"><i class="fa fa-comment fa-fw"></i>Messages</a>
+                        <a href="message.html"><i class="fa fa-comment fa-fw"></i>Messages</a>
                     </li>
                     <li>
                         <a href="notification.html"><i class="fa fa-bell fa-fw"></i>Notification</a>
