@@ -318,15 +318,7 @@ $carOwnerPassword = json_decode($jsonCarOwnerDataString);
 
     <script src="../assets/plugins/jquery-1.10.2.js"></script>
     <script src="../assets/plugins/bootstrap/bootstrap.min.js"></script>
-
-    <script>
-         jQuery(document).ready(function($){                                   
-                
-               setTimeout(function() {
-                  $("div.notification").fadeOut("slow");
-               }, 3000); 
-          });  
-      </script>;
+    <script src="../assets/js/custom.js"></script>
     
 </body>
 

@@ -1,5 +1,6 @@
 
 <?php 
+session_start();
 
 include("phpFiles/SelectProfileData.php"); 
 
@@ -24,6 +25,7 @@ $carOwnerVehicleData = json_decode($jsonCarOwnerVehicleString);
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="../assets/css/style.css" rel="stylesheet" />
     <link href="../assets/css/main-style.css" rel="stylesheet" />
+    <link href="../assets/css/jquery.datepick.css" rel="stylesheet" />
 
 </head>
 <body >
@@ -238,8 +240,50 @@ $carOwnerVehicleData = json_decode($jsonCarOwnerVehicleString);
                      <a href="edit_profile.php"><button class="btn btn-info">Edit Details <i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></a>
                  </div>
             </div>
+<?php 
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+    include 'phpFiles/Mysqldb.php';
+
+   if (!empty($_POST['vehivle_name']) && !empty($_POST['type']) && !empty($_POST['RegNo']) && !empty($_POST['RegDate']) && !empty($_POST['InsuranceNo']))
+
+    {
+      $vehivle_name   = $_POST['vehivle_name'];  
+      $type           = $_POST['type'];    
+      $RegNo          = $_POST['RegNo'];    
+      $RegDate        = $_POST['RegDate'];  
+      $InsuranceNo    = $_POST['InsuranceNo'];
+      $hiddenInsuranceNo    = $_POST['hiddenInsuranceNo'];
+       
+    }                                          
+       
+       $sql = "UPDATE vehicle SET VehicleRegNo ='".$RegNo."',RegistrationDate ='".$RegDate."',InsuranceNumber ='".$InsuranceNo."',VehicleType='".$type."',ModelName='".$vehivle_name."' WHERE VehicleRegNo='".$hiddenInsuranceNo."'";
+       
+        if (mysqli_query($conn, $sql)) {
+            $info = 
+            '<div class="alert alert-success alert-dismissable notification">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Success!</strong> The Value Supdated Successfully.
+             </div>';
+        } else {
+            $info = 
+            '<div class="alert alert-info alert-dismissable notification">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Info!</strong> Updated Failed.
+             </div>';
+        }
+
+}
+
+?>
+     
             <div class="row">
                 <h3 class="alert alert-info">Vehicles Details</h3>
+
+                   <?php //echo $sql;
+                        echo  $info;
+                    ?>
                  <div class="row">
                 <div class="col-lg-12">
                     <!--Simple table example -->
@@ -261,6 +305,7 @@ $carOwnerVehicleData = json_decode($jsonCarOwnerVehicleString);
                                                     <th>Reg. No</th>
                                                     <th>Date</th>
                                                     <th>Insurance NO</th>
+                                                    <th>Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody id="rowGenerate">
@@ -276,6 +321,69 @@ $carOwnerVehicleData = json_decode($jsonCarOwnerVehicleString);
                                                    <td><?php echo $value->VehicleRegNo; ?></td>
                                                    <td><?php echo $value->RegistrationDate; ?></td>
                                                    <td><?php echo $value->InsuranceNumber; ?></td>
+                                                   <td><button class="btn btn-info" data-toggle="modal" data-target="#edit_service<?php echo $i; ?>">Edit</button> 
+
+<!-- Modal -->
+<div class="modal fade" id="edit_service<?php echo $i; ?>" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Edit Vehicle Details</h4>
+        </div>
+        <div class="modal-body">
+            <form class="form-horizontal" method="post" action="">
+                  <div class="form-group">
+                    <label class="control-label col-sm-2" for="vehivle_name">Vehicle Name:</label>
+                    <div class="col-sm-5">
+                      <input type="text" class="form-control" name="vehivle_name" value="<?php echo $value->ModelName; ?>">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-sm-2" for="type">Type:</label>
+                    <div class="col-sm-5">
+                      <input type="text" class="form-control" name="type" id="service_name" value="<?php echo $value->VehicleType; ?>">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-sm-2" for="reg_no">Reg NO. :</label>
+                    <div class="col-sm-5">
+                      <input type="text" class="form-control" name="RegNo" id="reg_no" value="<?php echo $value->VehicleRegNo;
+                         $_SESSION['VehicleRegNo'] = $value->VehicleRegNo;
+                       ?>">
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="control-label col-sm-2" for="reg_date">Reg Date :</label>
+                    <div class="col-sm-5">
+                      <input type="text" class="form-control" name="RegDate" id="popupDatepicker" value="<?php echo $value->RegistrationDate; ?>">
+                    </div>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label class="control-label col-sm-2" for="insoNo">Insurance NO. :</label>
+                    <div class="col-sm-5">
+                      <input type="text" class="form-control" name="InsuranceNo" id="insoNo" value="<?php echo $value->InsuranceNumber; ?>">
+                    </div>
+                  </div>
+                  <input type="hidden" class="form-control" name="hiddenInsuranceNo" id="insoNo" value="<?php echo $value->VehicleRegNo; ?>">
+
+                  <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                      <input type="submit" class="btn btn-primary" value="Submit"></input>
+                    </div>
+                  </div>
+            </form>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+</div><!-- End Modal -->
+                                                   <button class="btn btn-danger">Delete</button></td>
                                                 </tr>
                                                 <?php 
                                                    }
@@ -306,6 +414,9 @@ $carOwnerVehicleData = json_decode($jsonCarOwnerVehicleString);
 
     <script src="../assets/plugins/jquery-1.10.2.js"></script>
     <script src="../assets/plugins/bootstrap/bootstrap.min.js"></script>
+    <script src="../assets/plugins/jquery.plugin.min.js"></script>
+    <script src="../assets/plugins/jquery.datepick.js"></script>
+    <script src="../assets/js/custom.js"></script>
      
 </body>
 
