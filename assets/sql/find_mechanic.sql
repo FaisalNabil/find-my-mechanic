@@ -19,7 +19,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `find_my_mechanic`
 --
-
+CREATE DATABASE IF NOT EXISTS `find_My_Mechanic` DEFAULT CHARACTER SET = 'utf8' COLLATE utf8_general_ci;
+USE `find_My_Mechanic`;
 -- --------------------------------------------------------
 
 --
