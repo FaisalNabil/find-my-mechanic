@@ -178,10 +178,10 @@ $carOwnerPassword = json_decode($jsonCarOwnerDataString);
                     <hr>
 
                     <li>
-                        <a href="index.html"><i class="fa fa-dashboard fa-fw"></i>Home</a>
+                        <a href="index.php"><i class="fa fa-dashboard fa-fw"></i>Home</a>
                     </li>
                     <li>
-                        <a href="message.html"><i class="fa fa-comment fa-fw"></i>Messages</a>
+                        <a href="message.php"><i class="fa fa-comment fa-fw"></i>Messages</a>
                     </li>
                     <li>
                         <a href="notification.html"><i class="fa fa-bell fa-fw"></i>Notification</a>
