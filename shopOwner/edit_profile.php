@@ -133,10 +133,10 @@
                     <ul class="dropdown-menu dropdown-user">
                         <li><a href="profile.php"><i class="fa fa-user fa-fw"></i>User Profile</a>
                         </li>
-                        <li><a href="setting.html"><i class="fa fa-gear fa-fw"></i>Settings</a>
+                        <li><a href="setting.php"><i class="fa fa-gear fa-fw"></i>Settings</a>
                         </li>
                         <li class="divider"></li>
-                        <li><a href="../login.html"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
+                        <li><a href="../login.php"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
                         </li>
                     </ul>
                     <!-- end dropdown-user -->
@@ -175,13 +175,13 @@
                         <a href="index.html"><i class="fa fa-dashboard fa-fw"></i>Home</a>
                     </li>
                     <li>
-                        <a href="message.html"><i class="fa fa-comment fa-fw"></i>Messages</a>
+                        <a href="message.php"><i class="fa fa-comment fa-fw"></i>Messages</a>
                     </li>
                     <li>
                         <a href="notification.html"><i class="fa fa-bell fa-fw"></i>Notification</a>
                     </li>
                     <li>
-                        <a href="entry.html"><i class="fa fa-edit fa-fw"></i>Available Stock</a>
+                        <a href="entry.php"><i class="fa fa-edit fa-fw"></i>Available Stock</a>
                     </li>
                 </ul>
                 <!-- end side-menu -->

@@ -39,7 +39,7 @@ $carOwnerVehicleData = json_decode($jsonCarOwnerVehicleString);
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand logo-color" href="index.html">
+                <a class="navbar-brand logo-color" href="index.php">
                     Logo Goes Here
                 </a>
             </div>
@@ -90,7 +90,7 @@ $carOwnerVehicleData = json_decode($jsonCarOwnerVehicleString);
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a class="text-center" href="message.html">
+                            <a class="text-center" href="message.php">
                                 <strong>Read All Messages</strong>
                                 <i class="fa fa-angle-right"></i>
                             </a>
@@ -141,10 +141,10 @@ $carOwnerVehicleData = json_decode($jsonCarOwnerVehicleString);
                     <ul class="dropdown-menu dropdown-user">
                         <li onclick="generateData()"><a href="#"><i class="fa fa-user fa-fw"></i>User Profile</a>
                         </li>
-                        <li><a href="setting.html"><i class="fa fa-gear fa-fw"></i>Settings</a>
+                        <li><a href="setting.php"><i class="fa fa-gear fa-fw"></i>Settings</a>
                         </li>
                         <li class="divider"></li>
-                        <li><a href="../login.html"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
+                        <li><a href="../login.php"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
                         </li>
                     </ul>
                     <!-- end dropdown-user -->
@@ -180,10 +180,10 @@ $carOwnerVehicleData = json_decode($jsonCarOwnerVehicleString);
                     <hr>
 
                     <li>
-                        <a href="index.html"><i class="fa fa-dashboard fa-fw"></i>Home</a>
+                        <a href="index.php"><i class="fa fa-dashboard fa-fw"></i>Home</a>
                     </li>
                     <li>
-                        <a href="message.html"><i class="fa fa-comment fa-fw"></i>Messages</a>
+                        <a href="message.php"><i class="fa fa-comment fa-fw"></i>Messages</a>
                     </li>
                     <li>
                         <a href="notification.html"><i class="fa fa-bell fa-fw"></i>Notification</a>
