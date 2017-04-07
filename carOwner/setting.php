@@ -196,11 +196,14 @@ $carOwnerPassword = json_decode($jsonCarOwnerDataString);
            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                include("phpFiles/Mysqldb.php"); 
+               $jsonoldPassword = $carOwnerPassword[0]->Password ;
 
-               if (!empty($_POST['newPassowrd']) && !empty($_POST['ConfirmPassword']) && ($_POST["newPassowrd"] == $_POST["ConfirmPassword"])) {
+               if (!empty($_POST['oldPassword']) &&($jsonoldPassword == $_POST['oldPassword'])) {
 
-                     $newPassowrd     = $_POST['newPassowrd'];
-                     $ConfirmPassword = $_POST['ConfirmPassword'];                     
+                      if (!empty($_POST['newPassowrd']) && !empty($_POST['ConfirmPassword'])&&($_POST["newPassowrd"] == $_POST["ConfirmPassword"])) {
+                        $newPassowrd     = $_POST['newPassowrd'];
+                     $ConfirmPassword = $_POST['ConfirmPassword']; 
+
                     if (preg_match("/^.*(?=.{5,})(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).*$/", $_POST["newPassowrd"]) === 0) {
                         $error = 
                          '<div class="alert alert-danger alert-dismissable">
@@ -219,11 +222,14 @@ $carOwnerPassword = json_decode($jsonCarOwnerDataString);
                                  </div>';
                             }
                         }
+                          
+                      }
+                      
                 }else{
                     $error = 
                          '<div class="alert alert-danger alert-dismissable">
                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                           <strong>Worning!</strong> Please Check You\'ve Entered Or Confirmed Your Password!.  
+                           <strong>Worning!</strong> You Entered Wrong password!.  
                          </div>';
                 }
             } 
@@ -270,7 +276,7 @@ $carOwnerPassword = json_decode($jsonCarOwnerDataString);
                                           <div class="form-group">
                                             <label class="control-label col-sm-2" for="old-password">Old Password:</label>
                                             <div class="col-sm-5">
-                                              <input type="password" class="form-control" id="email"  value="<?php echo $carOwnerPassword[0]->Password ;?>" placeholder="Enter Old Password">
+                                              <input type="password" class="form-control" id="password" name="oldPassword" placeholder="Enter Old Password"> 
                                             </div>
                                           </div>
                                           <div class="form-group">
