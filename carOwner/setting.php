@@ -21,6 +21,8 @@ $carOwnerPassword = json_decode($jsonCarOwnerDataString);
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="../assets/css/style.css" rel="stylesheet" />
     <link href="../assets/css/main-style.css" rel="stylesheet" />
+
+
    </head>
 <body>
     <!--  wrapper -->
@@ -206,17 +208,17 @@ $carOwnerPassword = json_decode($jsonCarOwnerDataString);
 
                     if (preg_match("/^.*(?=.{5,})(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).*$/", $_POST["newPassowrd"]) === 0) {
                         $error = 
-                         '<div class="alert alert-danger alert-dismissable">
+                         '<div class="alert alert-danger alert-dismissable notification">
                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                            <strong>Worning!</strong> Password must be at least 5 characters and must contain at least one lower case letter, one upper case letter and one digit!.  
                          </div>';
                     }else{
-                           $welcome =  "Welcome";
+                           
                         $sql = "UPDATE carowner SET Password ='".$newPassowrd."' WHERE Email='nabilt59@gmail.com'"; 
-
+                             $flag = 0;
                             if (mysqli_query($conn, $sql)) {
                                 $successes = 
-                                '<div class="alert alert-success alert-dismissable">
+                                '<div class="alert alert-success alert-dismissable notification">
                                     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                                     <strong>Success!</strong> Password Updated Successfully.
                                  </div>';
@@ -227,7 +229,7 @@ $carOwnerPassword = json_decode($jsonCarOwnerDataString);
                       
                 }else{
                     $error = 
-                         '<div class="alert alert-danger alert-dismissable">
+                         '<div class="alert alert-danger alert-dismissable notification">
                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                            <strong>Worning!</strong> You Entered Wrong password!.  
                          </div>';
@@ -252,8 +254,8 @@ $carOwnerPassword = json_decode($jsonCarOwnerDataString);
 
                 <div class="cow">
                     <div class="col-lg-12">
-                        <?php echo $successes; ?>
-                    </div>
+                       <?php echo $successes; ?>
+                </div>
                </div>
                <div class="cow">
                     <div class="col-lg-12">
@@ -316,6 +318,15 @@ $carOwnerPassword = json_decode($jsonCarOwnerDataString);
 
     <script src="../assets/plugins/jquery-1.10.2.js"></script>
     <script src="../assets/plugins/bootstrap/bootstrap.min.js"></script>
+
+    <script>
+         jQuery(document).ready(function($){                                   
+                
+               setTimeout(function() {
+                  $("div.notification").fadeOut("slow");
+               }, 3000); 
+          });  
+      </script>;
     
 </body>
 
