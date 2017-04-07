@@ -260,41 +260,41 @@
                                                     <td> <?php echo $avilableserviceData[$i]->ServiceName; ?> </td>
                                                      <td> <?php echo $avilableserviceData[$i]->Cost; ?> </td>
                                                     <td><button class="btn btn-info" data-toggle="modal" data-target="#edit_service<?php echo $i; ?>">Edit</button>
-                                                        <!-- Modal -->
-                                                        <div class="modal fade" id="edit_service<?php echo $i; ?>" role="dialog">
-                                                            <div class="modal-dialog modal-lg">
-                                                              <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                  <h4 class="modal-title">Edit Service</h4>
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                      <form class="form-horizontal" method="POST" action="">
-                                                                          <div class="form-group">
-                                                                            <label class="control-label col-sm-2" for="service_id">Service Id:</label>
-                                                                            <div class="col-sm-5">
-                                                                              <input type="text" class="form-control" name="ServiceId" id="service_id" value="<?php echo $avilableserviceData[$i]->ServicesId; ?>">
-                                                                            </div>
-                                                                          </div>
-                                                                          <div class="form-group">
-                                                                            <label class="control-label col-sm-2" for="service_name">Service Name:</label>
-                                                                            <div class="col-sm-5">
-                                                                              <input type="text" class="form-control" name="ServiceName" id="service_name" value="<?php echo $avilableserviceData[$i]->ServiceName; ?>">
-                                                                            </div>
-                                                                          </div>
-                                                                          <div class="form-group">
-                                                                            <label class="control-label col-sm-2" for="service_cost">Cost:</label>
-                                                                            <div class="col-sm-5">
-                                                                              <input type="text" class="form-control" name="Cost" id="service_cost" value="<?php echo $avilableserviceData[$i]->Cost; ?>">
-                                                                            </div>
-                                                                          </div>
-                                                                          
-                                                                          <div class="form-group">
-                                                                            <div class="col-sm-offset-2 col-sm-10">
-                                                                              <input type="submit" class="btn btn-primary" value="Submit"></input>
-                                                                            </div>
-                                                                          </div>
-                                                                        </form>
+    <!-- Modal -->
+    <div class="modal fade" id="edit_service<?php echo $i; ?>" role="dialog">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Edit Service</h4>
+            </div>
+            <div class="modal-body">
+                  <form class="form-horizontal" method="POST" action="">
+                      <div class="form-group">
+                        <label class="control-label col-sm-2" for="service_id">Service Id:</label>
+                        <div class="col-sm-5">
+                          <input type="text" class="form-control" name="ServiceId" id="service_id" value="<?php echo $avilableserviceData[$i]->ServicesId; ?>">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="control-label col-sm-2" for="service_name">Service Name:</label>
+                        <div class="col-sm-5">
+                          <input type="text" class="form-control" name="ServiceName" id="service_name" value="<?php echo $avilableserviceData[$i]->ServiceName; ?>">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="control-label col-sm-2" for="service_cost">Cost:</label>
+                        <div class="col-sm-5">
+                          <input type="text" class="form-control" name="Cost" id="service_cost" value="<?php echo $avilableserviceData[$i]->Cost; ?>">
+                        </div>
+                      </div>
+                      
+                      <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                          <input type="submit" class="btn btn-primary" value="Submit"></input>
+                        </div>
+                      </div>
+                    </form>
 <?php
     if($_SERVER["REQUEST_METHOD"] == "POST"){
         $serviceid=$_POST['ServicesId'];
