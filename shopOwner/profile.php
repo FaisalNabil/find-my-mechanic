@@ -259,9 +259,9 @@
                                                     <td> <?php echo $avilableserviceData[$i]->ServicesId; ?> </td>
                                                     <td> <?php echo $avilableserviceData[$i]->ServiceName; ?> </td>
                                                      <td> <?php echo $avilableserviceData[$i]->Cost; ?> </td>
-                                                    <td><button class="btn btn-info" data-toggle="modal" data-target="#edit_service">Edit</button>
+                                                    <td><button class="btn btn-info" data-toggle="modal" data-target="#edit_service<?php echo $i; ?>">Edit</button>
                                                         <!-- Modal -->
-                                                        <div class="modal fade" id="edit_service" role="dialog">
+                                                        <div class="modal fade" id="edit_service<?php echo $i; ?>" role="dialog">
                                                             <div class="modal-dialog modal-lg">
                                                               <div class="modal-content">
                                                                 <div class="modal-header">
@@ -269,26 +269,58 @@
                                                                   <h4 class="modal-title">Edit Service</h4>
                                                                 </div>
                                                                 <div class="modal-body">
-                                                                      <form class="form-horizontal">
+                                                                      <form class="form-horizontal" method="POST" action="">
+                                                                          <div class="form-group">
+                                                                            <label class="control-label col-sm-2" for="service_id">Service Id:</label>
+                                                                            <div class="col-sm-5">
+                                                                              <input type="text" class="form-control" name="ServiceId" id="service_id" value="<?php echo $avilableserviceData[$i]->ServicesId; ?>">
+                                                                            </div>
+                                                                          </div>
                                                                           <div class="form-group">
                                                                             <label class="control-label col-sm-2" for="service_name">Service Name:</label>
                                                                             <div class="col-sm-5">
-                                                                              <input type="text" class="form-control" id="service_name" value="<?php echo $avilableserviceData[$i]->ServiceName; ?>">
+                                                                              <input type="text" class="form-control" name="ServiceName" id="service_name" value="<?php echo $avilableserviceData[$i]->ServiceName; ?>">
                                                                             </div>
                                                                           </div>
                                                                           <div class="form-group">
                                                                             <label class="control-label col-sm-2" for="service_cost">Cost:</label>
                                                                             <div class="col-sm-5">
-                                                                              <input type="text" class="form-control" id="service_cost" value="<?php echo $avilableserviceData[$i]->Cost; ?>">
+                                                                              <input type="text" class="form-control" name="Cost" id="service_cost" value="<?php echo $avilableserviceData[$i]->Cost; ?>">
                                                                             </div>
                                                                           </div>
                                                                           
                                                                           <div class="form-group">
                                                                             <div class="col-sm-offset-2 col-sm-10">
-                                                                              <button type="submit" class="btn btn-primary">Submit</button>
+                                                                              <input type="submit" class="btn btn-primary" value="Submit"></input>
                                                                             </div>
                                                                           </div>
                                                                         </form>
+<?php
+    if($_SERVER["REQUEST_METHOD"] == "POST"){
+        $serviceid=$_POST['ServicesId'];
+        $servicename=$_POST['ServicesName'];
+        $cost=$_POST['Cost'];
+
+        require ("shopOwnerPHP/updateDatabase.php");
+
+        $result=' ';
+        $sql="UPDATE shopowner SET ServiceName='".$servicename."', Cost='".$cost."' WHERE ServiceId='".$serviceid."' ";
+
+        if(updateDB($sql)==1){
+            $result='<div class="alert alert-success alert-dismissable">
+                           <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                           <strong>Your Data Update Was Successfull!</strong>
+                         </div>';
+        }
+        else{
+            $result='<div class="alert alert-danger alert-dismissable">
+                           <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                           <strong>Your Data Was Not Updated!</strong>
+                         </div>';
+        }
+    }
+?>
+
                                                                 </div>
                                                                 <div class="modal-footer">
                                                                   <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
@@ -354,6 +386,7 @@
                         <!-- panel-body -->
                     </div>
                     <!--End simple table example -->
+                    <?php echo $result; ?>
                 </div>   
             </div>
              
