@@ -2,9 +2,11 @@
 
 include("phpFiles/SelectProfileData.php"); 
 
-$jsonCarOwnerDataString = getJSONFromDB("select ShopName,Address from shopowner where Email='tuhinbhuiyan7@gmail.com'");
+$jsonCarOwnerDataString = getJSONFromDB("select ShopName,Email,Address from shopowner where Email='tuhinbhuiyan7@gmail.com'");
 
 $ShopOwnerData = json_decode($jsonCarOwnerDataString);
+
+
 
 $jsonAvailableServiceDataString = getJSONFromDB("select* from availableservices where ServicesId='A32'");
 
@@ -13,6 +15,11 @@ $AvailableServiceData = json_decode($jsonAvailableServiceDataString);
 $jsonStockDataString = getJSONFromDB("select* from stock where StockId='2631'");
 
 $StockData = json_decode($jsonStockDataString);
+
+$jsonownerVehiclerelationDataString = getJSONFromDB("select* from ownervehiclerelation where Email='nabilt59@gmail.com'");
+
+$OwnerVehicleRelationData = json_decode($jsonownerVehiclerelationDataString);
+
 
 ?>
 
@@ -231,7 +238,56 @@ $StockData = json_decode($jsonStockDataString);
                 </div>
                 <!--end quick Help section -->
             </div>
+           <?php 
+         
+             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+               
+                 include 'phpFiles/Mysqldb.php';
 
+                 $messageBody = '';
+                 $carOwnerEmail = '';
+                 $shopownerEmail = '';
+                 $date = '';
+                 $info = '';
+                 $sql = '';
+
+                if (!empty($_POST['messageBody'])){
+                    
+                     $messageBody    = htmlspecialchars(addslashes(trim($_POST['messageBody'])));
+
+                     $carOwnerEmail  = 'nabilt59@gmail.com';// Value Come from SESSION
+                     $shopownerEmail = $ShopOwnerData[0]->Email;
+                     $date           = date("Y-m-d");
+
+                     $sql = "insert into message values('$carOwnerEmail','$shopownerEmail','$messageBody','$date')"; 
+                     
+                      
+                   
+                    if (mysqli_query($conn, $sql)) {
+                    $info = 
+                    '<div class="alert alert-success alert-dismissable">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Success!</strong>Message Send Successfully.
+                     </div>';
+                    } else {
+                        echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+                    }
+                }else{
+                    $info = 
+                    '<div class="alert alert-danger alert-dismissable">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Warning!</strong> You can\'t send blank message.
+                     </div>';
+                }
+                
+             }
+           ?> 
+            <div class="row">
+                <div class="col-lg-6 col-lg-offset-2">
+                    <?php echo $info ; 
+                    ?>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-lg-12">
                     <!--Simple table example -->
@@ -264,32 +320,35 @@ $StockData = json_decode($jsonStockDataString);
                                                     <td><?php echo $ShopOwnerData[0]->ShopName ;?></td>
                                                     <td>2 km</td>
                                                     <td><button class="btn btn-success" data-toggle="modal" data-target="#requestSendModal">Send Request</button>
-                                                    <!-- Modal -->
+                                               <!-- Modal -->
   <div class="modal fade" id="requestSendModal" role="dialog">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
           <h4 class="modal-title">Send Help Request to ShopOwner</h4>
-          <hr>
         </div>
         <div class="modal-body">
-            <form class="form-horizontal">
+            <form class="form-horizontal" action="" method="post">
                  <div class="form-group">        
                   <label class="control-label col-sm-2">Select Your Car:</label>
                   <div class="col-sm-10">
                         <select>
-                          <option value="volvo">Volvo</option>
-                          <option value="saab">Saab</option>
-                          <option value="opel">Opel</option>
-                          <option value="audi">Audi</option>
+                           <?php 
+                                foreach ($OwnerVehicleRelationData as $value) {
+
+                            ?>
+                               <option value="<?php echo $value->VehicleRegNo ;?>"><?php echo $value->VehicleRegNo ;?></option>     
+                            <?php 
+                             }
+                            ?>
                         </select>
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="control-label col-sm-2" for="Message">Message:</label>
                   <div class="col-sm-10">
-                    <textarea class="form-control" rows="5" id="Message"></textarea>
+                    <textarea class="form-control" rows="5" id="Message" name="messageBody"></textarea>
                   </div>
                 </div>
                 <div class="form-group">        
