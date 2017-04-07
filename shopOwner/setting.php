@@ -179,6 +179,69 @@
             </div>
             <!-- end sidebar-collapse -->
         </nav>
+        <?php 
+        $successes=$error=' ';
+           if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+               include("shopOwnerPHP/updateDatabase.php");
+               include("shopOwnerPHP/selectFromDatabase.php");
+
+               $jsonShopOwnerString = getJSONFromDB("select Password from shopowner where Email='hosensarwar007@gmail.com'");
+
+                $passwordData = json_decode($jsonShopOwnerString);
+
+
+                if($passwordData[0]->Password!=$_POST['OldPassword']){
+                    $error = 
+                         '<div class="alert alert-danger alert-dismissable">
+                           <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                           <strong>Incorrect Password!</strong> Please Input Your Valid Old Password!.  
+                         </div>';
+                }
+                else{
+                   if (!empty($_POST['OldPassword']) && !empty($_POST['NewPassword']) && !empty($_POST['ConfirmPassword']) && ($_POST["NewPassword"] == $_POST["ConfirmPassword"]) && $passwordData[0]->Password==$_POST['OldPassword'] ) {
+
+                         $newPassowrd     = $_POST['NewPassword'];
+                         $confirmPassword = $_POST['ConfirmPassword']; 
+
+                        if (preg_match("/^.*(?=.{5,})(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).*$/", $_POST["NewPassword"]) === 0) {
+                            $error = 
+                             '<div class="alert alert-danger alert-dismissable">
+                               <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                               <strong>Worning!</strong> Password must be at least 5 characters and must contain at least one lower case letter, one upper case letter and one digit!.  
+                             </div>';
+
+                        }
+                        else{
+                               $welcome =  "Welcome";
+                                $sql = "UPDATE shopowner SET Password ='".$newPassowrd."' WHERE Email='hosensarwar007@gmail.com'"; 
+
+                                if (updateDB($sql)==1) {
+                                    $successes = 
+                                    '<div class="alert alert-success alert-dismissable">
+                                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                        <strong>Success!</strong> Password Updated Successfully.
+                                     </div>';
+                                }
+                                else{
+                                    $error = 
+                                     '<div class="alert alert-danger alert-dismissable">
+                                       <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                       <strong>Warning!</strong> Password Was Not Updated!  
+                                     </div>';
+                                }
+                            }
+                    }
+                    else{
+                        $error = 
+                         '<div class="alert alert-danger alert-dismissable">
+                           <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                           <strong>Warning!</strong> Please Check, You\'ve Entered Or Confirmed Your Password!  
+                         </div>';
+                    } 
+                    }
+                } 
+         ?>
         <!-- end navbar side -->
         <!--  page-wrapper -->
         <div id="page-wrapper">
@@ -187,6 +250,26 @@
                 <div class="col-lg-12">
                     <h1 class="page-header">Settings</h1>
                 </div>
+
+                <div class="cow">
+                    <div class="col-lg-12">
+                         <div class="alert alert-info alert-dismissable">
+                           <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                           <strong>Info!</strong> Password must be at least 5 characters and must contain at least one lower case letter, one upper case letter and one digit!.  
+                         </div>
+                    </div>
+               </div>
+
+                <div class="cow">
+                    <div class="col-lg-12">
+                        <?php echo $successes; ?>
+                    </div>
+               </div>
+               <div class="cow">
+                    <div class="col-lg-12">
+                        <?php echo $error; ?>
+                    </div>
+               </div>
                 <!--End Page Header -->
                 <div class="col-lg-12">
                     <div class="panel panel-primary">
@@ -197,23 +280,23 @@
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-lg-12">
-                                     <form class="form-horizontal">
+                                     <form class="form-horizontal" action="" method="post">
                                           <div class="form-group">
                                             <label class="control-label col-sm-2" for="old-password">Old Password:</label>
                                             <div class="col-sm-5">
-                                              <input type="password" class="form-control" id="email" placeholder="Enter Old Password">
+                                              <input type="password" class="form-control" id="email" name="OldPassword" placeholder="Enter Old Password">
                                             </div>
                                           </div>
                                           <div class="form-group">
                                             <label class="control-label col-sm-2" for="old-password">New Password:</label>
                                             <div class="col-sm-5">
-                                              <input type="password" class="form-control" id="email" placeholder="Enter New Password">
+                                              <input type="password" class="form-control" id="email" name="NewPassword" placeholder="Enter New Password">
                                             </div>
                                           </div>
                                           <div class="form-group">
                                             <label class="control-label col-sm-2" for="old-password">New Password Again:</label>
                                             <div class="col-sm-5">
-                                              <input type="password" class="form-control" id="email" placeholder="Enter New Password Again">
+                                              <input type="password" class="form-control" id="email" name="ConfirmPassword" placeholder="Enter New Password Again">
                                             </div>
                                           </div>
                                            
