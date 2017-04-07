@@ -178,16 +178,16 @@ $carOwnerData = json_decode($jsonString);
                     <hr>
 
                     <li>
-                        <a href="index.html"><i class="fa fa-dashboard fa-fw"></i>Home</a>
+                        <a href="index.php"><i class="fa fa-dashboard fa-fw"></i>Home</a>
                     </li>
                     <li>
-                        <a href="message.html"><i class="fa fa-comment fa-fw"></i>Messages</a>
+                        <a href="message.php"><i class="fa fa-comment fa-fw"></i>Messages</a>
                     </li>
                     <li>
                         <a href="notification.html"><i class="fa fa-bell fa-fw"></i>Notification</a>
                     </li>
                     <li>
-                        <a href="entry.html"><i class="fa fa-edit fa-fw"></i>Entry</a>
+                        <a href="entry.php"><i class="fa fa-edit fa-fw"></i>Entry</a>
                     </li>
                 </ul>
                 <!-- end side-menu -->
