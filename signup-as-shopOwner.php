@@ -24,31 +24,31 @@
                         <h3 class="panel-title">Please Enter Your information</h3>
                     </div>
                     <div class="panel-body">
-                          <form class="form-horizontal">
+                          <form class="form-horizontal" action = "shopAction.php" method = "Post">
 
                              <div class="form-group">
                                 <label class="control-label col-sm-2" for="shpName">Shop Name:</label>
                                 <div class="col-sm-10">
-                                  <input type="text" class="form-control" id="shpName" placeholder="Enter Shop Name" required>
+                                  <input type="text" class="form-control" id="shpName" name = "shopOwnerName" placeholder="Enter Shop Name" required>
                                 </div>
                               </div>
 
                               <div class="form-group">
                                 <label class="control-label col-sm-2" for="email">Email:</label>
                                 <div class="col-sm-10">
-                                  <input type="email" class="form-control" id="email" placeholder="Enter email" required>
+                                  <input type="email" class="form-control" id="email" name = "shopOwnerEmail" placeholder="Enter email" required>
                                 </div>
                               </div>
                               <div class="form-group">
                                 <label class="control-label col-sm-2" for="pwd">Contact:</label>
                                 <div class="col-sm-10">
-                                  <input type="text" class="form-control" id="pwd" placeholder="Enter Contact Number" required>
+                                  <input type="text" class="form-control" id="pwd" name = "shopOwnerPhone" placeholder="Enter Contact Number" required>
                                 </div>
                               </div>
                               <div class="form-group">
                                 <label class="control-label col-sm-2" for="pwd">Password:</label>
                                 <div class="col-sm-10">
-                                  <input type="password" class="form-control" id="pwd" placeholder="Enter Password" required>
+                                  <input type="password" class="form-control" id="pwd" name = "shopOwnerPWD" placeholder="Enter Password" required>
                                 </div>
                               </div>
                               <div class="form-group">
@@ -61,7 +61,8 @@
                               <div class="form-group">
                                 <label class="control-label col-sm-2" for="shoptradeLicence">Shop Trade Licence:</label>
                                 <div class="col-sm-10">
-                                  <input type="text" class="form-control" id="shoptradeLicence" placeholder="Enter Shop Trade Licence" required>
+                                  <input type="text" class="form-control" id="shoptradeLicence" name = "shopOwnerTDN"
+                                  placeholder="Enter Shop Trade Licence" required>
                                 </div>
                               </div>
 
@@ -71,20 +72,20 @@
                               <div class="form-group">
                                 <label class="control-label col-sm-2" for="maps-latitude">Google Maps Latitude:</label>
                                 <div class="col-sm-10">
-                                  <input type="text" class="form-control" id="maps-latitude" placeholder="Enter Google Maps Latitude" required>
+                                  <input type="text" class="form-control" id="maps-latitude" name = "shopOwnerLatitude"     placeholder="Enter Google Maps Latitude" required>
                                 </div>
                               </div>
                               <div class="form-group">
                                 <label class="control-label col-sm-2" for="maps-latitude">Google Maps Longitude:</label>
                                 <div class="col-sm-10">
-                                  <input type="text" class="form-control" id="maps-longitude" placeholder="Enter Google Maps Longitude" required>
+                                  <input type="text" class="form-control" id="maps-longitude" name = "shopOwnerLongitude" placeholder="Enter Google Maps Longitude" required>
                                 </div>
                               </div>
                               <hr>
                                <div class="form-group">
                                   <label class="control-label col-sm-2" for="comment">Address:</label>
                                   <div class="col-sm-10">
-                                      <textarea class="form-control" id="comment" required></textarea>
+                                      <textarea class="form-control" id="comment" name = "shopOwnerAddress" required></textarea>
                                   </div>
                                   
                                </div>
