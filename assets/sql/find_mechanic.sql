@@ -54,17 +54,39 @@ CREATE TABLE `carowner` (
   `NID` varchar(20) NOT NULL,
   `DrivingLicence` varchar(20) NOT NULL,
   `Password` varchar(20) NOT NULL,
-  `Address` varchar(100) NOT NULL
+  `Address` varchar(100) NOT NULL,
+  `flag` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `carowner`
 --
 
-INSERT INTO `carowner` (`Name`, `Email`, `Contact`, `DOB`, `NID`, `DrivingLicence`, `Password`, `Address`) VALUES
-('Nabil', 'nabilt59@gmail.com', '01521480480', '1994-11-20', '199646896557', '46788065', '12345', 'nikunja-2');
+INSERT INTO `carowner` (`Name`, `Email`, `Contact`, `DOB`, `NID`, `DrivingLicence`, `Password`, `Address`, `flag`) VALUES
+('Nabil', 'nabilt59@gmail.com', '01521480480', '1994-11-20', '199646896557', '46788065', '12345', 'nikunja-2', 1);
 
 -- --------------------------------------------------------
+
+--
+-- Table structure for table `carshop`
+--
+
+CREATE TABLE `carshop` (
+  `Email` varchar(35) NOT NULL,
+  `Password` varchar(15) NOT NULL,
+  `flag` int(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `carshop`
+--
+
+INSERT INTO `carshop` (`Email`, `Password`, `flag`) VALUES
+('tuhinbhuiyan7@gmail.com', '1234', 2),
+('nabilt59@gmail.com', '12345', 1);
+
+-- --------------------------------------------------------
+
 
 --
 -- Table structure for table `message`
@@ -158,16 +180,17 @@ CREATE TABLE `shopowner` (
   `Latitude` decimal(65,9) NOT NULL,
   `Longitude` decimal(65,9) NOT NULL,
   `Address` varchar(100) NOT NULL,
-  `ShopTradeLicence` varchar(20) NOT NULL
+  `ShopTradeLicence` varchar(20) NOT NULL,
+  `flag` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `shopowner`
 --
 
-INSERT INTO `shopowner` (`ShopName`, `Email`, `Contact`, `Password`, `Latitude`, `Longitude`, `Address`, `ShopTradeLicence`) VALUES
-('Sarwar Carwash', 'hosensarwar007@gmail.com', '01700000000', '1234', '23.128912000', '93.009122000', 'Gulshan,Dhaka', '889872'),
-('Tuhin Enterprise', 'tuhinbhuiyan7@gmail.com', '01521498220', '1234', '9.999999999', '9.999999999', 'uttara', 'A123E');
+INSERT INTO `shopowner` (`ShopName`, `Email`, `Contact`, `Password`, `Latitude`, `Longitude`, `Address`, `ShopTradeLicence`, `flag`) VALUES
+('Sarwar Carwash', 'hosensarwar007@gmail.com', '01700000000', '1234', '23.128912000', '93.009122000', 'Gulshan,Dhaka', '889872', 2),
+('Tuhin Enterprise', 'tuhinbhuiyan7@gmail.com', '01521498220', '1234', '9.999999999', '9.999999999', 'uttara', 'A123E', 2);
 
 -- --------------------------------------------------------
 
