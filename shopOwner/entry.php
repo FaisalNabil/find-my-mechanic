@@ -6,7 +6,109 @@
     $jsonShopOwnerString = getJSONFromDB("select * from stock");
 
     $stockDetailData = json_decode($jsonShopOwnerString);
+
+    if(isset($_POST['editSubmit']) && $_SERVER["REQUEST_METHOD"] == "POST"){
+        $stockid=$_POST['PartsId'];
+        $stockname=$_POST['PartsName'];
+        $unitprice=$_POST['UnitPrice'];
+        $totalunit=$_POST['TotalUnit'];
+        $hiddenpartsid=$_POST['HiddenPartsId'];
+        
+        require ("shopOwnerPHP/updateDatabase.php");
+
+        $sql="UPDATE stock SET StockId='".$stockid."', PartsName ='".$stockname."', PricePerUnit ='".$unitprice."', TotalUnit ='".$totalunit."' ";
+        $sqlRelation="UPDATE shopstockrelation SET StockId='".$stockid."' WHERE ShopEmail='hosensarwar007@gmail.com'";
+
+        //echo $sql;
+        if(updateDB($sql)==1){
+            header("Refresh:0");
+            updateDB($sqlRelation);
+        }
+        else {
+            header("Refresh:0");
+        }
+    }
+    if(isset($_POST['addanothersubmit']) && $_SERVER["REQUEST_METHOD"] == "POST"){
+        $addstockid=$_POST['AddPartsId'];
+        $addstockname=$_POST['AddPartsName'];
+        $addtotalunit=$_POST['AddTotalUnit'];
+        $addunitprice=$_POST['AddUnitPrice'];
+        
+        require ("shopOwnerPHP/updateDatabase.php");
+
+        $sql="INSERT INTO stock (StockId, PartsName, PricePerUnit, TotalUnit) VALUES ('".$addstockid."','".$addstockname."','".$addunitprice."','".$addtotalunit."')";
+
+        $sqlRelation="INSERT INTO shopstockrelation (StockId, ShopEmail) VALUES('".$addstockid."','hosensarwar007@gmail.com')";
+        
+        //echo $sql."<br>";
+        //echo $sqlRelation;
+
+        if(updateDB($sql)==1){
+            header("Refresh:0");
+            updateDB($sqlRelation);
+        }
+        else{
+            header("Refresh:0");
+        }
+        
+    }
 ?>
+
+<script type="text/javascript">
+xmlhttp = new XMLHttpRequest();
+    function deletefunction(obj,id){
+        //alert(id);
+        str=document.getElementById(id).innerText;
+        //alert(str);
+
+    xmlhttp.onreadystatechange = function() {
+        
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            
+            //m=document.getElementById(id);
+            var i=xmlhttp.responseText;
+            if(i==1){
+                document.getElementById("stockTable").deleteRow(obj.parentNode.parentNode.rowIndex);
+            }
+                //m.innerHTML=i;
+                
+        }
+    };
+    var url="shopOwnerPHP/stockRowDelete.php?sid="+str;
+    //alert(url);
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+    }
+
+    function partNameCheck(id){
+        //alert(id);
+        str=document.getElementById(id).value;
+        //alert(str);
+
+    xmlhttp.onreadystatechange = function() {
+        
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            
+            m=document.getElementById("errorMessage");
+            var i=xmlhttp.responseText;
+            //alert(i);
+            if(i==str){
+                m.innerHTML="Stock Id exist, Try another one";
+                m.innerHTML.color='red';
+            }
+            else{
+                m.innerHTML="Good Choice!!";
+                m.innerHTML.color='green';
+            }   
+                
+        }
+    };
+    var url="shopOwnerPHP/stockIdCheckAJAX.php?";
+    //alert(url);
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+    }
+</script>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -206,9 +308,10 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="table-responsive">
-                                         <table class="table table-bordered">
+                                         <table class="table table-bordered" id="stockTable">
                                             <thead>
                                               <tr>
+                                                <th>Stock Id</th>
                                                 <th>Parts Name</th>
                                                 <th>Unit Price</th>
                                                 <th>Total Unit Left</th>
@@ -220,12 +323,13 @@
                                                 for($i=0;$i<sizeof($stockDetailData);$i++){
                                                ?>     
                                               <tr>
-                                                <td><?php echo $stockDetailData[$i]->PartsName ?></td>
-                                                <td><?php echo $stockDetailData[$i]->PricePerUnit ?></td>
-                                                <td><?php echo $stockDetailData[$i]->TotalUnit ?></td>
-                                                <td><button class="btn btn-info" data-toggle="modal" data-target="#myModal">Edit</button> 
+                                                <td id="stockid<?php echo $i ?>"><?php echo $stockDetailData[$i]->StockId; ?></td>
+                                                <td><?php echo $stockDetailData[$i]->PartsName; ?></td>
+                                                <td><?php echo $stockDetailData[$i]->PricePerUnit; ?></td>
+                                                <td><?php echo $stockDetailData[$i]->TotalUnit; ?></td>
+                                                <td><button class="btn btn-info" data-toggle="modal" data-target="#myModal<?php echo $i; ?>">Edit</button> 
                                                     <!-- Modal -->
-                                                    <div class="modal fade" id="myModal" role="dialog">
+                                                    <div class="modal fade" id="myModal<?php echo $i; ?>" role="dialog">
                                                         <div class="modal-dialog modal-lg">
                                                           <div class="modal-content">
                                                             <div class="modal-header">
@@ -233,28 +337,39 @@
                                                               <h4 class="modal-title">Edit Stock</h4>
                                                             </div>
                                                             <div class="modal-body">
-                                                                  <form class="form-horizontal">
+                                                                  <form class="form-horizontal" method="POST" action="">
+                                                                      <div class="form-group">
+                                                                        <label class="control-label col-sm-2" for="parts_id">Parts Id:</label>
+                                                                        <div class="col-sm-5">
+                                                                          <input type="text" class="form-control" name="PartsId" id="parts_id<?php echo $i ?>" value="<?php echo $stockDetailData[$i]->StockId; ?>" onkeyup="partNameCheck('parts_id<?php echo $i; ?>')"><span id="errorMessage"></span>
+                                                                        </div>
+                                                                      </div>
+
                                                                       <div class="form-group">
                                                                         <label class="control-label col-sm-2" for="parts_name">Parts Name:</label>
                                                                         <div class="col-sm-5">
-                                                                          <input type="text" class="form-control" id="parts_name" value="<?php echo $stockDetailData[$i]->PartsName ?>">
+                                                                          <input type="text" class="form-control" name="PartsName" id="parts_name" value="<?php echo $stockDetailData[$i]->PartsName; ?>">
                                                                         </div>
                                                                       </div>
                                                                       <div class="form-group">
                                                                         <label class="control-label col-sm-2" for="Unit_price">Unit Price:</label>
                                                                         <div class="col-sm-5">
-                                                                          <input type="text" class="form-control" id="Unit_price" value="<?php echo $stockDetailData[$i]->PricePerUnit ?>">
+                                                                          <input type="text" class="form-control" name="UnitPrice" id="Unit_price" value="<?php echo $stockDetailData[$i]->PricePerUnit; ?>">
                                                                         </div>
                                                                       </div>
                                                                       <div class="form-group">
                                                                         <label class="control-label col-sm-2" for="Unit">Total Unit Left:</label>
                                                                         <div class="col-sm-5">
-                                                                          <input type="text" class="form-control" id="Unit" value="<?php echo $stockDetailData[$i]->TotalUnit ?>">
+                                                                          <input type="text" class="form-control" name="TotalUnit" id="Unit" value="<?php echo $stockDetailData[$i]->TotalUnit; ?>">
                                                                         </div>
                                                                       </div>
+
+                                                                          <input type="hidden" class="form-control" name="HiddenPartsId" id="hidden_parts_id" value="<?php echo $stockDetailData[$i]->StockId; ?>">
+                                                                        
+
                                                                       <div class="form-group">
                                                                         <div class="col-sm-offset-2 col-sm-10">
-                                                                          <button type="submit" class="btn btn-primary">Submit</button>
+                                                                          <input type="submit" class="btn btn-primary" name="editSubmit" value="Submit"></input>
                                                                         </div>
                                                                       </div>
                                                                     </form>
@@ -265,7 +380,7 @@
                                                           </div>
                                                         </div>
                                                     </div><!-- End Modal -->
-                                                    <button class="btn btn-danger">Delete</button>
+                                                    <button class="btn btn-danger" onclick="deletefunction(this,'stockid<?php echo $i;?>') ">Delete</button>
                                                 </td>
                                               </tr>
                                               <?php
@@ -289,28 +404,34 @@
                                                               <h4 class="modal-title">Stock Entry</h4>
                                                             </div>
                                                             <div class="modal-body">
-                                                                  <form class="form-horizontal">
+                                                                  <form class="form-horizontal" method="POST" action="">
                                                                       <div class="form-group">
-                                                                        <label class="control-label col-sm-2" for="parts_name">Parts Name:</label>
+                                                                        <label class="control-label col-sm-2" for="add_parts_id">Parts Id:</label>
                                                                         <div class="col-sm-5">
-                                                                          <input type="text" class="form-control" id="parts_name"  placeholder="Enter Parts Name">
+                                                                          <input type="text" class="form-control" name="AddPartsId" id="add_parts_id"  placeholder="Enter Parts Id">
                                                                         </div>
                                                                       </div>
                                                                       <div class="form-group">
-                                                                        <label class="control-label col-sm-2" for="unit_price">Unit Price:</label>
+                                                                        <label class="control-label col-sm-2" for="add_parts_name">Parts Name:</label>
                                                                         <div class="col-sm-5">
-                                                                          <input type="text" class="form-control" id="unit_price"  placeholder="Enter Unit Price">
+                                                                          <input type="text" class="form-control" name="AddPartsName" id="add_parts_name"  placeholder="Enter Parts Name">
                                                                         </div>
                                                                       </div>
                                                                       <div class="form-group">
-                                                                        <label class="control-label col-sm-2" for="total_unit">Total Units:</label>
+                                                                        <label class="control-label col-sm-2" for="add_unit_price">Unit Price:</label>
                                                                         <div class="col-sm-5">
-                                                                          <input type="text" class="form-control" id="total_unit"  placeholder="Enter Total Unit">
+                                                                          <input type="text" class="form-control" name="AddUnitPrice" id="add_unit_price"  placeholder="Enter Unit Price">
+                                                                        </div>
+                                                                      </div>
+                                                                      <div class="form-group">
+                                                                        <label class="control-label col-sm-2" for="add_total_unit">Total Units:</label>
+                                                                        <div class="col-sm-5">
+                                                                          <input type="text" class="form-control" name="AddTotalUnit" id="add_total_unit"  placeholder="Enter Total Unit">
                                                                         </div>
                                                                       </div>
                                                                       <div class="form-group">
                                                                         <div class="col-sm-offset-2 col-sm-10">
-                                                                          <button type="submit" class="btn btn-primary">Submit</button>
+                                                                          <input type="submit" class="btn btn-primary" name ="addanothersubmit" value="Submit"></input>
                                                                         </div>
                                                                       </div>
                                                                     </form>
