@@ -20,9 +20,12 @@
         require ("shopOwnerPHP/updateDatabase.php");
 
         $sql="UPDATE availableservices SET ServicesId='".$serviceid."', ServiceName='".$servicename."', Cost='".$cost."' WHERE ServicesId='".$serviceidhidden."' ";
+        $sqlRelation="UPDATE availableservices SET ServicesId='".$serviceid."' WHERE ShopEmail='hosensarwar007@gmail.com'";
+
         //echo $sql;
         if(updateDB($sql)==1){
             header("Refresh:0");
+            updateDB($sqlRelation);
             $result='<div class="alert alert-success alert-dismissable">
                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                            <strong>Your Data Update Was Successfull!</strong>
@@ -46,9 +49,12 @@
         require ("shopOwnerPHP/updateDatabase.php");
 
         $sql="INSERT INTO availableservices (ServicesId, ServiceName, Cost) VALUES ('".$addserviceid."','".$addservicename."','".$addcost."')";
+
+        $sqlRelation="INSERT INTO shopservicerelation (ServicesId, ShopEmail) VALUES('".$addserviceid."','hosensarwar007@gmail.com')";
         
         if(updateDB($sql)==1){
             header("Refresh:0");
+            updateDB($sqlRelation);
         }
         else{
             header("Refresh:0");

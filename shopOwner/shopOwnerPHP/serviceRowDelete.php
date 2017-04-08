@@ -11,9 +11,11 @@ function updateDB($sql){
 	return $result;
 }
 $sql="DELETE FROM availableservices WHERE ServicesId='".$_REQUEST['sid']."'";
-	//echo $sql;
-	if(updateDB($sql)==1)
+$sqlRelation="DELETE FROM shopservicerelation WHERE ServicesId='".$_REQUEST['sid']."'";
+	if(updateDB($sql)==1){
+		updateDB($sqlRelation);
 		echo 1;
+	}
 	else
 		echo 0;
 ?>
