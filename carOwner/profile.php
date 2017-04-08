@@ -242,7 +242,7 @@ $carOwnerVehicleData = json_decode($jsonCarOwnerVehicleString);
             </div>
 <?php 
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if (isset($_POST['update']) && $_SERVER['REQUEST_METHOD'] == 'POST') {
 
     include 'phpFiles/Mysqldb.php';
 
@@ -276,10 +276,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
 }
-
-?>
-
-<?php 
     if (isset($_POST['delete'])) {
 
          $hiddenRegNo    = $_POST['hiddenRegNo'];
@@ -399,7 +395,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                   <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                      <input type="submit" class="btn btn-primary" value="Submit"></input>
+                      <input type="submit" name="update" class="btn btn-primary" value="Submit"></input>
                     </div>
                   </div>
             </form>
