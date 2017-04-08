@@ -10,7 +10,77 @@
     $jsonServiceString = getJSONFromDB("select * from availableservices");
 
     $avilableserviceData = json_decode($jsonServiceString);
+
+    if(isset($_POST['editSubmit']) && $_SERVER["REQUEST_METHOD"] == "POST"){
+        $serviceid=$_POST['ServiceId'];
+        $servicename=$_POST['ServiceName'];
+        $cost=$_POST['Cost'];
+        $serviceidhidden=$_POST['ServiceIdHidden'];
+        
+        require ("shopOwnerPHP/updateDatabase.php");
+
+        $sql="UPDATE availableservices SET ServicesId='".$serviceid."', ServiceName='".$servicename."', Cost='".$cost."' WHERE ServicesId='".$serviceidhidden."' ";
+        //echo $sql;
+        if(updateDB($sql)==1){
+            header("Refresh:0");
+            $result='<div class="alert alert-success alert-dismissable">
+                           <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                           <strong>Your Data Update Was Successfull!</strong>
+                         </div>';
+        }
+        else{
+            header("Refresh:0");
+            $result='<div class="alert alert-danger alert-dismissable">
+                           <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                           <strong>Your Data Was Not Updated!</strong>
+                         </div>';
+        }
+        
+    }
+
+    if(isset($_POST['addanothersubmit']) && $_SERVER["REQUEST_METHOD"] == "POST"){
+        $addserviceid=$_POST['Addserviceid'];
+        $addservicename=$_POST['Addservicename'];
+        $addcost=$_POST['Addservicecost'];
+        
+        require ("shopOwnerPHP/updateDatabase.php");
+
+        $sql="INSERT INTO availableservices (ServicesId, ServiceName, Cost) VALUES ('".$addserviceid."','".$addservicename."','".$addcost."')";
+        
+        if(updateDB($sql)==1){
+            header("Refresh:0");
+        }
+        else{
+            header("Refresh:0");
+        }
+        
+    }
 ?>
+
+<script type="text/javascript">
+xmlhttp = new XMLHttpRequest();
+    function deletefunction(obj,id){
+        //alert(id);
+        str=document.getElementById(id).innerText;
+        //alert(str);
+
+    xmlhttp.onreadystatechange = function() {
+        
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            
+            m=document.getElementById(id);
+            var i=xmlhttp.responseText;
+            if(i==1)
+                //m.innerHTML=i;
+                document.getElementById("serviceTable").deleteRow(obj.parentNode.parentNode.rowIndex);
+        }
+    };
+    var url="shopOwnerPHP/serviceRowDelete.php?sid="+str;
+    //alert(url);
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+    }
+</script>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,7 +93,7 @@
    </head>
 <body>
     <!--  wrapper -->
-    <div id="wrapper">
+    <div id="wrapper" <?php $result=' '; ?> >
         <!-- navbar top -->
         <nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="navbar">
             <!-- navbar-header -->
@@ -85,7 +155,7 @@
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a class="text-center" href="message.php">
+                            <a class="text-center" href="message.html">
                                 <strong>Read All Messages</strong>
                                 <i class="fa fa-angle-right"></i>
                             </a>
@@ -136,10 +206,10 @@
                     <ul class="dropdown-menu dropdown-user">
                         <li><a href="#"><i class="fa fa-user fa-fw"></i>User Profile</a>
                         </li>
-                        <li><a href="setting.php"><i class="fa fa-gear fa-fw"></i>Settings</a>
+                        <li><a href="setting.html"><i class="fa fa-gear fa-fw"></i>Settings</a>
                         </li>
                         <li class="divider"></li>
-                        <li><a href="../login.php"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
+                        <li><a href="../login.html"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
                         </li>
                     </ul>
                     <!-- end dropdown-user -->
@@ -241,7 +311,7 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="table-responsive">
-                                         <table class="table table-bordered">
+                                         <table class="table table-bordered" id="serviceTable">
                                             <thead>
                                               <tr>
                                                 <th>#</th>
@@ -256,71 +326,46 @@
                                                     # code...
                                                 ?>
                                                 <tr>
-                                                    <td> <?php echo $avilableserviceData[$i]->ServicesId; ?> </td>
+                                                    <td id="serviceid<?php echo $i ?>"> <?php echo $avilableserviceData[$i]->ServicesId; ?> </td>
                                                     <td> <?php echo $avilableserviceData[$i]->ServiceName; ?> </td>
                                                      <td> <?php echo $avilableserviceData[$i]->Cost; ?> </td>
                                                     <td><button class="btn btn-info" data-toggle="modal" data-target="#edit_service<?php echo $i; ?>">Edit</button>
-    <!-- Modal -->
-    <div class="modal fade" id="edit_service<?php echo $i; ?>" role="dialog">
-        <div class="modal-dialog modal-lg">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal">&times;</button>
-              <h4 class="modal-title">Edit Service</h4>
-            </div>
-            <div class="modal-body">
-                  <form class="form-horizontal" method="POST" action="">
-                      <div class="form-group">
-                        <label class="control-label col-sm-2" for="service_id">Service Id:</label>
-                        <div class="col-sm-5">
-                          <input type="text" class="form-control" name="ServiceId" id="service_id" value="<?php echo $avilableserviceData[$i]->ServicesId; ?>">
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <label class="control-label col-sm-2" for="service_name">Service Name:</label>
-                        <div class="col-sm-5">
-                          <input type="text" class="form-control" name="ServiceName" id="service_name" value="<?php echo $avilableserviceData[$i]->ServiceName; ?>">
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <label class="control-label col-sm-2" for="service_cost">Cost:</label>
-                        <div class="col-sm-5">
-                          <input type="text" class="form-control" name="Cost" id="service_cost" value="<?php echo $avilableserviceData[$i]->Cost; ?>">
-                        </div>
-                      </div>
-                      
-                      <div class="form-group">
-                        <div class="col-sm-offset-2 col-sm-10">
-                          <input type="submit" class="btn btn-primary" value="Submit"></input>
-                        </div>
-                      </div>
-                    </form>
-<?php
-    if($_SERVER["REQUEST_METHOD"] == "POST"){
-        $serviceid=$_POST['ServicesId'];
-        $servicename=$_POST['ServicesName'];
-        $cost=$_POST['Cost'];
-
-        require ("shopOwnerPHP/updateDatabase.php");
-
-        $result=' ';
-        $sql="UPDATE shopowner SET ServiceName='".$servicename."', Cost='".$cost."' WHERE ServiceId='".$serviceid."' ";
-
-        if(updateDB($sql)==1){
-            $result='<div class="alert alert-success alert-dismissable">
-                           <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                           <strong>Your Data Update Was Successfull!</strong>
-                         </div>';
-        }
-        else{
-            $result='<div class="alert alert-danger alert-dismissable">
-                           <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                           <strong>Your Data Was Not Updated!</strong>
-                         </div>';
-        }
-    }
-?>
-
+                                                        <!-- Modal -->
+                                                        <div class="modal fade" id="edit_service<?php echo $i; ?>" role="dialog">
+                                                            <div class="modal-dialog modal-lg">
+                                                              <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                  <h4 class="modal-title">Edit Service</h4>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                      <form class="form-horizontal" method="POST" action="">
+                                                                          <div class="form-group">
+                                                                            <label class="control-label col-sm-2" for="service_id">Service Id:</label>
+                                                                            <div class="col-sm-5">
+                                                                              <input type="text" class="form-control" name="ServiceId" id="service_id" value="<?php echo $avilableserviceData[$i]->ServicesId; ?>">
+                                                                            </div>
+                                                                          </div>
+                                                                          <div class="form-group">
+                                                                            <label class="control-label col-sm-2" for="service_name">Service Name:</label>
+                                                                            <div class="col-sm-5">
+                                                                              <input type="text" class="form-control" name="ServiceName" id="service_name" value="<?php echo $avilableserviceData[$i]->ServiceName; ?>">
+                                                                            </div>
+                                                                          </div>
+                                                                          <div class="form-group">
+                                                                            <label class="control-label col-sm-2" for="service_cost">Cost:</label>
+                                                                            <div class="col-sm-5">
+                                                                              <input type="text" class="form-control" name="Cost" id="service_cost" value="<?php echo $avilableserviceData[$i]->Cost; ?>">
+                                                                            </div>
+                                                                          </div>
+                                                                          <input type="hidden" class="form-control" name="ServiceIdHidden" id="service_id_hidden" value="<?php echo $avilableserviceData[$i]->ServicesId; ?>">
+                                                                          
+                                                                          <div class="form-group">
+                                                                            <div class="col-sm-offset-2 col-sm-10">
+                                                                              <input type="submit" class="btn btn-primary" name="editSubmit" value="Submit"></input>
+                                                                            </div>
+                                                                          </div>
+                                                                        </form>
                                                                 </div>
                                                                 <div class="modal-footer">
                                                                   <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
@@ -328,7 +373,8 @@
                                                               </div>
                                                             </div>
                                                         </div><!-- End Modal -->
-                                                        <button class="btn btn-danger">Delete</button>
+                                                            
+                                                        <button class="btn btn-danger" onclick="deletefunction(this,'serviceid<?php echo $i; ?>')">Delete</button>
                                                     </td>
                                                   </tr>
                                                   <tr>
@@ -355,23 +401,30 @@
                                                               <h4 class="modal-title">Service Entry</h4>
                                                             </div>
                                                             <div class="modal-body">
-                                                                  <form class="form-horizontal">
+                                                                  <form class="form-horizontal" method="POST" action="">
+                                                                      <div class="form-group">
+                                                                        <label class="control-label col-sm-2" for="service_id">Service Id:</label>
+                                                                        <div class="col-sm-5">
+                                                                          <input type="text" class="form-control" name="Addserviceid" id="service_id"  placeholder="Enter Service Id">
+                                                                        </div>
+                                                                      </div>
+
                                                                       <div class="form-group">
                                                                         <label class="control-label col-sm-2" for="service_name">Service Name:</label>
                                                                         <div class="col-sm-5">
-                                                                          <input type="text" class="form-control" id="service_name"  placeholder="Enter Service Name">
+                                                                          <input type="text" class="form-control" name="Addservicename" id="service_name"  placeholder="Enter Service Name">
                                                                         </div>
                                                                       </div>
 
                                                                       <div class="form-group">
                                                                         <label class="control-label col-sm-2" for="service_cost">Cost:</label>
                                                                         <div class="col-sm-5">
-                                                                          <input type="text" class="form-control" id="service_cost"  placeholder="Enter Service Cost">
+                                                                          <input type="text" class="form-control" name="Addservicecost" id="service_cost"  placeholder="Enter Service Cost">
                                                                         </div>
                                                                       </div>
                                                                       <div class="form-group">
                                                                         <div class="col-sm-offset-2 col-sm-10">
-                                                                          <button type="submit" class="btn btn-primary">Submit</button>
+                                                                          <input type="submit" class="btn btn-primary" name="addanothersubmit" value="Submit"></input>
                                                                         </div>
                                                                       </div>
                                                                     </form>
