@@ -44,14 +44,14 @@
                          
                             <div class="row">
                             <div class="col-md-5">
-                                <a href="signup-as-carOwner.html" class="btn btn-lg btn-primary">Signup as car Owner</a>
+                                <a href="signup-as-carOwner.php" class="btn btn-lg btn-primary">Signup as car Owner</a>
                             </div>
                             <div class="text-center col-md-1">
                                     <i class="fa fa-opera fa-2x"></i>
 
                             </div>
                             <div class="col-md-6">
-                                <a href="signup-as-shopOwner.html" class="btn btn-lg btn-primary">Signup as shop Owner</a>
+                                <a href="signup-as-shopOwner.php" class="btn btn-lg btn-primary">Signup as shop Owner</a>
                             </div>
                         </div>
                      
