@@ -7,6 +7,11 @@ $jsonCarOwnerDataString = getJSONFromDB("select ShopName,Email,Address from shop
 $ShopOwnerData = json_decode($jsonCarOwnerDataString);
 
 
+$jsonCarOwnerDataString = getJSONFromDB("select* from carowner ");
+
+$AvailableServiceData = json_decode($jsonAvailableServiceDataString);
+
+
 
 $jsonAvailableServiceDataString = getJSONFromDB("select* from availableservices where ServicesId='A32'");
 
