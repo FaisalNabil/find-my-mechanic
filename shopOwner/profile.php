@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
-<?php 
+<?php session_start();
     require("shopOwnerPHP/selectFromDatabase.php"); 
 
-    $jsonShopOwnerString = getJSONFromDB("select * from shopowner");
-
+    $jsonShopOwnerString = getJSONFromDB("select * from shopowner WHERE Email= '".$_SESSION["shopOwnerEmail"]."'");
+    //echo $_SESSION["shopOwnerEmail"];
     $shopOwnerData = json_decode($jsonShopOwnerString);
 
-    $jsonServiceString = getJSONFromDB("select * from availableservices");
+    $jsonServiceString = getJSONFromDB("select * from availableservices JOIN shopservicerelation ON availableservices.ServicesId=shopservicerelation.ServicesId WHERE shopservicerelation.ShopEmail= '".$_SESSION["shopOwnerEmail"]."'");
 
     $avilableserviceData = json_decode($jsonServiceString);
 
@@ -20,19 +20,14 @@
         require ("shopOwnerPHP/updateDatabase.php");
 
         $sql="UPDATE availableservices SET ServicesId='".$serviceid."', ServiceName='".$servicename."', Cost='".$cost."' WHERE ServicesId='".$serviceidhidden."' ";
-        $sqlRelation="UPDATE availableservices SET ServicesId='".$serviceid."' WHERE ShopEmail='hosensarwar007@gmail.com'";
+        $sqlRelation="UPDATE availableservices SET ServicesId='".$serviceid."' WHERE ShopEmail= '".$_SESSION["shopOwnerEmail"]."' AND ServicesId='".$serviceidhidden."'";
 
         //echo $sql;
         if(updateDB($sql)==1){
             header("Refresh:0");
             updateDB($sqlRelation);
-            $result='<div class="alert alert-success alert-dismissable">
-                           <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                           <strong>Your Data Update Was Successfull!</strong>
-                         </div>';
         }
         else{
-            header("Refresh:0");
             $result='<div class="alert alert-danger alert-dismissable">
                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                            <strong>Your Data Was Not Updated!</strong>
@@ -50,14 +45,17 @@
 
         $sql="INSERT INTO availableservices (ServicesId, ServiceName, Cost) VALUES ('".$addserviceid."','".$addservicename."','".$addcost."')";
 
-        $sqlRelation="INSERT INTO shopservicerelation (ServicesId, ShopEmail) VALUES('".$addserviceid."','hosensarwar007@gmail.com')";
+        $sqlRelation="INSERT INTO shopservicerelation (ServicesId, ShopEmail) VALUES('".$addserviceid."','".$_SESSION["shopOwnerEmail"]."')";
         
         if(updateDB($sql)==1){
             header("Refresh:0");
             updateDB($sqlRelation);
         }
         else{
-            header("Refresh:0");
+            $result='<div class="alert alert-danger alert-dismissable">
+                           <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                           New Service <strong>Added</strong>
+                         </div>';
         }
         
     }
@@ -65,7 +63,7 @@
 
 <script type="text/javascript">
 xmlhttp = new XMLHttpRequest();
-    function deletefunction(obj,id){
+    function deletefunction(obj,id){ //Delete operation
         //alert(id);
         str=document.getElementById(id).innerText;
         //alert(str);
@@ -77,11 +75,68 @@ xmlhttp = new XMLHttpRequest();
             m=document.getElementById(id);
             var i=xmlhttp.responseText;
             if(i==1)
-                //m.innerHTML=i;
                 document.getElementById("serviceTable").deleteRow(obj.parentNode.parentNode.rowIndex);
         }
     };
     var url="shopOwnerPHP/serviceRowDelete.php?sid="+str;
+    //alert(url);
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+    }
+
+    function serviceIdCheck(id){   //Checks Service Id
+        //alert(id);
+        str=document.getElementById(id).value;
+        //alert(str);
+
+    xmlhttp.onreadystatechange = function() {
+        
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200 && id!="") {
+            
+            m=document.getElementById("errorMessage");
+            var i=xmlhttp.responseText;
+            //alert(i);
+            if(i==str){
+                m.innerHTML="*Service Id exist, Try another one";
+                m.style.color= "red";
+            }
+            else{
+                m.innerHTML="Good Choice!!";
+                m.style.color= "green";
+            }   
+                
+        }
+    };
+    var url="shopOwnerPHP/serviceIdCheckAJAX.php?sid="+str;
+    //alert(url);
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+    }
+
+    function serviceIdCheckOnAdd(id){   //checks Service id on new add
+        //alert(id);
+        str=document.getElementById(id).value;
+        //alert(str);
+
+    xmlhttp.onreadystatechange = function() {
+        
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200 && id!="") {
+            
+            m=document.getElementById("addErrorMessage");
+            var i=xmlhttp.responseText;
+            //alert(i);
+            if(i==str){
+                m.innerHTML="*Service Id exist, Try another one";
+                m.style.color= "red";
+            }
+            else{
+                m.innerHTML="Good Choice!!";
+                m.style.color= "green";
+            }   
+                
+        }
+    };
+    var url="shopOwnerPHP/serviceIdCheckAJAX.php?sid="+str;
     //alert(url);
     xmlhttp.open("GET", url, true);
     xmlhttp.send();
@@ -349,7 +404,7 @@ xmlhttp = new XMLHttpRequest();
                                                                           <div class="form-group">
                                                                             <label class="control-label col-sm-2" for="service_id">Service Id:</label>
                                                                             <div class="col-sm-5">
-                                                                              <input type="text" class="form-control" name="ServiceId" id="service_id" value="<?php echo $avilableserviceData[$i]->ServicesId; ?>">
+                                                                              <input type="text" class="form-control" name="ServiceId" id="service_id" value="<?php echo $avilableserviceData[$i]->ServicesId; ?>" onkeyup="serviceIdCheck('service_id<?php echo $i; ?>')"><span id="errorMessage"></span>>
                                                                             </div>
                                                                           </div>
                                                                           <div class="form-group">
@@ -409,23 +464,23 @@ xmlhttp = new XMLHttpRequest();
                                                             <div class="modal-body">
                                                                   <form class="form-horizontal" method="POST" action="">
                                                                       <div class="form-group">
-                                                                        <label class="control-label col-sm-2" for="service_id">Service Id:</label>
+                                                                        <label class="control-label col-sm-2" for="add_service_id">Service Id:</label>
                                                                         <div class="col-sm-5">
-                                                                          <input type="text" class="form-control" name="Addserviceid" id="service_id"  placeholder="Enter Service Id">
+                                                                          <input type="text" class="form-control" name="Addserviceid" id="add_service_id" onkeyup="serviceIdCheckOnAdd('add_service_id')" placeholder="Enter Service Id">
+                                                                        </div><span id="addErrorMessage"></span>
+                                                                      </div>
+
+                                                                      <div class="form-group">
+                                                                        <label class="control-label col-sm-2" for="add_service_name">Service Name:</label>
+                                                                        <div class="col-sm-5">
+                                                                          <input type="text" class="form-control" name="Addservicename" id="add_service_name"  placeholder="Enter Service Name">
                                                                         </div>
                                                                       </div>
 
                                                                       <div class="form-group">
-                                                                        <label class="control-label col-sm-2" for="service_name">Service Name:</label>
+                                                                        <label class="control-label col-sm-2" for="add_service_cost">Cost:</label>
                                                                         <div class="col-sm-5">
-                                                                          <input type="text" class="form-control" name="Addservicename" id="service_name"  placeholder="Enter Service Name">
-                                                                        </div>
-                                                                      </div>
-
-                                                                      <div class="form-group">
-                                                                        <label class="control-label col-sm-2" for="service_cost">Cost:</label>
-                                                                        <div class="col-sm-5">
-                                                                          <input type="text" class="form-control" name="Addservicecost" id="service_cost"  placeholder="Enter Service Cost">
+                                                                          <input type="text" class="form-control" name="Addservicecost" id="add_service_cost"  placeholder="Enter Service Cost">
                                                                         </div>
                                                                       </div>
                                                                       <div class="form-group">

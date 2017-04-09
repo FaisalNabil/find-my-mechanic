@@ -89,7 +89,7 @@ xmlhttp = new XMLHttpRequest();
     xmlhttp.send();
     }
 
-    function partNameCheck(id){
+    function partIdCheck(id){
         //alert(id);
         str=document.getElementById(id).value;
         //alert(str);
@@ -118,7 +118,7 @@ xmlhttp = new XMLHttpRequest();
     xmlhttp.send();
     }
 
-    function partNameCheckOnAdd(id){
+    function partIdCheckOnAdd(id){
         //alert(id);
         str=document.getElementById(id).value;
         //alert(str);
@@ -379,7 +379,7 @@ xmlhttp = new XMLHttpRequest();
                                                                       <div class="form-group">
                                                                         <label class="control-label col-sm-2" for="parts_id">Parts Id:</label>
                                                                         <div class="col-sm-5">
-                                                                          <input type="text" class="form-control" name="PartsId" id="parts_id<?php echo $i ?>" value="<?php echo $stockDetailData[$i]->StockId; ?>" onkeyup="partNameCheck('parts_id<?php echo $i; ?>')"><span id="errorMessage"></span>
+                                                                          <input type="text" class="form-control" name="PartsId" id="parts_id<?php echo $i ?>" value="<?php echo $stockDetailData[$i]->StockId; ?>" onkeyup="partIdCheck('parts_id<?php echo $i; ?>')"><span id="errorMessage"></span>
                                                                         </div>
                                                                       </div>
 
@@ -446,7 +446,7 @@ xmlhttp = new XMLHttpRequest();
                                                                       <div class="form-group">
                                                                         <label class="control-label col-sm-2" for="add_parts_id" >Parts Id:</label>
                                                                         <div class="col-sm-5">
-                                                                          <input type="text" class="form-control" name="AddPartsId" id="add_parts_id" onkeyup="partNameCheckOnAdd('add_parts_id')" placeholder="Enter Parts Id"><span id="addErrorMessage"></span>
+                                                                          <input type="text" class="form-control" name="AddPartsId" id="add_parts_id" onkeyup="partIdCheckOnAdd('add_parts_id')" placeholder="Enter Parts Id"><span id="addErrorMessage"></span>
                                                                         </div>
                                                                       </div>
                                                                       <div class="form-group">
