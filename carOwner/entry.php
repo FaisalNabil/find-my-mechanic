@@ -279,6 +279,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                             </div>
                                         </div>
                                     </form>
+                                    <a href="profile.php">
+                                      <button type="submit" class="btn btn-danger">Cancle</button>
+                                    </a>
                                 </div>
 
                             </div>
