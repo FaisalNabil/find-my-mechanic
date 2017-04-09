@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
-<?php 
+<?php session_start();
     require("shopOwnerPHP/selectFromDatabase.php"); 
 
-    $jsonShopOwnerString = getJSONFromDB("select * from stock");
+    $jsonShopOwnerString = getJSONFromDB("select * from stock JOIN shopstockrelation ON stock.StockId=shopstockrelation.StockId WHERE shopstockrelation.ShopEmail='".$_SESSION["shopOwnerEmail"]."'");
 
     $stockDetailData = json_decode($jsonShopOwnerString);
 
-    if(isset($_POST['editSubmit']) && $_SERVER["REQUEST_METHOD"] == "POST"){
+    if(isset($_POST['editSubmit']) && $_POST['PartsId']!="" && $_SERVER["REQUEST_METHOD"] == "POST"){
         $stockid=$_POST['PartsId'];
         $stockname=$_POST['PartsName'];
         $unitprice=$_POST['UnitPrice'];
@@ -16,8 +16,8 @@
         
         require ("shopOwnerPHP/updateDatabase.php");
 
-        $sql="UPDATE stock SET StockId='".$stockid."', PartsName ='".$stockname."', PricePerUnit ='".$unitprice."', TotalUnit ='".$totalunit."' ";
-        $sqlRelation="UPDATE shopstockrelation SET StockId='".$stockid."' WHERE ShopEmail='hosensarwar007@gmail.com'";
+        $sql="UPDATE stock SET StockId='".$stockid."', PartsName ='".$stockname."', PricePerUnit ='".$unitprice."', TotalUnit ='".$totalunit."'  WHERE StockId='".$hiddenpartsid."'";
+        $sqlRelation="UPDATE shopstockrelation SET StockId='".$stockid."' WHERE ShopEmail='".$_SESSION["shopOwnerEmail"]."' AND StockId='".$hiddenpartsid."'";
 
         //echo $sql;
         if(updateDB($sql)==1){
@@ -25,10 +25,14 @@
             updateDB($sqlRelation);
         }
         else {
-            header("Refresh:0");
+            $info=
+                    '<div class="alert alert-info alert-dismissable">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        Data Updating <strong>Failed!</strong>
+                     </div>';
         }
     }
-    if(isset($_POST['addanothersubmit']) && $_SERVER["REQUEST_METHOD"] == "POST"){
+    if(isset($_POST['addanothersubmit']) && $_POST['AddPartsId']!="" && $_SERVER["REQUEST_METHOD"] == "POST"){
         $addstockid=$_POST['AddPartsId'];
         $addstockname=$_POST['AddPartsName'];
         $addtotalunit=$_POST['AddTotalUnit'];
@@ -38,7 +42,7 @@
 
         $sql="INSERT INTO stock (StockId, PartsName, PricePerUnit, TotalUnit) VALUES ('".$addstockid."','".$addstockname."','".$addunitprice."','".$addtotalunit."')";
 
-        $sqlRelation="INSERT INTO shopstockrelation (StockId, ShopEmail) VALUES('".$addstockid."','hosensarwar007@gmail.com')";
+        $sqlRelation="INSERT INTO shopstockrelation (StockId, ShopEmail) VALUES('".$addstockid."','".$_SESSION["shopOwnerEmail"]."')";
         
         //echo $sql."<br>";
         //echo $sqlRelation;
@@ -49,6 +53,11 @@
         }
         else{
             header("Refresh:0");
+            $info=
+                    '<div class="alert alert-info alert-dismissable">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Adding!</strong> Failed.
+                     </div>';
         }
         
     }
@@ -87,23 +96,52 @@ xmlhttp = new XMLHttpRequest();
 
     xmlhttp.onreadystatechange = function() {
         
-        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200 && id!="") {
             
             m=document.getElementById("errorMessage");
             var i=xmlhttp.responseText;
             //alert(i);
             if(i==str){
-                m.innerHTML="Stock Id exist, Try another one";
-                m.innerHTML.color='red';
+                m.innerHTML="*Stock Id exist, Try another one";
+                m.style.color= "red";
             }
             else{
                 m.innerHTML="Good Choice!!";
-                m.innerHTML.color='green';
+                m.style.color= "green";
             }   
                 
         }
     };
-    var url="shopOwnerPHP/stockIdCheckAJAX.php?";
+    var url="shopOwnerPHP/stockIdCheckAJAX.php?sid="+str;
+    //alert(url);
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+    }
+
+    function partNameCheckOnAdd(id){
+        //alert(id);
+        str=document.getElementById(id).value;
+        //alert(str);
+
+    xmlhttp.onreadystatechange = function() {
+        
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200 && id!="") {
+            
+            m=document.getElementById("addErrorMessage");
+            var i=xmlhttp.responseText;
+            //alert(i);
+            if(i==str){
+                m.innerHTML="*Stock Id exist, Try another one";
+                m.style.color= "red";
+            }
+            else{
+                m.innerHTML="Good Choice!!";
+                m.style.color= "green";
+            }   
+                
+        }
+    };
+    var url="shopOwnerPHP/stockIdCheckAJAX.php?sid="+str;
     //alert(url);
     xmlhttp.open("GET", url, true);
     xmlhttp.send();
@@ -119,7 +157,7 @@ xmlhttp = new XMLHttpRequest();
     <link href="../assets/css/main-style.css" rel="stylesheet" />
     <link href="../assets/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
    </head>
-<body>
+<body <?php $info=''; ?> >
     <!--  wrapper -->
     <div id="wrapper">
         <!-- navbar top -->
@@ -132,7 +170,7 @@ xmlhttp = new XMLHttpRequest();
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand logo-color" href="index.html">
+                <a class="navbar-brand logo-color" href="index.php">
                     Logo Goes Here
                 </a>
             </div>
@@ -147,7 +185,7 @@ xmlhttp = new XMLHttpRequest();
                     <!-- dropdown-messages -->
                     <ul class="dropdown-menu dropdown-messages">
                         <li>
-                            <a href="message.html">
+                            <a href="message.php">
                                 <div>
                                     <strong><span class=" label label-danger">Faisal</span></strong>
                                     <span class="pull-right text-muted">
@@ -273,7 +311,7 @@ xmlhttp = new XMLHttpRequest();
                     <hr>
 
                     <li>
-                        <a href="index.html"><i class="fa fa-dashboard fa-fw"></i>Home</a>
+                        <a href="index.php"><i class="fa fa-dashboard fa-fw"></i>Home</a>
                     </li>
                     <li>
                         <a href="message.php"><i class="fa fa-comment fa-fw"></i>Messages</a>
@@ -406,9 +444,9 @@ xmlhttp = new XMLHttpRequest();
                                                             <div class="modal-body">
                                                                   <form class="form-horizontal" method="POST" action="">
                                                                       <div class="form-group">
-                                                                        <label class="control-label col-sm-2" for="add_parts_id">Parts Id:</label>
+                                                                        <label class="control-label col-sm-2" for="add_parts_id" >Parts Id:</label>
                                                                         <div class="col-sm-5">
-                                                                          <input type="text" class="form-control" name="AddPartsId" id="add_parts_id"  placeholder="Enter Parts Id">
+                                                                          <input type="text" class="form-control" name="AddPartsId" id="add_parts_id" onkeyup="partNameCheckOnAdd('add_parts_id')" placeholder="Enter Parts Id"><span id="addErrorMessage"></span>
                                                                         </div>
                                                                       </div>
                                                                       <div class="form-group">
@@ -442,6 +480,7 @@ xmlhttp = new XMLHttpRequest();
                                                           </div>
                                                         </div>
                                                     </div><!-- End Modal -->
+                                                    <?php echo $info ; ?>
                         </div>
                         <!-- panel-body -->
                     </div>

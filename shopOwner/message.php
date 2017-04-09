@@ -81,7 +81,7 @@
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a class="text-center" href="message.html">
+                            <a class="text-center" href="message.php">
                                 <strong>Read All Messages</strong>
                                 <i class="fa fa-angle-right"></i>
                             </a>

@@ -13,7 +13,7 @@ function getJSONFromDB($sql){
 	}
 	return json_encode($arr);
 }
-$jsonStockString=getJSONFromDB("SELECT * FROM stock");
+$jsonStockString=getJSONFromDB("SELECT * FROM stock WHERE StockId='".$_REQUEST['sid']."'");
 
 $stockDetailData = json_decode($jsonStockString);
 
