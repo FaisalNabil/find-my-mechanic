@@ -2,7 +2,7 @@
     require "shopOwnerPHP/selectFromDatabase.php"; 
 
     $jsonShopOwnerString = getJSONFromDB("select * from shopowner WHERE Email='".$_SESSION["shopOwnerEmail"]."'");
-    echo $_SESSION["shopOwnerEmail"];
+    //echo $_SESSION["shopOwnerEmail"];
 
     $shopOwnerData = json_decode($jsonShopOwnerString);
 
