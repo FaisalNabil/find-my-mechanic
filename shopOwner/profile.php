@@ -404,7 +404,7 @@ xmlhttp = new XMLHttpRequest();
                                                                           <div class="form-group">
                                                                             <label class="control-label col-sm-2" for="service_id">Service Id:</label>
                                                                             <div class="col-sm-5">
-                                                                              <input type="text" class="form-control" name="ServiceId" id="service_id" value="<?php echo $avilableserviceData[$i]->ServicesId; ?>" onkeyup="serviceIdCheck('service_id<?php echo $i; ?>')"><span id="errorMessage"></span>>
+                                                                              <input type="text" class="form-control" name="ServiceId" id="service_id<?php echo $i ?>" value="<?php echo $avilableserviceData[$i]->ServicesId; ?>" onkeyup="serviceIdCheck('service_id<?php echo $i; ?>')"><span id="errorMessage"></span>
                                                                             </div>
                                                                           </div>
                                                                           <div class="form-group">
