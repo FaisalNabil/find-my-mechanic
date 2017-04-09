@@ -1,10 +1,79 @@
-<?php 
+<?php session_start();
     require "shopOwnerPHP/selectFromDatabase.php"; 
 
-    $jsonShopOwnerString = getJSONFromDB("select * from shopowner");
+    $jsonShopOwnerString = getJSONFromDB("select * from shopowner WHERE Email='".$_SESSION["shopOwnerEmail"]."'");
+    echo $_SESSION["shopOwnerEmail"];
 
     $shopOwnerData = json_decode($jsonShopOwnerString);
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST')
+    {
+        
+        require "shopOwnerPHP/updateDatabase.php";
+
+        if (!empty($_POST['ShopName']) && !empty($_POST['Contact']) && !empty($_POST['ShopTradeLicence']) && !empty($_POST['Latitude']) && !empty($_POST['Longitude']) && !empty($_POST['Location']) && !empty($_POST['Email']))
+
+        {
+          $shopName         = $_POST['ShopName'];
+          $shopEmail        = $_POST['Email'];
+          $contact          = $_POST['Contact'];    
+          $shopTradeLicence = $_POST['ShopTradeLicence'];  
+          $latitude         = $_POST['Latitude'];   
+          $longitude        = $_POST['Longitude'];
+          $location         = $_POST['Location'];
+
+
+        }
+       
+
+        $sql = "UPDATE shopowner SET ShopName ='".$shopName."', Email='".$shopEmail."', Contact='".$contact."',Latitude = '".$latitude."',Longitude='".$longitude."',Address ='".$location."',ShopTradeLicence='".$shopTradeLicence."' WHERE Email='".$_SESSION["shopOwnerEmail"]."'";
+        /*$sqlRelationService="UPDATE shopservicerelation SET ShopEmail='".$shopEmail."' WHERE ShopEmail= '".$_SESSION["shopOwnerEmail"]."'";
+        $sqlRelationStock="UPDATE shopstockrelation SET ShopEmail='".$shopEmail."' WHERE ShopEmail= '".$_SESSION["shopOwnerEmail"]."'";*/
+        
+        if (updateDB($sql)) {
+            header("Refresh:0");
+            //updateDB($sqlRelation);
+            $_SESSION["shopOwnerEmail"]=$shopEmail;
+        } else {
+            $info = 
+            '<div class="alert alert-info alert-dismissable">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Info!</strong> Updated Failed.
+             </div>';
+        }
+    }
+
 ?>
+
+<script type="text/javascript">
+xmlhttp = new XMLHttpRequest();
+    function emailcheckfunction(id){ //check email operation
+        //alert(id);
+        str=document.getElementById(id).value;
+        //alert(str);
+
+    xmlhttp.onreadystatechange = function() {
+        
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            
+            m=document.getElementById("emailcheck");
+            var i=xmlhttp.responseText;
+            //alert(i);
+            if(i==str){
+                m.innerHTML="*Email Already Exists!"
+                m.style.color="red";
+            }
+            else{
+                m.innerHTML=""
+            }
+        }
+    };
+    var url="shopOwnerPHP/emailCheckAJAX.php?email="+str;
+    //alert(url);
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+    }
+</script>
 
 <!DOCTYPE html>
 <html>
@@ -18,7 +87,7 @@
     <link href="../assets/css/main-style.css" rel="stylesheet" />
     <link href="../assets/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
    </head>
-<body>
+<body <?php $info=''; ?> >
     <!--  wrapper -->
     <div id="wrapper">
         <!-- navbar top -->
@@ -189,44 +258,7 @@
             <!-- end sidebar-collapse -->
         </nav>
         <!-- end navbar side -->
-         <?php 
-            if ($_SERVER['REQUEST_METHOD'] == 'POST')
-            {
-                
-                require "shopOwnerPHP/updateDatabase.php";
-
-                if (!empty($_POST['ShopName']) && !empty($_POST['Contact']) && !empty($_POST['ShopTradeLicence']) && !empty($_POST['Latitude']) && !empty($_POST['Longitude']) && !empty($_POST['Location']))
-
-                {
-                  $shopName         = $_POST['ShopName'];  
-                  $contact          = $_POST['Contact'];    
-                  $shopTradeLicence = $_POST['ShopTradeLicence'];  
-                  $latitude         = $_POST['Latitude'];   
-                  $longitude        = $_POST['Longitude'];
-                  $location         = $_POST['Location'];
-
-
-                }
-               
-
-                $sql = "UPDATE shopowner SET ShopName ='".$shopName."',Contact='".$contact."',Latitude = '".$latitude."',Longitude='".$longitude."',Address ='".$location."',ShopTradeLicence='".$shopTradeLicence."' WHERE Email='abc@gmail.com'";
-                
-                if (updateDB($sql)) {
-                $info = 
-                '<div class="alert alert-success alert-dismissable">
-                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                    <strong>Success!</strong> The Value Supdated Successfully.
-                 </div>';
-                } else {
-                    $info = 
-                    '<div class="alert alert-info alert-dismissable">
-                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                        <strong>Info!</strong> Updated Failed.
-                     </div>';
-                }
-                }
-
-         ?>
+         
         <!--  page-wrapper -->
         <div id="page-wrapper">
             <div class="row">
@@ -255,42 +287,51 @@
                                     <div class="table-responsive">
                                          <form class="form-horizontal" action="" method="post">
                                               <div class="form-group">
-                                                <label class="control-label col-sm-2" for="email">Shop Name:</label>
+                                                <label class="control-label col-sm-2" for="name">Shop Name:</label>
                                                 <div class="col-sm-5">
                                                   <input type="text" class="form-control" id="name" name="ShopName" placeholder="" value="<?php echo $shopOwnerData[0]->ShopName; ?>">
                                                 </div>
                                               </div>
+
+                                              <div class="form-group">
+                                                <label class="control-label col-sm-2" for="email">Email:</label>
+                                                <div class="col-sm-5">
+                                                  <input type="text" class="form-control" id="email" name="Email" placeholder="" value="<?php echo $shopOwnerData[0]->Email; ?>" onkeyup="emailcheckfunction('email')"> <span id="emailcheck"></span>
+                                                </div>
+                                              </div>
                                     
                                               <div class="form-group">
-                                                <label class="control-label col-sm-2" for="email">Contact:</label>
+                                                <label class="control-label col-sm-2" for="contact">Contact:</label>
                                                 <div class="col-sm-5">
                                                   <input type="text" class="form-control" id="contact" name="Contact" placeholder="" value="<?php echo $shopOwnerData[0]->Contact; ?>">
                                                 </div>
                                               </div>
                                               <div class="form-group">
-                                                <label class="control-label col-sm-2" for="email">Shop Trade Licence:</label>
+                                                <label class="control-label col-sm-2" for="shoptradeLicence">Shop Trade Licence:</label>
                                                 <div class="col-sm-10">
                                                   <input type="text" class="form-control" id="shoptradeLicence" name="ShopTradeLicence" placeholder="" value="<?php echo $shopOwnerData[0]->ShopTradeLicence; ?>" required="">
                                                 </div>
                                               </div>
 
                                               <div class="form-group">
-                                                <label class="control-label col-sm-2" for="email">Google Maps Latitude:</label>
+                                                <label class="control-label col-sm-2" for="maps_latitude">Google Maps Latitude:</label>
                                                 <div class="col-sm-10">
-                                                  <input type="text" class="form-control" id="maps-latitude" name="Latitude" placeholder="" value="<?php echo $shopOwnerData[0]->Latitude; ?>" required="">
+                                                  <input type="text" class="form-control" id="maps_latitude" name="Latitude" placeholder="" value="<?php echo $shopOwnerData[0]->Latitude; ?>" required="">
                                                 </div>
                                               </div>
                                               <div class="form-group">
-                                                <label class="control-label col-sm-2" for="email">Google Maps Longitude:</label>
+                                                <label class="control-label col-sm-2" for="maps_longitude">Google Maps Longitude:</label>
                                                 <div class="col-sm-10">
-                                                  <input type="text" class="form-control" id="maps-longitude" name="Longitude" placeholder="" value="<?php echo $shopOwnerData[0]->Longitude; ?>" required="">
+                                                  <input type="text" class="form-control" id="maps_longitude" name="Longitude" placeholder="" value="<?php echo $shopOwnerData[0]->Longitude; ?>" required="">
                                                 </div>
                                               </div>
 
+                                              <input type="hidden" class="form-control" id="Hidden_Shop_Email" name="HiddenEmail" placeholder="" value="<?php echo $shopOwnerData[0]->Email; ?>" required="">
+
                                               <div class="form-group">
-                                                <label class="control-label col-sm-2" for="email">Location:</label>
+                                                <label class="control-label col-sm-2" for="address">Location:</label>
                                                 <div class="col-sm-5">
-                                                   <textarea class="form-control" id="comment" name="Location" required=""><?php echo $shopOwnerData[0]->Address; ?></textarea>
+                                                   <textarea class="form-control" id="address" name="Location" required=""><?php echo $shopOwnerData[0]->Address; ?></textarea>
                                                 </div>
                                               </div>
 
