@@ -18,7 +18,8 @@
 		$sql .= "insert into carshop(Email,Password,flag) values ('".$email."','".$password."',1);";
 
 		if (mysqli_multi_query($conn, $sql)) {
-	    	header("Location: signup-as-carOwner.php");
+			$_SESSION["carOwnerSignupEmail"] = $email;
+	    	header("Location: carOwner/index.php");
 		} 
 		else {
 		    echo "Error: " . $sql . "<br>" . mysqli_error($conn);
