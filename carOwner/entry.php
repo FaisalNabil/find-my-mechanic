@@ -1,4 +1,4 @@
-
+<?php session_start();?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,7 +12,7 @@
     <link href="../assets/css/main-style.css" rel="stylesheet" />
    </head>
 <body>
-<?php 
+<?php
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
@@ -29,13 +29,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
        $sql = "insert into vehicle values('$RegNo','$RegDate','$InsuranceNo','$VehicleType','$ModelName')"; 
+       $sqlRel="INSERT INTO ownervehiclerelation VALUES('".$_SESSION["carOwnerEmail"]."','".$RegNo."')";
+
+       //echo $sqlRel;
 
         if (mysqli_query($conn, $sql)) {
-            $info = 
+            if(mysqli_query($conn, $sqlRel)){
+                $info = 
             '<div class="alert alert-success alert-dismissable">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                 <strong>Success!</strong> The Value Insertered Successfully.
              </div>';
+            }
+            
         } else {
             echo "Error: " . $sql . "<br>" . mysqli_error($conn);
         }

@@ -1,8 +1,9 @@
 <?php 
+session_start();
 
 include("phpFiles/SelectProfileData.php"); 
 
-$jsonCarOwnerDataString = getJSONFromDB("select Password from carowner where Email='nabilt59@gmail.com'");
+$jsonCarOwnerDataString = getJSONFromDB("select Password from carowner where Email='".$_SESSION["carOwnerEmail"]."'");
 
 $carOwnerPassword = json_decode($jsonCarOwnerDataString);
 
@@ -214,7 +215,7 @@ $carOwnerPassword = json_decode($jsonCarOwnerDataString);
                          </div>';
                     }else{
                            
-                        $sql = "UPDATE carowner SET Password ='".$newPassowrd."' WHERE Email='nabilt59@gmail.com'"; 
+                        $sql = "UPDATE carowner SET Password ='".$newPassowrd."' WHERE Email='".$_SESSION["carOwnerEmail"]."'"; 
                              $flag = 0;
                             if (mysqli_query($conn, $sql)) {
                                 $successes = 
