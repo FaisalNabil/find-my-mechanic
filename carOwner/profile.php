@@ -70,6 +70,41 @@ if (isset($_POST['update']) && $_SERVER['REQUEST_METHOD'] == 'POST') {
 
 ?>
 
+<script type="text/javascript">
+
+xmlhttp = new XMLHttpRequest();
+     
+
+    function RegNoCheck(id){   //Checks RegNo
+        //alert(id);
+        str=document.getElementById(id).value;
+        //alert(str);
+
+    xmlhttp.onreadystatechange = function() {
+        
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200 && id!="") {
+            
+            m=document.getElementById("ErrorMessage");
+            var i=xmlhttp.responseText;
+            //alert(i);
+            if(i==str){
+                m.innerHTML="*Registration No Already Exist, Try another one";
+                m.style.color= "red";
+            }
+            else{
+                m.innerHTML="Valid Registration No!";
+                m.style.color= "green";
+            }   
+                
+        }
+    };
+    var url="phpFiles/RegNoCheckAjax.php?RegNo="+str;
+    //alert(url);
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+    }
+</script>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -318,7 +353,7 @@ if (isset($_POST['update']) && $_SERVER['REQUEST_METHOD'] == 'POST') {
                                                 <tr>
                                                     <th>#</th>
                                                     <th>Vehicle Name</th>
-													<th>Type</th>
+													                          <th>Type</th>
                                                     <th>Reg. No</th>
                                                     <th>Date</th>
                                                     <th>Insurance NO</th>
@@ -366,9 +401,10 @@ if (isset($_POST['update']) && $_SERVER['REQUEST_METHOD'] == 'POST') {
                   <div class="form-group">
                     <label class="control-label col-sm-2" for="reg_no">Reg NO. :</label>
                     <div class="col-sm-5">
-                      <input type="text" class="form-control" name="RegNo" id="reg_no" value="<?php echo $value->VehicleRegNo;
-                         $_SESSION['VehicleRegNo'] = $value->VehicleRegNo;
+                      <input type="text" class="form-control" name="RegNo" id="reg_no<?php echo $i ?>" onkeyup="RegNoCheck('reg_no<?php echo $i; ?>')" value="<?php echo $value->VehicleRegNo;
+                         //$_SESSION['VehicleRegNo'] = $value->VehicleRegNo;
                        ?>">
+                       <span id="ErrorMessage"></span>
                     </div>
                   </div>
 
