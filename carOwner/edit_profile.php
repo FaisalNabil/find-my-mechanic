@@ -1,10 +1,11 @@
 
 
 <?php 
+session_start();
 
 include("phpFiles/SelectProfileData.php"); 
 
-$jsonString = getJSONFromDB("select * from carowner where Email='nabilt59@gmail.com'");
+$jsonString = getJSONFromDB("select * from carowner where Email='".$_SESSION["carOwnerEmail"]."'");
 
 $carOwnerData = json_decode($jsonString);
 
@@ -137,9 +138,9 @@ $carOwnerData = json_decode($jsonString);
                     </a>
                     <!-- dropdown user-->
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="profile.html"><i class="fa fa-user fa-fw"></i>User Profile</a>
+                        <li><a href="profile.php"><i class="fa fa-user fa-fw"></i>User Profile</a>
                         </li>
-                        <li><a href="setting.html"><i class="fa fa-gear fa-fw"></i>Settings</a>
+                        <li><a href="setting.php"><i class="fa fa-gear fa-fw"></i>Settings</a>
                         </li>
                         <li class="divider"></li>
                         <li><a href="../login.html"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
@@ -212,7 +213,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
        
 
-       $sql = "UPDATE carowner SET Name ='".$Name."',Contact='".$contact."',DOB='".$Birthdate."',NID='".$NID."',DrivingLicence = '".$DrivingLicence."',Address='".$PresentAddress."' WHERE Email='nabilt59@gmail.com'"; 
+       $sql = "UPDATE carowner SET Name ='".$Name."',Contact='".$contact."',DOB='".$Birthdate."',NID='".$NID."',DrivingLicence = '".$DrivingLicence."',Address='".$PresentAddress."' WHERE Email='".$_SESSION["carOwnerEmail"]."'"; 
 
         if (mysqli_query($conn, $sql)) {
             $info = 

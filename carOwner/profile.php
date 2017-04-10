@@ -4,11 +4,11 @@ session_start();
 
 include("phpFiles/SelectProfileData.php"); 
 
-$jsonCarOwnerDataString = getJSONFromDB("select * from carowner where Email='nabilt59@gmail.com'");
+$jsonCarOwnerDataString = getJSONFromDB("select * from carowner where Email='".$_SESSION["carOwnerEmail"]."'");
 
 $carOwnerData = json_decode($jsonCarOwnerDataString);
 
-$jsonCarOwnerVehicleString = getJSONFromDB("select * from vehicle");
+$jsonCarOwnerVehicleString = getJSONFromDB("select * from vehicle JOIN ownervehiclerelation ON vehicle.VehicleRegNo=ownervehiclerelation.VehicleRegNo WHERE ownervehiclerelation.Email='".$_SESSION["carOwnerEmail"]."'");
 
 $carOwnerVehicleData = json_decode($jsonCarOwnerVehicleString);
 
@@ -143,7 +143,7 @@ $carOwnerVehicleData = json_decode($jsonCarOwnerVehicleString);
                     <ul class="dropdown-menu dropdown-user">
                         <li onclick="generateData()"><a href="#"><i class="fa fa-user fa-fw"></i>User Profile</a>
                         </li>
-                        <li><a href="setting.html"><i class="fa fa-gear fa-fw"></i>Settings</a>
+                        <li><a href="setting.php"><i class="fa fa-gear fa-fw"></i>Settings</a>
                         </li>
                         <li class="divider"></li>
                         <li><a href="../login.html"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
@@ -262,6 +262,7 @@ if (isset($_POST['update']) && $_SERVER['REQUEST_METHOD'] == 'POST') {
        $sql = "UPDATE vehicle SET VehicleRegNo ='".$RegNo."',RegistrationDate ='".$RegDate."',InsuranceNumber ='".$InsuranceNo."',VehicleType='".$type."',ModelName='".$vehivle_name."' WHERE VehicleRegNo='".$hiddenRegNo."'";
        
         if (mysqli_query($conn, $sql)) {
+            header("Refresh:0");
             $info = 
             '<div class="alert alert-success alert-dismissable notification">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
