@@ -7,7 +7,55 @@ $jsonCarOwnerDataString = getJSONFromDB("select Password from carowner where Ema
 
 $carOwnerPassword = json_decode($jsonCarOwnerDataString);
 
+$successes = "";
+$error     ="";
 
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+   include("phpFiles/Mysqldb.php"); 
+   $jsonoldPassword = $carOwnerPassword[0]->Password ;
+
+   if (!empty($_POST['oldPassword']) &&($jsonoldPassword == $_POST['oldPassword'])) {
+
+          if (!empty($_POST['newPassowrd']) && !empty($_POST['ConfirmPassword'])&&($_POST["newPassowrd"] == $_POST["ConfirmPassword"])) {
+            $newPassowrd     = $_POST['newPassowrd'];
+         $ConfirmPassword = $_POST['ConfirmPassword']; 
+
+        if (preg_match("/^.*(?=.{5,})(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).*$/", $_POST["newPassowrd"]) === 0) {
+            $error = 
+             '<div class="alert alert-danger alert-dismissable notification">
+               <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+               <strong>Worning!</strong> Password must be at least 5 characters and must contain at least one lower case letter, one upper case letter and one digit!.  
+             </div>';
+        }else{
+               
+            $sql = "UPDATE carowner SET Password ='".$newPassowrd."' WHERE Email='".$_SESSION["carOwnerEmail"]."'";
+
+            $sqlcarshop = "UPDATE carshop SET Password ='".$newPassowrd."' WHERE Email='".$_SESSION["carOwnerEmail"]."'"; 
+                 $flag = 0;
+                if (mysqli_query($conn, $sql)) {
+                    if (mysqli_query($conn, $sqlcarshop)) {
+                         $successes = 
+                    '<div class="alert alert-success alert-dismissable notification">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Success!</strong> Password Updated Successfully.
+                     </div>';
+                         
+                    }
+                    
+                }
+            }
+              
+          }
+          
+    }else{
+        $error = 
+             '<div class="alert alert-danger alert-dismissable notification">
+               <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+               <strong>Worning!</strong> You Entered Wrong password!.  
+             </div>';
+    }
+} 
 
 ?>
 
@@ -195,48 +243,6 @@ $carOwnerPassword = json_decode($jsonCarOwnerDataString);
             </div>
             <!-- end sidebar-collapse -->
         </nav>
-         <?php 
-           if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-               include("phpFiles/Mysqldb.php"); 
-               $jsonoldPassword = $carOwnerPassword[0]->Password ;
-
-               if (!empty($_POST['oldPassword']) &&($jsonoldPassword == $_POST['oldPassword'])) {
-
-                      if (!empty($_POST['newPassowrd']) && !empty($_POST['ConfirmPassword'])&&($_POST["newPassowrd"] == $_POST["ConfirmPassword"])) {
-                        $newPassowrd     = $_POST['newPassowrd'];
-                     $ConfirmPassword = $_POST['ConfirmPassword']; 
-
-                    if (preg_match("/^.*(?=.{5,})(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).*$/", $_POST["newPassowrd"]) === 0) {
-                        $error = 
-                         '<div class="alert alert-danger alert-dismissable notification">
-                           <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                           <strong>Worning!</strong> Password must be at least 5 characters and must contain at least one lower case letter, one upper case letter and one digit!.  
-                         </div>';
-                    }else{
-                           
-                        $sql = "UPDATE carowner SET Password ='".$newPassowrd."' WHERE Email='".$_SESSION["carOwnerEmail"]."'"; 
-                             $flag = 0;
-                            if (mysqli_query($conn, $sql)) {
-                                $successes = 
-                                '<div class="alert alert-success alert-dismissable notification">
-                                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                                    <strong>Success!</strong> Password Updated Successfully.
-                                 </div>';
-                            }
-                        }
-                          
-                      }
-                      
-                }else{
-                    $error = 
-                         '<div class="alert alert-danger alert-dismissable notification">
-                           <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                           <strong>Worning!</strong> You Entered Wrong password!.  
-                         </div>';
-                }
-            } 
-         ?>
         <div id="page-wrapper">
             <div class="row">
                 <!-- Page Header -->

@@ -1,19 +1,7 @@
-<?php session_start();?>
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebTechnology Final Project</title>
-    <link href="../assets/plugins/bootstrap/bootstrap.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link href="../assets/css/jquery.datepick.css" rel="stylesheet" />
-    <link href="../assets/css/style.css" rel="stylesheet" />
-    <link href="../assets/css/main-style.css" rel="stylesheet" />
-   </head>
-<body>
-<?php
+<?php 
+session_start();
 
+$info = "";
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     include 'phpFiles/Mysqldb.php';
@@ -29,6 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
        $sql = "insert into vehicle values('$RegNo','$RegDate','$InsuranceNo','$VehicleType','$ModelName')"; 
+       
        $sqlRel="INSERT INTO ownervehiclerelation VALUES('".$_SESSION["carOwnerEmail"]."','".$RegNo."')";
 
        //echo $sqlRel;
@@ -48,7 +37,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 }
 
+
+
 ?>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebTechnology Final Project</title>
+    <link href="../assets/plugins/bootstrap/bootstrap.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="../assets/css/jquery.datepick.css" rel="stylesheet" />
+    <link href="../assets/css/style.css" rel="stylesheet" />
+    <link href="../assets/css/main-style.css" rel="stylesheet" />
+   </head>
+<body>
     <!--  wrapper -->
     <div id="wrapper">
         <!-- navbar top -->

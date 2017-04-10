@@ -244,7 +244,7 @@ $OwnerVehicleRelationData = json_decode($jsonownerVehiclerelationDataString);
                 <!--end quick Help section -->
             </div>
            <?php 
-         
+            $info = "";
              if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                
                  include 'phpFiles/Mysqldb.php';
