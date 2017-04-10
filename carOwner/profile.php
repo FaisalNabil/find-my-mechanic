@@ -75,7 +75,7 @@ if (isset($_POST['update']) && $_SERVER['REQUEST_METHOD'] == 'POST') {
 xmlhttp = new XMLHttpRequest();
      
 
-    function RegNoCheck(id){   //Checks RegNo
+    function RegNoCheck(id,error){   //Checks RegNo
         //alert(id);
         str=document.getElementById(id).value;
         //alert(str);
@@ -84,7 +84,7 @@ xmlhttp = new XMLHttpRequest();
         
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200 && id!="") {
             
-            m=document.getElementById("ErrorMessage");
+            m=document.getElementById(error);
             var i=xmlhttp.responseText;
             //alert(i);
             if(i==str){
@@ -401,10 +401,10 @@ xmlhttp = new XMLHttpRequest();
                   <div class="form-group">
                     <label class="control-label col-sm-2" for="reg_no">Reg NO. :</label>
                     <div class="col-sm-5">
-                      <input type="text" class="form-control" name="RegNo" id="reg_no<?php echo $i ?>" onkeyup="RegNoCheck('reg_no<?php echo $i; ?>')" value="<?php echo $value->VehicleRegNo;
+                      <input type="text" class="form-control" name="RegNo" id="reg_no<?php echo $i ?>" onkeyup="RegNoCheck('reg_no<?php echo $i; ?>','ErrorMessage<?php echo $i ?>')" value="<?php echo $value->VehicleRegNo;
                          //$_SESSION['VehicleRegNo'] = $value->VehicleRegNo;
                        ?>">
-                       <span id="ErrorMessage"></span>
+                       <span id="ErrorMessage<?php echo $i ?>"></span>
                     </div>
                   </div>
 
