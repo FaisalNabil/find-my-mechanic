@@ -1,13 +1,44 @@
 <?php
 	if($_SERVER["REQUEST_METHOD"] == "POST"){
-		$name = $_POST["carOwnerName"];
+		if(empty($_POST["carOwnerName"])){
+			$nameError = "Name is required";
+		}else{
+			$name = $_POST["carOwnerName"];
+		}
+
 		$email = $_POST["carOwnerEmail"];
-		$phone = $_POST["carOwnerPhone"];
-		$dob = $_POST["carOwnerDOB"];
-		$nid = $_POST["carOwnerNID"];
-		$drivingLicence = $_POST["carOwnerDriving"];
+
+		if(empty($_POST["carOwnerPhone"])){
+			$phoneError = "Phone is required";
+		}else{
+			$phone = $_POST["carOwnerPhone"];
+		}
+
+		if(empty($_POST["carOwnerDOB"])){
+			$dobError = $_POST["DOB is required"];
+		}else{
+			$dob = $_POST["carOwnerDOB"];
+		}
+
+		if(empty($_POST["carOwnerNid"])){
+			$nidError = "Nid is required";
+		}else{
+			$nid = $_POST["carOwnerNid"];
+		}
+
+		if(empty($_POST["carOwnerDriving"])){
+			$dlError = "Driving Licence is required";
+		}else{
+			$drivingLicence = $_POST["carOwnerDriving"];	
+		}
+
 		$password = $_POST["carOwnerPWD"];
-		$address = $_POST["carOwnerAddress"];
+
+		if(empty($_POST["carOwnerAddress"])){
+			$addressError = "Address is required";
+		}else{
+			$address = $_POST["carOwnerAddress"];
+		}
 
 		$conn = mysqli_connect("localhost", "root", "","find_my_mechanic");
 		if(!$conn){
