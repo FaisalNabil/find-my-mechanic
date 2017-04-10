@@ -23,7 +23,7 @@
 	}
 	elseif($json[0]->flag == '1' && $json[0]->password == $password){
 		$_SESSION["carOwnerEmail"] = $email;
-		header("Location: carOwner/index.html");
+		header("Location: carOwner/index.php");
 	}
 	else{
 		//$_SESSION["error"] == "yes";
