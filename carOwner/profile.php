@@ -12,6 +12,61 @@ $jsonCarOwnerVehicleString = getJSONFromDB("select * from vehicle JOIN ownervehi
 
 $carOwnerVehicleData = json_decode($jsonCarOwnerVehicleString);
 
+$info ="";
+
+if (isset($_POST['update']) && $_SERVER['REQUEST_METHOD'] == 'POST') {
+
+    include 'phpFiles/Mysqldb.php';
+    include 'phpFiles/updateDatabase.php';
+
+
+   if (!empty($_POST['vehivle_name']) && !empty($_POST['type']) && !empty($_POST['RegNo']) && !empty($_POST['RegDate']) && !empty($_POST['InsuranceNo']))
+
+    {
+      $vehivle_name   = $_POST['vehivle_name'];  
+      $type           = $_POST['type'];    
+      $RegNo          = $_POST['RegNo'];    
+      $RegDate        = $_POST['RegDate'];  
+      $InsuranceNo    = $_POST['InsuranceNo'];
+      $hiddenRegNo    = $_POST['hiddenRegNo'];
+       
+    }                                          
+       
+       $sql = "UPDATE vehicle SET VehicleRegNo ='".$RegNo."',RegistrationDate ='".$RegDate."',InsuranceNumber ='".$InsuranceNo."',VehicleType='".$type."',ModelName='".$vehivle_name."' WHERE VehicleRegNo='".$hiddenRegNo."'";
+       
+        if(updateDB($sql)==1){
+            header("Refresh:0");
+             
+        }
+        else{
+            $result='<div class="alert alert-danger alert-dismissable">
+                           <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                           <strong>Your Data Was Not Updated!</strong>
+                         </div>';
+        }
+
+}
+    if (isset($_POST['delete'])) {
+
+         $hiddenRegNo    = $_POST['hiddenRegNo'];
+
+         include 'phpFiles/Mysqldb.php';
+         include 'phpFiles/updateDatabase.php';
+
+        $sql = "DELETE FROM vehicle WHERE VehicleRegNo='".$hiddenRegNo."'";
+
+        if(updateDB($sql)==1){
+            header("Refresh:0");
+             
+        }
+        else{
+            $result='<div class="alert alert-danger alert-dismissable">
+                           <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                           <strong>Your Data Was Not Deleted!</strong>
+                         </div>';
+        }
+    }
+
 
 ?>
 
@@ -239,69 +294,7 @@ $carOwnerVehicleData = json_decode($jsonCarOwnerVehicleString);
                  <div class="pull-right" style="margin-top: 20px; margin-right: 30px;">
                      <a href="edit_profile.php"><button class="btn btn-info">Edit Details <i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></a>
                  </div>
-            </div>
-<?php 
-
-if (isset($_POST['update']) && $_SERVER['REQUEST_METHOD'] == 'POST') {
-
-    include 'phpFiles/Mysqldb.php';
-
-
-   if (!empty($_POST['vehivle_name']) && !empty($_POST['type']) && !empty($_POST['RegNo']) && !empty($_POST['RegDate']) && !empty($_POST['InsuranceNo']))
-
-    {
-      $vehivle_name   = $_POST['vehivle_name'];  
-      $type           = $_POST['type'];    
-      $RegNo          = $_POST['RegNo'];    
-      $RegDate        = $_POST['RegDate'];  
-      $InsuranceNo    = $_POST['InsuranceNo'];
-      $hiddenRegNo    = $_POST['hiddenRegNo'];
-       
-    }                                          
-       
-       $sql = "UPDATE vehicle SET VehicleRegNo ='".$RegNo."',RegistrationDate ='".$RegDate."',InsuranceNumber ='".$InsuranceNo."',VehicleType='".$type."',ModelName='".$vehivle_name."' WHERE VehicleRegNo='".$hiddenRegNo."'";
-       
-        if (mysqli_query($conn, $sql)) {
-            header("Refresh:0");
-            $info = 
-            '<div class="alert alert-success alert-dismissable notification">
-                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                <strong>Success!</strong> The Value Updated Successfully.
-             </div>';
-        } else {
-            $info = 
-            '<div class="alert alert-info alert-dismissable notification">
-                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                <strong>Info!</strong> Updated Failed.
-             </div>';
-        }
-
-}
-    if (isset($_POST['delete'])) {
-
-         $hiddenRegNo    = $_POST['hiddenRegNo'];
-
-         include 'phpFiles/Mysqldb.php';
-
-        $sql = "DELETE FROM vehicle WHERE VehicleRegNo='".$hiddenRegNo."'";
-
-        if (mysqli_query($conn, $sql)) {
-            $info = 
-            '<div class="alert alert-success alert-dismissable notification">
-                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                <strong>Success!</strong> The Value Deleted Successfully.
-             </div>';
-        } else {
-            $info = 
-            '<div class="alert alert-info alert-dismissable notification">
-                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                <strong>Info!</strong> Not Deleted Yet!.
-             </div>';
-        }
-    }
-
-?>
-     
+            </div>   
             <div class="row">
                 <h3 class="alert alert-info">Vehicles Details</h3>
 

@@ -9,6 +9,42 @@ $jsonString = getJSONFromDB("select * from carowner where Email='".$_SESSION["ca
 
 $carOwnerData = json_decode($jsonString);
 
+$info ="";
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+    include 'phpFiles/Mysqldb.php';
+
+   if (!empty($_POST['Name']) && !empty($_POST['Birthdate']) && !empty($_POST['contact']) && !empty($_POST['NID']) && !empty($_POST['DrivingLicence']) && !empty($_POST['PresentAddress']))
+
+    {
+      $Name           = $_POST['Name'];  
+      $Birthdate      = $_POST['Birthdate'];    
+      $contact        = $_POST['contact'];    
+      $NID            = $_POST['NID'];  
+      $DrivingLicence = $_POST['DrivingLicence'];   
+      $PresentAddress = $_POST['PresentAddress'];   
+    }
+       
+
+       $sql = "UPDATE carowner SET Name ='".$Name."',Contact='".$contact."',DOB='".$Birthdate."',NID='".$NID."',DrivingLicence = '".$DrivingLicence."',Address='".$PresentAddress."' WHERE Email='".$_SESSION["carOwnerEmail"]."'"; 
+
+        if (mysqli_query($conn, $sql)) {
+            $info = 
+            '<div class="alert alert-success alert-dismissable">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Success!</strong> The Value Supdated Successfully.
+             </div>';
+        } else {
+            $info = 
+            '<div class="alert alert-info alert-dismissable">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Info!</strong> Updated Failed.
+             </div>';
+        }
+
+}
+
 ?>
 
 
@@ -195,43 +231,6 @@ $carOwnerData = json_decode($jsonString);
             </div>
             <!-- end sidebar-collapse -->
         </nav>
-         <?php 
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-    include 'phpFiles/Mysqldb.php';
-
-   if (!empty($_POST['Name']) && !empty($_POST['Birthdate']) && !empty($_POST['contact']) && !empty($_POST['NID']) && !empty($_POST['DrivingLicence']) && !empty($_POST['PresentAddress']))
-
-    {
-      $Name           = $_POST['Name'];  
-      $Birthdate      = $_POST['Birthdate'];    
-      $contact        = $_POST['contact'];    
-      $NID            = $_POST['NID'];  
-      $DrivingLicence = $_POST['DrivingLicence'];   
-      $PresentAddress = $_POST['PresentAddress'];   
-    }
-       
-
-       $sql = "UPDATE carowner SET Name ='".$Name."',Contact='".$contact."',DOB='".$Birthdate."',NID='".$NID."',DrivingLicence = '".$DrivingLicence."',Address='".$PresentAddress."' WHERE Email='".$_SESSION["carOwnerEmail"]."'"; 
-
-        if (mysqli_query($conn, $sql)) {
-            $info = 
-            '<div class="alert alert-success alert-dismissable">
-                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                <strong>Success!</strong> The Value Supdated Successfully.
-             </div>';
-        } else {
-            $info = 
-            '<div class="alert alert-info alert-dismissable">
-                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                <strong>Info!</strong> Updated Failed.
-             </div>';
-        }
-
-}
-
-?>
          <div id="page-wrapper">
             <div class="row">
                 <!-- Page Header -->
