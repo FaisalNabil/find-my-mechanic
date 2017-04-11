@@ -1,3 +1,26 @@
+<?php 
+
+include("phpFiles/selectData.php");
+
+$jsonShopOwnerDataString = getJSONFromDB("select * from shopowner"); 
+$shopOwnerData = json_decode($jsonShopOwnerDataString);
+
+
+if (isset($_POST['viewProfile'])) {
+     
+      $hiddenEmail = $_POST['hiddenEmail'];
+      
+      $jsonShopOwnerDataStringbyEmail = getJSONFromDB("select * from shopowner where Email='".$hiddenEmail."'"); 
+       $shopOwnerDatabyEmail = json_decode($jsonShopOwnerDataStringbyEmail);
+
+       $sql = "select * from shopowner where Email='".$hiddenEmail."'";
+
+
+}
+
+?>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -204,86 +227,102 @@
                                                 <tr>
                                                     <th>#</th>
                                                     <th>Shop Name</th>
+                                                    <th>Email</th>
                                                     <th>Location</th>
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                               <?php 
+                                                    $i = 0;
+                                                  foreach ($shopOwnerData as $value) {
+                                                      $i++;
+                                                  ?>
+
+                                                  
                                                 <tr>
-                                                    <td>1</td>
-                                                    <td>Tuhin Enterprise</td>
-                                                    <td>Uttara,Dhaka</td>
+                                                    <td><?php echo $i; ?></td>
+                                                    <td><?php echo $value->ShopName; ?></td>
+                                                    <td><?php echo $value->Email; ?></td>
+                                                    <td><?php echo $value->Address; ?></td>
                                                     <td>
-                                                    <button class="btn btn-primary" data-toggle="modal" data-target="#shopOwnerModal">View Profile</button>
+                                                    <button class="btn btn-primary" data-toggle="modal" data-target="#shopOwnerModal" name="viewProfile">View Profile</button>
                                                      <!-- Modal -->
-                                                        <div class="modal fade" id="shopOwnerModal" role="dialog">
-                                                        <div class="modal-dialog modal-lg">
-                                                          <div class="modal-content">
-                                                            <div class="modal-header">
-                                                              <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                              <h4 class="modal-title">Shop Profile</h4>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                               <form class="form-horizontal">
-                                                                <div class="form-group">
-                                                                  <label class="control-label col-sm-2" for="name">Name:</label>
-                                                                  <div class="col-sm-10">
-                                                                      <label for="shopName">Tuhin Enterprise</label>
-                                                                  </div>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                  <label class="control-label col-sm-2" for="address">Address:</label>
-                                                                  <div class="col-sm-10">          
-                                                                      <label for="address">sector-7,Uttara,Dhaka</label>
-                                                                  </div>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                  <label class="control-label col-sm-2" for="services">Services & Parts:</label>
-                                                                  <div class="col-sm-10">          
-                                                                        <table class="table table-bordered">
-                                                                            <thead>
-                                                                              <tr>
-                                                                                <th>#</th>
-                                                                                <th>Service Available</th>
-                                                                                <th>Available Parts</th>
-                                                                         
-                                                                              </tr>
-                                                                            </thead>
-                                                                            <tbody>
-                                                                              <tr>
-                                                                                <td>1</td>
-                                                                                <td>Oil & Filter Change</td>
-                                                                                <td>Bumper. Unexposed bumper. Exposed bumper.</td>
-                                                                         
-                                                                              </tr>
-                                                                              <tr>
-                                                                                <td>2</td>
-                                                                                <td>Brakes, Power Steering</td>
-                                                                                <td>Cowl screen.</td>
-                                                                         
-                                                                              </tr>
-                                                                              <tr>
-                                                                                <td>3</td>
-                                                                                <td>Body & Paint Work</td>
-                                                                                <td>Decklid</td>
-                                                                         
-                                                                              </tr>
-                                                                            </tbody>
-                                                                        </table>
-                                                                  </div>
-                                                                </div>
-                                                              </form>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                              <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                                                            </div>
-                                                          </div>
-                                                        </div>
-                                                        </div><!-- End Modal -->
+    <div class="modal fade" id="shopOwnerModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Shop Profile</h4>
+        </div>        
+        <div class="modal-body">
+           <form class="form-horizontal">
+            <div class="form-group">
+              <label class="control-label col-sm-2" for="name">Name:</label>
+              <div class="col-sm-10">
+                  <label for="shopName"><?php echo $value->ShopName;; ?></label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-2" for="address">Address:</label>
+              <div class="col-sm-10">          
+                  <label for="address"><?php echo $value->Address; ?></label>
+              </div>
+            </div>
+             
+            <div class="form-group">
+              <label class="control-label col-sm-2" for="services">Services & Parts:</label>
+              <div class="col-sm-10">          
+                    <table class="table table-bordered">
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>Service Available</th>
+                            <th>Available Parts</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>1</td>
+                            <td>Oil & Filter Change</td>
+                            <td>Bumper. Unexposed bumper. Exposed bumper.</td>
+                     
+                          </tr>
+                          <tr>
+                            <td>2</td>
+                            <td>Brakes, Power Steering</td>
+                            <td>Cowl screen.</td>
+                     
+                          </tr>
+                          <tr>
+                            <td>3</td>
+                            <td>Body & Paint Work</td>
+                            <td>Decklid</td>
+                     
+                          </tr>
+                        </tbody>
+                    </table>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success pull-left">Approved</button>
+          <button type="button" class="btn btn-danger pull-left">Delete</button>
+          <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+    </div><!-- End Modal -->
+                                                    <button class="btn btn-warning">Pending</button>
                                                     <button class="btn btn-danger">Delete</button>
 
                                                     </td>
                                                 </tr>
+                                                <?php 
+                                                   }
+                                                  ?>
                                             </tbody>
                                         </table>
                                     </div>
