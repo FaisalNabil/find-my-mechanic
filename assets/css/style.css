@@ -19,7 +19,7 @@
 #page-wrapper {
     padding: 0 15px;
     min-height: 568px;
-     background-color:rgb(209, 212, 216);
+    background-color:rgb(209, 212, 216);
 }
 
 
@@ -334,4 +334,8 @@ table.dataTable thead .sorting:after {
 .vehicleDeleteBtn {
     margin-left: 55px;
     margin-top: -35px;
+}
+
+.margin-left {
+    margin-left: 95px;
 }

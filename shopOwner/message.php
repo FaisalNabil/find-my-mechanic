@@ -189,7 +189,7 @@
         </nav>
         <!-- end navbar side -->
         <!--  page-wrapper -->
-        <div id="page-wrapper">
+        <div id="page-wrapper" style="background-color: #FFFFFF;" >
 
             <div class="row">
                 <!-- Page Header -->
@@ -200,61 +200,139 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <div class="alert alert-success">
-                      <strong>Message List</strong> 
-                    </div>
-                </div>
-                <div class="col-md-12">
-                      <table class="table table-inbox table-hover">
-                            <tbody>
-                            <?php
-                                for($i=0;$i<sizeof($messageData);$i++){
-                                  ?>
-                              <tr>
-                                  <td class="inbox-small-cells">
-                                      <input type="checkbox" class="mail-checkbox">
-                                  </td>
-                                  <td><i class="fa fa-star"></i></td>
-                                  <td class="from"><?php echo $messageData[$i]->CarOwnerEmail; ?></td>
-                                  <td class="message-body"><?php echo $messageData[$i]->MessageBody; ?></td>
-                                  <td></td>
-                                  <td class="text-right"><?php echo $messageData[$i]->Date; ?></td>
-                                  <td class="pull-right"><a href="message-reply.html"><button class="btn btn-primary">Reply</button></a>
-                                    <button class="btn btn-danger">Delete</button>
-                                  </td>
-                              </tr>
-                              <?php
-                                }
-                              ?>
-                              
-                               
-                          </tbody>
-                          </table>
-                </div>
-                <!-- <div class="col-md-12 space">
-                    <div class="image-control">
-                      <img src="assets/img/sarwar.jpg" alt="">
-                      <label for="name">Me:</label>
-                      <em>Hello</em>
-                    </div>
-                </div>
-                <div class="col-md-12 space">
-                    <div class="image-control">
-                      <img src="assets/img/faisal.jpg" alt="">
-                      <label for="name">Faisal:</label>
-                      <em>Hi</em>
-                    </div>
-                </div>
-                <div class="col-md-12 space">
-                     <form>
-                        <div class="form-group">
-                          <label for="comment">Reply:</label>
-                          <textarea class="form-control" rows="5" id="comment"></textarea>
+                 <ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#inbox">Inbox</a></li>
+    <li><a data-toggle="tab" href="#outbox">Outbox</a></li>
+  </ul>
+  <div class="tab-content">
+    <div id="inbox" class="tab-pane fade in active">
+       <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Date</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Nabil</td>
+                <td>9 PM | 04-07-2017</td>
+                <td>
+                  <button type="button" class="btn btn-info" data-toggle="modal" data-target="#open">Open</button>
+                  <!-- Modal -->
+                  <div class="modal fade" id="open" role="dialog">
+                    <div class="modal-dialog">
+                    
+                      <!-- Modal content-->
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          <h4 class="modal-title">Message Details</h4>
                         </div>
-                        <button class="btn btn-primary">Send</button>
-                      </form>
-                
-                </div> -->
+                        <div class="modal-body">
+                            <form class="form-horizontal">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="sendeName">Sender:</label>
+                                    <div class="col-sm-10">
+                                      <span>Nabil</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="message">Message: </label>
+                                    <div class="col-sm-10">          
+                                       <span>Hello, I am Nabil from Nikunjo-3</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="reply">Reply: </label>
+                                    <div class="col-sm-10">          
+                                        <textarea class="form-control" rows="5" id="reply"></textarea>
+                                    </div>
+                                </div>
+                                 <button type="button" class="btn btn-primary margin-left">Send</button>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        </div>
+                      </div>
+                      
+                    </div>
+                  </div>
+
+                </td>
+              </tr>
+              <tr>
+                <td>Tuhin</td>
+                <td>4 AM | 06-12-2017</td>
+                <td><button type="button" class="btn btn-info" data-dismiss="modal">Open</button></td>
+              </tr>
+            </tbody>
+          </table>
+    </div>
+
+    <div id="outbox" class="tab-pane fade">
+       <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Date</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Nabil</td>
+                <td>9 PM | 04-07-2017</td>
+                <td>
+                  <button type="button" class="btn btn-info" data-toggle="modal" data-target="#outboxMessage">Open</button>
+                  <!-- Modal -->
+                  <div class="modal fade" id="outboxMessage" role="dialog">
+                    <div class="modal-dialog">
+                    
+                      <!-- Modal content-->
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          <h4 class="modal-title">Message Details</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form-horizontal">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="sendeName">Sender:</label>
+                                    <div class="col-sm-10">
+                                      <span>Nabil</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="message">Message: </label>
+                                    <div class="col-sm-10">          
+                                       <span>Hello, I am Nabil from Nikunjo-3</span>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        </div>
+                      </div>
+                      
+                    </div>
+                  </div>
+
+                </td>
+              </tr>
+              <tr>
+                <td>Tuhin</td>
+                <td>4 AM | 06-12-2017</td>
+                <td><button type="button" class="btn btn-info" data-dismiss="modal">Open</button></td>
+              </tr>
+            </tbody>
+          </table>
+    </div>
+  </div>
+                </div>
             </div>
         </div>
         <!-- end page-wrapper -->
