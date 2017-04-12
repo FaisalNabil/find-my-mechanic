@@ -20,6 +20,10 @@
         if(updateDB($sql)==1)
             header("Refreash:0");
     }
+
+    $jsonShopOwnerString = getJSONFromDB("SELECT ShopName FROM shopowner WHERE Email='".$_SESSION["shopOwnerEmail"]."'");
+
+    $jsonShopOwnerData = json_decode($jsonShopOwnerString);
 ?>
 <head>
     <meta charset="utf-8">
@@ -73,7 +77,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand logo-color" href="index.html">
+                <a class="navbar-brand logo-color" href="index.php">
                     Logo Goes Here
                 </a>
             </div>
@@ -88,7 +92,7 @@
                     <!-- dropdown-messages -->
                     <ul class="dropdown-menu dropdown-messages">
                         <li>
-                            <a href="message-reply.html">
+                            <a href="#">
                                 <div>
                                     <strong><span class=" label label-danger">Faisal</span></strong>
                                     <span class="pull-right text-muted">
@@ -100,7 +104,7 @@
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a href="message-reply.html">
+                            <a href="#">
                                 <div>
                                     <strong><span class=" label label-info">Tuhin</span></strong>
                                     <span class="pull-right text-muted">
@@ -112,7 +116,7 @@
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a href="message-reply.html">
+                            <a href="#">
                                 <div>
                                     <strong><span class=" label label-success">Sarwar</span></strong>
                                     <span class="pull-right text-muted">
@@ -140,7 +144,7 @@
                     <!-- dropdown Notifications-->
                     <ul class="dropdown-menu dropdown-alerts">
                         <li>
-                            <a href="notification.html">
+                            <a href="notification.php">
                                 <div>
                                     <i class="fa fa-comment fa-fw"></i>Help Request Sent Successfully
                                     <span class="pull-right text-muted small"> 1 minutes ago</span>
@@ -149,7 +153,7 @@
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a href="notification.html">
+                            <a href="notification.php">
                                 <div>
                                     <i class="fa fa-comment fa-fw"></i>Tuhin Accept Your Request
                                     <span class="pull-right text-muted small"> 0 minutes ago</span>
@@ -158,7 +162,7 @@
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a class="text-center" href="notification.html">
+                            <a class="text-center" href="notification.php">
                                 <strong>See All Notifications</strong>
                                 <i class="fa fa-angle-right"></i>
                             </a>
@@ -199,11 +203,8 @@
                     <li>
                         <!-- user image section-->
                         <div class="user-section">
-                            <div class="user-section-inner">
-                                <img src="../assets/img/user.jpg" alt="">
-                            </div>
                             <div class="user-info">
-                                <div>Tuhin Ent.</div>
+                                <div><?php echo $jsonShopOwnerData[0]->ShopName; ?></div>
                                 <div class="user-text-online">
                                     <span class="user-circle-online btn btn-success btn-circle "></span>&nbsp;Online
                                 </div>
@@ -214,13 +215,13 @@
                     <hr>
 
                     <li>
-                        <a href="index.html"><i class="fa fa-dashboard fa-fw"></i>Home</a>
+                        <a href="index.php"><i class="fa fa-dashboard fa-fw"></i>Home</a>
                     </li>
                     <li class="selected">
                         <a href="message.php"><i class="fa fa-comment fa-fw"></i>Messages</a>
                     </li>
                     <li>
-                        <a href="notification.html"><i class="fa fa-bell fa-fw"></i>Notification</a>
+                        <a href="notification.php"><i class="fa fa-bell fa-fw"></i>Notification</a>
                     </li>
                     <li>
                         <a href="entry.php"><i class="fa fa-edit fa-fw"></i>Available Stock</a>

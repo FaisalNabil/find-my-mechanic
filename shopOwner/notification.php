@@ -4,11 +4,17 @@
 <?php session_start();
     require("shopOwnerPHP/selectFromDatabase.php");
 
+    //for retriving notification
     $sql="SELECT (SELECT name FROM carowner where Email=notification.FromEmail) AS name,Date FROM notification WHERE ToEmail='".$_SESSION["shopOwnerEmail"]."'";
 
     $jsonNotificationString = getJSONFromDB($sql);
 
     $notificationData = json_decode($jsonNotificationString);
+
+    //for user name
+    $jsonShopOwnerString = getJSONFromDB("SELECT ShopName FROM shopowner WHERE Email='".$_SESSION["shopOwnerEmail"]."'");
+
+    $jsonShopOwnerData = json_decode($jsonShopOwnerString);
 
  ?>
 
@@ -161,11 +167,8 @@
                     <li>
                         <!-- user image section-->
                         <div class="user-section">
-                            <div class="user-section-inner">
-                                <img src="../assets/img/user.jpg" alt="">
-                            </div>
                             <div class="user-info">
-                                <div>Tuhin Ent.</div>
+                                <div><?php echo $jsonShopOwnerData[0]->ShopName; ?></div>
                                 <div class="user-text-online">
                                     <span class="user-circle-online btn btn-success btn-circle "></span>&nbsp;Online
                                 </div>

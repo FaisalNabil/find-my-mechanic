@@ -151,7 +151,7 @@ xmlhttp = new XMLHttpRequest();
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a class="text-center" href="#">
+                            <a class="text-center" href="message.php">
                                 <strong>Read All Messages</strong>
                                 <i class="fa fa-angle-right"></i>
                             </a>
@@ -167,7 +167,7 @@ xmlhttp = new XMLHttpRequest();
                     <!-- dropdown Notifications-->
                     <ul class="dropdown-menu dropdown-alerts">
                         <li>
-                            <a href="notification.html">
+                            <a href="notification.php">
                                 <div>
                                     <i class="fa fa-comment fa-fw"></i>Help Request Sent Successfully
                                     <span class="pull-right text-muted small"> 1 minutes ago</span>
@@ -176,7 +176,7 @@ xmlhttp = new XMLHttpRequest();
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a href="notification.html">
+                            <a href="notification.php">
                                 <div>
                                     <i class="fa fa-comment fa-fw"></i>Tuhin Accept Your Request
                                     <span class="pull-right text-muted small"> 0 minutes ago</span>
@@ -185,7 +185,7 @@ xmlhttp = new XMLHttpRequest();
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a class="text-center" href="notification.html">
+                            <a class="text-center" href="notification.php">
                                 <strong>See All Notifications</strong>
                                 <i class="fa fa-angle-right"></i>
                             </a>
@@ -226,11 +226,8 @@ xmlhttp = new XMLHttpRequest();
                     <li>
                         <!-- user image section-->
                         <div class="user-section">
-                            <div class="user-section-inner">
-                                <img src="../assets/img/user.jpg" alt="">
-                            </div>
                             <div class="user-info">
-                                <div>Tuhin Ent.</div>
+                                <div><?php echo $shopOwnerData[0]->ShopName; ?></div>
                                 <div class="user-text-online">
                                     <span class="user-circle-online btn btn-success btn-circle "></span>&nbsp;Online
                                 </div>
@@ -247,7 +244,7 @@ xmlhttp = new XMLHttpRequest();
                         <a href="message.php"><i class="fa fa-comment fa-fw"></i>Messages</a>
                     </li>
                     <li>
-                        <a href="notification.html"><i class="fa fa-bell fa-fw"></i>Notification</a>
+                        <a href="notification.php"><i class="fa fa-bell fa-fw"></i>Notification</a>
                     </li>
                     <li>
                         <a href="entry.php"><i class="fa fa-edit fa-fw"></i>Available Stock</a>
