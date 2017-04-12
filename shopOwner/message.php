@@ -1,11 +1,25 @@
 <!DOCTYPE html>
 <html>
-<?php 
-    require("shopOwnerPHP/selectFromDatabase.php"); 
+<?php session_start();
+    require("shopOwnerPHP/selectFromDatabase.php");
+    require("shopOwnerPHP/updateDatabase.php");
 
-    $jsonShopOwnerString = getJSONFromDB("select * from message");
+    $jsonInboxString = getJSONFromDB("SELECT (SELECT name FROM carowner where Email=message.SenderMail) AS name,SenderMail,Date,MessageBody,Status FROM message WHERE ReceiverMail='".$_SESSION["shopOwnerEmail"]."' ");
+    //echo $jsonInboxString;
+    $inboxMessageData = json_decode($jsonInboxString);
 
-    $messageData = json_decode($jsonShopOwnerString);
+    $jsonOutboxString = getJSONFromDB("SELECT (SELECT name FROM carowner where Email=message.ReceiverMail) AS name,Date,MessageBody,Status FROM message WHERE SenderMail='".$_SESSION["shopOwnerEmail"]."' ");
+    //echo $jsonInboxString;
+    $outboxMessageData = json_decode($jsonOutboxString);
+
+    if(isset($_POST['send']) && $_POST['reply']!="" && $_SERVER["REQUEST_METHOD"] == "POST"){
+        $reply=$_POST['reply'];           //message body
+        $sendermail=$_POST['SenderMail'];
+
+        $sql="INSERT INTO message(SenderMail, ReceiverMail, MessageBody, Date, Status) VALUES ('".$_SESSION["shopOwnerEmail"]."','".$sendermail."','".$reply."','".date("Y-m-d")."','unread')";
+        if(updateDB($sql)==1)
+            header("Refreash:0");
+    }
 ?>
 <head>
     <meta charset="utf-8">
@@ -16,6 +30,35 @@
     <link href="../assets/css/style.css" rel="stylesheet" />
     <link href="../assets/css/main-style.css" rel="stylesheet" />
     <link href="../assets/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+
+    <script type="text/javascript">
+        xmlhttp = new XMLHttpRequest();
+    function statusChange(id,senderMail){
+        //alert(id);
+        str=document.getElementById(id).innerText;
+        //alert(str);
+
+    xmlhttp.onreadystatechange = function() {
+        
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            
+            m=document.getElementById(id);
+            var i=xmlhttp.responseText;
+            //alert(i);
+            if(i=="success"){
+                m.innerText="";
+            }
+                //m.innerHTML=i;
+                
+        }
+    };
+    var url="shopOwnerPHP/messageStatus.php?sender="+senderMail;
+    //alert(url);
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+    }
+    </script>
+
    </head>
 <body>
     <!--  wrapper -->
@@ -212,16 +255,20 @@
                 <th>Name</th>
                 <th>Date</th>
                 <th>Action</th>
+                <th>Status</th>
               </tr>
             </thead>
             <tbody>
+              <?php
+                for($i=0;$i<sizeof($inboxMessageData);$i++){
+                ?>
               <tr>
-                <td>Nabil</td>
-                <td>9 PM | 04-07-2017</td>
+                <td><?php echo $inboxMessageData[$i]->name; ?></td>
+                <td><?php echo $inboxMessageData[$i]->Date; ?></td>
                 <td>
-                  <button type="button" class="btn btn-info" data-toggle="modal" data-target="#open">Open</button>
+                  <button type="button" onclick="statusChange('status<?php echo $i; ?>','<?php echo $inboxMessageData[$i]->SenderMail ?>')" class="btn btn-info" data-toggle="modal" data-target="#open<?php echo $i ?>">Open</button>
                   <!-- Modal -->
-                  <div class="modal fade" id="open" role="dialog">
+                  <div class="modal fade" id="open<?php echo $i ?>" role="dialog">
                     <div class="modal-dialog">
                     
                       <!-- Modal content-->
@@ -231,26 +278,33 @@
                           <h4 class="modal-title">Message Details</h4>
                         </div>
                         <div class="modal-body">
-                            <form class="form-horizontal">
+                            <form class="form-horizontal" action="" method="POST">
                                 <div class="form-group">
                                     <label class="control-label col-sm-2" for="sendeName">Sender:</label>
                                     <div class="col-sm-10">
-                                      <span>Nabil</span>
+                                      <span><?php echo $inboxMessageData[$i]->name ?></span>
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <label class="control-label col-sm-2">Email:</label>
+                                    <div class="col-sm-10">
+                                      <span><?php echo $inboxMessageData[$i]->SenderMail ?></span>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="SenderMail" value="<?php echo $inboxMessageData[$i]->SenderMail ?>">
+                                <div class="form-group">
                                     <label class="control-label col-sm-2" for="message">Message: </label>
                                     <div class="col-sm-10">          
-                                       <span>Hello, I am Nabil from Nikunjo-3</span>
+                                       <span><?php echo $inboxMessageData[$i]->MessageBody ?></span>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label col-sm-2" for="reply">Reply: </label>
                                     <div class="col-sm-10">          
-                                        <textarea class="form-control" rows="5" id="reply"></textarea>
+                                        <textarea class="form-control" rows="5" id="reply" name="reply"></textarea>
                                     </div>
                                 </div>
-                                 <button type="button" class="btn btn-primary margin-left">Send</button>
+                                 <button type="submit" name="send" class="btn btn-primary margin-left">Send</button>
                             </form>
                         </div>
                         <div class="modal-footer">
@@ -262,12 +316,11 @@
                   </div>
 
                 </td>
+                <td id="status<?php echo $i; ?>"><?php if($inboxMessageData[$i]->Status == "unread") echo "Unread"; ?></td>
               </tr>
-              <tr>
-                <td>Tuhin</td>
-                <td>4 AM | 06-12-2017</td>
-                <td><button type="button" class="btn btn-info" data-dismiss="modal">Open</button></td>
-              </tr>
+              <?php
+              }
+              ?>
             </tbody>
           </table>
     </div>
@@ -282,13 +335,16 @@
               </tr>
             </thead>
             <tbody>
+              <?php
+                for($i=0;$i<sizeof($outboxMessageData);$i++){
+                ?>
               <tr>
-                <td>Nabil</td>
-                <td>9 PM | 04-07-2017</td>
+                <td><?php echo $outboxMessageData[$i]->name; ?></td>
+                <td><?php echo $outboxMessageData[$i]->Date; ?></td>
                 <td>
-                  <button type="button" class="btn btn-info" data-toggle="modal" data-target="#outboxMessage">Open</button>
+                  <button type="button" class="btn btn-info" data-toggle="modal" data-target="#outboxMessage<?php echo $i; ?>">Open</button>
                   <!-- Modal -->
-                  <div class="modal fade" id="outboxMessage" role="dialog">
+                  <div class="modal fade" id="outboxMessage<?php echo $i; ?>" role="dialog">
                     <div class="modal-dialog">
                     
                       <!-- Modal content-->
@@ -300,15 +356,15 @@
                         <div class="modal-body">
                             <form class="form-horizontal">
                                 <div class="form-group">
-                                    <label class="control-label col-sm-2" for="sendeName">Sender:</label>
+                                    <label class="control-label col-sm-2" for="receiverName">To:</label>
                                     <div class="col-sm-10">
-                                      <span>Nabil</span>
+                                      <span><?php echo $outboxMessageData[$i]->name; ?></span>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label col-sm-2" for="message">Message: </label>
                                     <div class="col-sm-10">          
-                                       <span>Hello, I am Nabil from Nikunjo-3</span>
+                                       <span><?php echo $outboxMessageData[$i]->MessageBody; ?></span>
                                     </div>
                                 </div>
                             </form>
@@ -323,11 +379,9 @@
 
                 </td>
               </tr>
-              <tr>
-                <td>Tuhin</td>
-                <td>4 AM | 06-12-2017</td>
-                <td><button type="button" class="btn btn-info" data-dismiss="modal">Open</button></td>
-              </tr>
+              <?php
+                }
+              ?>
             </tbody>
           </table>
     </div>
