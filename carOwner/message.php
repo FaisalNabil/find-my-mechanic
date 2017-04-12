@@ -4,11 +4,11 @@
     require("phpFiles/SelectProfileData.php");
     require("phpFiles/updateDatabase.php");
 
-    $jsonInboxString = getJSONFromDB("SELECT (SELECT ShopName FROM shopowner where Email=message.SenderMail) AS name,SenderMail,Date,MessageBody,Status FROM message WHERE ReceiverMail='".$_SESSION["carOwnerEmail"]."' ");
+    $jsonInboxString = getJSONFromDB("SELECT (SELECT ShopName FROM shopowner where Email=message.SenderMail) AS name,SenderMail,Date,MessageBody,Status FROM message WHERE ReceiverMail='".$_SESSION["carOwnerEmail"]."'   ORDER BY Date DESC");
     //echo $jsonInboxString;
     $inboxMessageData = json_decode($jsonInboxString);
 
-    $jsonOutboxString = getJSONFromDB("SELECT (SELECT ShopName FROM shopowner where Email=message.ReceiverMail) AS name,Date,MessageBody,Status FROM message WHERE SenderMail='".$_SESSION["carOwnerEmail"]."' ");
+    $jsonOutboxString = getJSONFromDB("SELECT (SELECT ShopName FROM shopowner where Email=message.ReceiverMail) AS name,Date,MessageBody,Status FROM message WHERE SenderMail='".$_SESSION["carOwnerEmail"]."'   ORDER BY Date DESC");
     //echo $jsonInboxString;
     $outboxMessageData = json_decode($jsonOutboxString);
 
