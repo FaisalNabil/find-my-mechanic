@@ -1,5 +1,17 @@
 <!DOCTYPE html>
 <html>
+
+<?php session_start();
+    require("shopOwnerPHP/selectFromDatabase.php");
+
+    $sql="SELECT (SELECT name FROM carowner where Email=notification.FromEmail) AS name,Date FROM notification WHERE ToEmail='".$_SESSION["shopOwnerEmail"]."'";
+
+    $jsonNotificationString = getJSONFromDB($sql);
+
+    $notificationData = json_decode($jsonNotificationString);
+
+ ?>
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -74,7 +86,7 @@
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a class="text-center" href="message.html">
+                            <a class="text-center" href="message.php">
                                 <strong>Read All Messages</strong>
                                 <i class="fa fa-angle-right"></i>
                             </a>
@@ -90,7 +102,7 @@
                     <!-- dropdown Notifications-->
                     <ul class="dropdown-menu dropdown-alerts">
                         <li>
-                            <a href="notification.html">
+                            <a href="notification.php">
                                 <div>
                                     <i class="fa fa-comment fa-fw"></i>Help Request Sent Successfully
                                     <span class="pull-right text-muted small"> 1 minutes ago</span>
@@ -99,7 +111,7 @@
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a href="notification.html">
+                            <a href="notification.php">
                                 <div>
                                     <i class="fa fa-comment fa-fw"></i>Tuhin Accept Your Request
                                     <span class="pull-right text-muted small"> 0 minutes ago</span>
@@ -108,7 +120,7 @@
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a class="text-center" href="notification.html">
+                            <a class="text-center" href="notification.php">
                                 <strong>See All Notifications</strong>
                                 <i class="fa fa-angle-right"></i>
                             </a>
@@ -170,7 +182,7 @@
                         <a href="message.php"><i class="fa fa-comment fa-fw"></i>Messages</a>
                     </li>
                     <li class="selected">
-                        <a href="notification.html"><i class="fa fa-bell fa-fw"></i>Notification</a>
+                        <a href="notification.php"><i class="fa fa-bell fa-fw"></i>Notification</a>
                     </li>
                     <li>
                         <a href="entry.php"><i class="fa fa-edit fa-fw"></i>Available Stock</a>
@@ -189,6 +201,15 @@
                     <h1 class="page-header">Notifications</h1>
                 </div>
                 <!--End Page Header -->
+                <?php
+                for($i=0;$i<sizeof($notificationData);$i++){
+                 ?>
+                 <div>
+                     <span><?php echo $notificationData[$i]->Date; ?></span> <p><B><?php echo $notificationData[$i]->name; ?></B> has requested for your help</p>
+                 </div>
+                 <?php
+                  }
+                ?>
             </div>
             
         </div>
