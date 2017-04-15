@@ -41,7 +41,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand logo-color" href="index.html">
+                <a class="navbar-brand logo-color" href="index.php">
                     Logo Goes Here
                 </a>
             </div>
@@ -179,7 +179,7 @@
                     <hr>
 
                     <li>
-                        <a href="index.html"><i class="fa fa-dashboard fa-fw"></i>Home</a>
+                        <a href="index.php"><i class="fa fa-dashboard fa-fw"></i>Home</a>
                     </li>
                     <li>
                         <a href="message.php"><i class="fa fa-comment fa-fw"></i>Messages</a>
