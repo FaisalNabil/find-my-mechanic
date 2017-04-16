@@ -20,18 +20,17 @@
         require ("shopOwnerPHP/updateDatabase.php");
 
         $sql="UPDATE availableservices SET ServicesId='".$serviceid."', ServiceName='".$servicename."', Cost='".$cost."' WHERE ServicesId='".$serviceidhidden."' ";
-        $sqlRelation="UPDATE availableservices SET ServicesId='".$serviceid."' WHERE ShopEmail= '".$_SESSION["shopOwnerEmail"]."' AND ServicesId='".$serviceidhidden."'";
+        $sqlRelation="UPDATE shopservicerelation SET ServicesId='".$serviceid."' WHERE ShopEmail= '".$_SESSION["shopOwnerEmail"]."' AND ServicesId='".$serviceidhidden."'";
 
         //echo $sql;
         if(updateDB($sql)==1){
-            header("Refresh:0");
             updateDB($sqlRelation);
+            echo "<script type='text/javascript'>alert('Successfully updated');</script>";
+            header("Refresh:0");
+            
         }
         else{
-            $result='<div class="alert alert-danger alert-dismissable">
-                           <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                           <strong>Your Data Was Not Updated!</strong>
-                         </div>';
+            echo "<script type='text/javascript'>alert('Updated Failed');</script>";
         }
         
     }
@@ -48,14 +47,12 @@
         $sqlRelation="INSERT INTO shopservicerelation (ServicesId, ShopEmail) VALUES('".$addserviceid."','".$_SESSION["shopOwnerEmail"]."')";
         
         if(updateDB($sql)==1){
-            header("Refresh:0");
+            echo "<script type='text/javascript'>alert('Successfully Inserted');</script>";
             updateDB($sqlRelation);
+            header("Refresh:0");
         }
         else{
-            $result='<div class="alert alert-danger alert-dismissable">
-                           <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                           New Service <strong>Added</strong>
-                         </div>';
+            echo "<script type='text/javascript'>alert('Insert Failed');</script>";
         }
         
     }
@@ -147,18 +144,11 @@ xmlhttp = new XMLHttpRequest();
     }
 </script>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebTechnology Final Project</title>
-    <link href="../assets/plugins/bootstrap/bootstrap.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link href="../assets/css/style.css" rel="stylesheet" />
-    <link href="../assets/css/main-style.css" rel="stylesheet" />
-    <link href="../assets/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <?php include("TemplateFile/head.php"); ?>
    </head>
 <body>
     <!--  wrapper -->
-    <div id="wrapper" <?php $result=' '; ?> >
+    <div id="wrapper">
         <!-- navbar top -->
         <nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="navbar">
             <!-- navbar-header -->
@@ -396,7 +386,6 @@ xmlhttp = new XMLHttpRequest();
                         <!-- panel-body -->
                     </div>
                     <!--End simple table example -->
-                    <?php echo $result; ?>
                 </div>   
             </div>
              

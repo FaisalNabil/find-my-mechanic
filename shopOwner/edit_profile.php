@@ -1,7 +1,7 @@
 <?php session_start();
     require "shopOwnerPHP/selectFromDatabase.php"; 
 
-    $jsonShopOwnerString = getJSONFromDB("select * from shopowner WHERE Email='".$_SESSION["shopOwnerEmail"]."'");
+    $jsonShopOwnerString = getJSONFromDB("SELECT * FROM shopowner WHERE Email='".$_SESSION["shopOwnerEmail"]."'");
     //echo $_SESSION["shopOwnerEmail"];
 
     $shopOwnerData = json_decode($jsonShopOwnerString);
@@ -11,11 +11,10 @@
         
         require "shopOwnerPHP/updateDatabase.php";
 
-        if (!empty($_POST['ShopName']) && !empty($_POST['Contact']) && !empty($_POST['ShopTradeLicence']) && !empty($_POST['Latitude']) && !empty($_POST['Longitude']) && !empty($_POST['Location']) && !empty($_POST['Email']))
+        if (!empty($_POST['ShopName']) && !empty($_POST['Contact']) && !empty($_POST['ShopTradeLicence']) && !empty($_POST['Latitude']) && !empty($_POST['Longitude']) && !empty($_POST['Location']) )
 
         {
           $shopName         = $_POST['ShopName'];
-          $shopEmail        = $_POST['Email'];
           $contact          = $_POST['Contact'];    
           $shopTradeLicence = $_POST['ShopTradeLicence'];  
           $latitude         = $_POST['Latitude'];   
@@ -26,66 +25,22 @@
         }
        
 
-        $sql = "UPDATE shopowner SET ShopName ='".$shopName."', Email='".$shopEmail."', Contact='".$contact."',Latitude = '".$latitude."',Longitude='".$longitude."',Address ='".$location."',ShopTradeLicence='".$shopTradeLicence."' WHERE Email='".$_SESSION["shopOwnerEmail"]."'";
-        /*$sqlRelationService="UPDATE shopservicerelation SET ShopEmail='".$shopEmail."' WHERE ShopEmail= '".$_SESSION["shopOwnerEmail"]."'";
-        $sqlRelationStock="UPDATE shopstockrelation SET ShopEmail='".$shopEmail."' WHERE ShopEmail= '".$_SESSION["shopOwnerEmail"]."'";*/
+        $sql = "UPDATE shopowner SET ShopName ='".$shopName."', Contact='".$contact."',Latitude = '".$latitude."',Longitude='".$longitude."',Address ='".$location."',ShopTradeLicence='".$shopTradeLicence."' WHERE Email='".$_SESSION["shopOwnerEmail"]."'";
         
-        if (updateDB($sql)) {
+        if (updateDB($sql)==1) {
+            echo "<script type='text/javascript'>alert('Successfully updated');</script>";
             header("Refresh:0");
-            //updateDB($sqlRelation);
-            $_SESSION["shopOwnerEmail"]=$shopEmail;
         } else {
-            $info = 
-            '<div class="alert alert-info alert-dismissable">
-                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                <strong>Info!</strong> Updated Failed.
-             </div>';
+            echo "<script type='text/javascript'>alert('Updated Failed');</script>";
         }
     }
 
 ?>
 
-<script type="text/javascript">
-xmlhttp = new XMLHttpRequest();
-    function emailcheckfunction(id){ //check email operation
-        //alert(id);
-        str=document.getElementById(id).value;
-        //alert(str);
-
-    xmlhttp.onreadystatechange = function() {
-        
-        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-            
-            m=document.getElementById("emailcheck");
-            var i=xmlhttp.responseText;
-            //alert(i);
-            if(i==str){
-                m.innerHTML="*Email Already Exists!"
-                m.style.color="red";
-            }
-            else{
-                m.innerHTML=""
-            }
-        }
-    };
-    var url="shopOwnerPHP/emailCheckAJAX.php?email="+str;
-    //alert(url);
-    xmlhttp.open("GET", url, true);
-    xmlhttp.send();
-    }
-</script>
-
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebTechnology Final Project</title>
-    <link href="../assets/plugins/bootstrap/bootstrap.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link href="../assets/css/style.css" rel="stylesheet" />
-    <link href="../assets/css/main-style.css" rel="stylesheet" />
-    <link href="../assets/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <?php include("TemplateFile/head.php"); ?>
    </head>
 <body <?php $info=''; ?> >
     <!--  wrapper -->
@@ -184,14 +139,6 @@ xmlhttp = new XMLHttpRequest();
                                                   <input type="text" class="form-control" id="name" name="ShopName" placeholder="" value="<?php echo $shopOwnerData[0]->ShopName; ?>">
                                                 </div>
                                               </div>
-
-                                              <div class="form-group">
-                                                <label class="control-label col-sm-2" for="email">Email:</label>
-                                                <div class="col-sm-5">
-                                                  <input type="text" class="form-control" id="email" name="Email" placeholder="" value="<?php echo $shopOwnerData[0]->Email; ?>" onkeyup="emailcheckfunction('email')"> <span id="emailcheck"></span>
-                                                </div>
-                                              </div>
-                                    
                                               <div class="form-group">
                                                 <label class="control-label col-sm-2" for="contact">Contact:</label>
                                                 <div class="col-sm-5">

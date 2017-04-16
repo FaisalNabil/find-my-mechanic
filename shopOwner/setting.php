@@ -13,6 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 
     if($passwordData[0]->Password!=$_POST['OldPassword']){
+      
         $error = 
              '<div class="alert alert-danger alert-dismissable">
                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -20,12 +21,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
              </div>';
     }
     else{
+      
        if (!empty($_POST['OldPassword']) && !empty($_POST['NewPassword']) && !empty($_POST['ConfirmPassword']) && ($_POST["NewPassword"] == $_POST["ConfirmPassword"]) && $passwordData[0]->Password==$_POST['OldPassword'] ) {
-
+           
              $newPassowrd     = $_POST['NewPassword'];
              $confirmPassword = $_POST['ConfirmPassword']; 
 
             if (preg_match("/^.*(?=.{5,})(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).*$/", $_POST["NewPassword"]) === 0) {
+              
                 $error = 
                  '<div class="alert alert-danger alert-dismissable">
                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -34,10 +37,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             }
             else{
-                   $welcome =  "Welcome";
-                    $sql = "UPDATE shopowner SET Password ='".$newPassowrd."' WHERE Email='hosensarwar007@gmail.com'"; 
-
+              
+                    $sql = "UPDATE shopowner SET Password ='".$newPassowrd."' WHERE Email='".$_SESSION["shopOwnerEmail"]."'"; 
+                    $resql="UPDATE carshop SET Password ='".$newPassowrd."' WHERE Email='".$_SESSION["shopOwnerEmail"]."'";
                     if (updateDB($sql)==1) {
+                      updateDB($resql);
+                      
                         $successes = 
                         '<div class="alert alert-success alert-dismissable">
                             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -45,6 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                          </div>';
                     }
                     else{
+                      
                         $error = 
                          '<div class="alert alert-danger alert-dismissable">
                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -54,6 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 }
         }
         else{
+          
             $error = 
              '<div class="alert alert-danger alert-dismissable">
                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -65,18 +72,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $jsonString = getJSONFromDB("SELECT ShopName FROM shopowner WHERE Email='".$_SESSION["shopOwnerEmail"]."' ");
 
-    $jsonShopOwnerData = json_decode($jsonString); 
+    $jsonShopOwnerData = json_decode($jsonString);
 ?>
+
+<script type="text/javascript">
+  function validate(){
+    var password=document.getElementById("newPassword").value;
+    var repassword=document.getElementById("reNewPassword").value;
+    var m=document.getElementById("matchCheck");
+
+    if(password!=repassword){
+      m.innerHTML="Password didn't match";
+      m.style.color="red";
+    }
+    else{
+      m.innerHTML="Password matches";
+      m.style.color="green";
+    }
+  }
+</script>
 
 <html>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebTechnology Final Project</title>
-    <link href="../assets/plugins/bootstrap/bootstrap.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link href="../assets/css/style.css" rel="stylesheet" />
-    <link href="../assets/css/main-style.css" rel="stylesheet" />
+    <?php include("TemplateFile/head.php"); ?>
    </head>
 <body <?php $successes=$error=' '; ?> >
     <!--  wrapper -->
@@ -182,19 +200,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                           <div class="form-group">
                                             <label class="control-label col-sm-2" for="old-password">Old Password:</label>
                                             <div class="col-sm-5">
-                                              <input type="password" class="form-control" id="email" name="OldPassword" placeholder="Enter Old Password">
+                                              <input type="password" class="form-control" id="oldPassword" name="OldPassword" placeholder="Enter Old Password">
                                             </div>
                                           </div>
                                           <div class="form-group">
-                                            <label class="control-label col-sm-2" for="old-password">New Password:</label>
+                                            <label class="control-label col-sm-2" for="NewPassword">New Password:</label>
                                             <div class="col-sm-5">
-                                              <input type="password" class="form-control" id="email" name="NewPassword" placeholder="Enter New Password">
+                                              <input type="password" class="form-control" id="newPassword" name="NewPassword" placeholder="Enter New Password">
                                             </div>
                                           </div>
                                           <div class="form-group">
-                                            <label class="control-label col-sm-2" for="old-password">New Password Again:</label>
+                                            <label class="control-label col-sm-2" for="ConfirmPassword">New Password Again:</label>
                                             <div class="col-sm-5">
-                                              <input type="password" class="form-control" id="email" name="ConfirmPassword" placeholder="Enter New Password Again">
+                                              <input type="password" class="form-control" id="reNewPassword" name="ConfirmPassword" placeholder="Enter New Password Again" onkeyup="validate()"><span id="matchCheck"></span>
                                             </div>
                                           </div>
                                            
