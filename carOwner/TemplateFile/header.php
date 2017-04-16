@@ -1,4 +1,14 @@
+<?php 
 
+session_start();
+
+include("phpFiles/SelectProfileData.php"); 
+
+$jsonCarOwnerDataString = getJSONFromDB("select * from carowner where Email='".$_SESSION["carOwnerEmail"]."'");
+
+$carOwnerData = json_decode($jsonCarOwnerDataString);
+
+?>
 
 <!DOCTYPE html>
 <html>
@@ -131,7 +141,7 @@
                         <li><a href="setting.php"><i class="fa fa-gear fa-fw"></i>Settings</a>
                         </li>
                         <li class="divider"></li>
-                        <li><a href="../login.html"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
+                        <li><a href="../login.php"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
                         </li>
                     </ul>
                     <!-- end dropdown-user -->
@@ -156,7 +166,7 @@
                                 <img src="../assets/img/user.jpg" alt="">
                             </div>
                             <div class="user-info">
-                                <div>Faisal <strong>Nabil</strong></div>
+                                <div><?php echo $carOwnerData[0]->Name; ?></strong></div>
                                 <div class="user-text-online">
                                     <span class="user-circle-online btn btn-success btn-circle "></span>&nbsp;Online
                                 </div>
