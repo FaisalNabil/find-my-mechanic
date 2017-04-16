@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,6 +8,8 @@
     <title>WebTechnology Final Project</title>
     <link href="../assets/plugins/bootstrap/bootstrap.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="../assets/css/jquery.datepick.css" rel="stylesheet" />
+    
     <link href="../assets/css/style.css" rel="stylesheet" />
     <link href="../assets/css/main-style.css" rel="stylesheet" />
    </head>
@@ -107,7 +111,7 @@
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a class="text-center" href="#">
+                            <a class="text-center" href="notification.html">
                                 <strong>See All Notifications</strong>
                                 <i class="fa fa-angle-right"></i>
                             </a>
@@ -122,9 +126,9 @@
                     </a>
                     <!-- dropdown user-->
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="profile.html"><i class="fa fa-user fa-fw"></i>User Profile</a>
+                        <li><a href="profile.php"><i class="fa fa-user fa-fw"></i>User Profile</a>
                         </li>
-                        <li><a href="setting.html"><i class="fa fa-gear fa-fw"></i>Settings</a>
+                        <li><a href="setting.php"><i class="fa fa-gear fa-fw"></i>Settings</a>
                         </li>
                         <li class="divider"></li>
                         <li><a href="../login.html"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
@@ -162,16 +166,17 @@
                     </li>
                     <hr>
 
-                    <li>
+                    <li class="<?php if($currentPage =='home'){echo 'selected';}?>">
+
                         <a href="index.php"><i class="fa fa-dashboard fa-fw"></i>Home</a>
                     </li>
-                    <li>
+                    <li class="<?php if($currentPage =='message'){echo 'selected';}?>">
                         <a href="message.php"><i class="fa fa-comment fa-fw"></i>Messages</a>
                     </li>
-                    <li class="selected">
+                    <li class="<?php if($currentPage =='notification'){echo 'selected';}?>">
                         <a href="notification.php"><i class="fa fa-bell fa-fw"></i>Notification</a>
                     </li>
-                    <li>
+                    <li class="<?php if($currentPage =='entry'){echo 'selected';}?>">
                         <a href="entry.php"><i class="fa fa-edit fa-fw"></i>Entry</a>
                     </li>
                 </ul>
@@ -179,26 +184,3 @@
             </div>
             <!-- end sidebar-collapse -->
         </nav>
-        <!-- end navbar side -->
-        <!--  page-wrapper -->
-        <div id="page-wrapper">
-            <div class="row">
-                <!-- Page Header -->
-                <div class="col-lg-12">
-                    <h1 class="page-header">Notifications</h1>
-                </div>
-                <!--End Page Header -->
-            </div>
-            
-        </div>
-        <!-- end page-wrapper -->
-
-    </div>
-    <!-- end wrapper -->
-
-    <script src="../assets/plugins/jquery-1.10.2.js"></script>
-    <script src="../assets/plugins/bootstrap/bootstrap.min.js"></script>
-    
-</body>
-
-</html>
