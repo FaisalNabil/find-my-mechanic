@@ -1,29 +1,30 @@
 <?php 
 
-include("phpFiles/SelectProfileData.php"); 
 
-$jsonCarOwnerDataString = getJSONFromDB("select ShopName,Email,Address from shopowner where Email='tuhinbhuiyan7@gmail.com'");
+//include("phpFiles/SelectProfileData.php"); 
 
-$ShopOwnerData = json_decode($jsonCarOwnerDataString);
+/*$jsonCarOwnerDataString = getJSONFromDB("select ShopName,Email,Address from shopowner where Email='".$_SESSION["carOwnerEmail"]."'");
 
-
-$jsonCarOwnerDataString = getJSONFromDB("select* from carowner ");
-
-$AvailableServiceData = json_decode($jsonAvailableServiceDataString);
+$ShopOwnerData = json_decode($jsonCarOwnerDataString);*/
 
 
+/*$jsonCarOwnerDataString = getJSONFromDB("select* from carowner ");*/
+
+/*$AvailableServiceData = json_decode($jsonAvailableServiceDataString);*/
+
+/*
 
 $jsonAvailableServiceDataString = getJSONFromDB("select* from availableservices where ServicesId='A32'");
 
 $AvailableServiceData = json_decode($jsonAvailableServiceDataString);
 
-$jsonStockDataString = getJSONFromDB("select* from stock where StockId='2631'");
+$jsonStockDataString = getJSONFromDB("select* from stock where StockId='2631'");*/
 
-$StockData = json_decode($jsonStockDataString);
+/*$StockData = json_decode($jsonStockDataString);
 
 $jsonownerVehiclerelationDataString = getJSONFromDB("select* from ownervehiclerelation where Email='nabilt59@gmail.com'");
 
-$OwnerVehicleRelationData = json_decode($jsonownerVehiclerelationDataString);
+$OwnerVehicleRelationData = json_decode($jsonownerVehiclerelationDataString);*/
 
 
 ?>
@@ -64,7 +65,7 @@ $OwnerVehicleRelationData = json_decode($jsonownerVehiclerelationDataString);
                 <!--end quick Help section -->
             </div>
            <?php 
-            $info = "";
+            /*$info = "";
              if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                
                  include 'phpFiles/Mysqldb.php';
@@ -105,11 +106,11 @@ $OwnerVehicleRelationData = json_decode($jsonownerVehiclerelationDataString);
                      </div>';
                 }
                 
-             }
+             }*/
            ?> 
             <div class="row">
                 <div class="col-lg-6 col-lg-offset-2">
-                    <?php echo $info ; 
+                    <?php //echo $info ; 
                     ?>
                 </div>
             </div>
@@ -136,13 +137,13 @@ $OwnerVehicleRelationData = json_decode($jsonownerVehiclerelationDataString);
                                             </thead>
                                             <tbody>
                                               <?php 
-                                                $i = 0;
+                                                /*$i = 0;
                                                 foreach ($ShopOwnerData as $value) {
-                                                    $i++;
+                                                    $i++;*/
                                                ?>
                                                 <tr>
-                                                    <td><?php echo $i; ?></td>
-                                                    <td><?php echo $ShopOwnerData[0]->ShopName ;?></td>
+                                                    <td><?php //echo $i; ?></td>
+                                                    <td><?php //echo $ShopOwnerData[0]->ShopName ;?></td>
                                                     <td>2 km</td>
                                                     <td><button class="btn btn-success" data-toggle="modal" data-target="#requestSendModal">Send Request</button>
                                                <!-- Modal -->
@@ -160,12 +161,12 @@ $OwnerVehicleRelationData = json_decode($jsonownerVehiclerelationDataString);
                   <div class="col-sm-10">
                         <select>
                            <?php 
-                                foreach ($OwnerVehicleRelationData as $value) {
+                                //foreach ($OwnerVehicleRelationData as $value) {
 
                             ?>
-                               <option value="<?php echo $value->VehicleRegNo ;?>"><?php echo $value->VehicleRegNo ;?></option>     
+                               <option value="<?php //echo $value->VehicleRegNo ;?>"><?php //echo $value->VehicleRegNo ;?></option>     
                             <?php 
-                             }
+                             //}
                             ?>
                         </select>
                   </div>
@@ -204,13 +205,13 @@ $OwnerVehicleRelationData = json_decode($jsonownerVehiclerelationDataString);
                 <div class="form-group">
                   <label class="control-label col-sm-2" for="name">Name:</label>
                   <div class="col-sm-10">
-                      <label for="shopName"><?php echo $ShopOwnerData[0]->ShopName ; ?></label>
+                      <label for="shopName"><?php// echo $ShopOwnerData[0]->ShopName ; ?></label>
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="control-label col-sm-2" for="address">Address:</label>
                   <div class="col-sm-10">          
-                      <label for="address"><?php echo $ShopOwnerData[0]->Address ; ?></label>
+                      <label for="address"><?php //echo $ShopOwnerData[0]->Address ; ?></label>
                   </div>
                 </div>
                 <div class="form-group">
@@ -228,27 +229,27 @@ $OwnerVehicleRelationData = json_decode($jsonownerVehiclerelationDataString);
                             </thead>
                             <tbody>
                             <?php
-                                $i = 0; 
+                                /*$i = 0; 
                                 foreach ($AvailableServiceData as $value) {
-                                     $i++;
+                                     $i++;*/
                                 ?>
                                 <tr>
-                                    <td><?php echo $i; ?></td>
-                                    <td><?php echo $value->ServiceName ; ?></td>
-                                    <td><?php echo $value->Cost ; ?></td>
+                                    <td><?php //echo $i; ?></td>
+                                    <td><?php// echo $value->ServiceName ; ?></td>
+                                    <td><?php //echo $value->Cost ; ?></td>
 
-                                    <?php foreach($StockData as $stock ){?>
+                                    <?php //foreach($StockData as $stock ){?>
 
-                                       <td><?php echo $stock->PartsName ; ?></td>
-                                       <td><?php echo $stock->PricePerUnit ; ?></td>
+                                       <td><?php //echo $stock->PartsName ; ?></td>
+                                       <td><?php //echo $stock->PricePerUnit ; ?></td>
 
                                     <?php 
-                                     }
+                                     //}
                                     ?>
 
                                 </tr>
                             <?php 
-                                 }
+                                //}
                             ?>
                                
                                
@@ -268,7 +269,7 @@ $OwnerVehicleRelationData = json_decode($jsonownerVehiclerelationDataString);
                                                 </tr>
 
                                                 <?php 
-                                                  }
+                                                  //}
                                                 ?>
                                                
                                             </tbody>
