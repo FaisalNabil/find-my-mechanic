@@ -4,8 +4,7 @@
 		$password = $_POST["password"];
 
 	function getJSONFromDB($sql){
-		$conn = mysqli_connect("localhost", "root", "","find_my_mechanic");
-		$result = mysqli_query($conn, $sql)or die(mysqli_error($conn));
+		include("Mysqldb.php");
 		$arr=array();
 		while($row = mysqli_fetch_assoc($result)) {
 			$arr[]=$row;

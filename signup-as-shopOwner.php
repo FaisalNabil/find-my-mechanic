@@ -54,10 +54,8 @@
     $address = $_POST["shopOwnerAddress"];
    
     if($error == 0){
-      $conn = mysqli_connect("localhost", "root", "","find_my_mechanic");
-      if(!$conn){
-        die("connection failed: ".mysqli_connect_error());
-      }
+      include("Mysqldb.php");
+      
       $sql = "insert into shopowner(ShopName,Email,Contact,Password,Latitude,Longitude,Address,ShopTradeLicence,flag) values ('".$name."','".$email."','".$phone."','".$password."','".$latitude."','".$longitude."','".$address."','".$stl."',2);";
 
       $sql .= "insert into carshop(Email,Password,flag) values ('".$email."','".$password."',2);";

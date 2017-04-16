@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 06, 2017 at 07:18 PM
+-- Generation Time: Apr 16, 2017 at 07:14 AM
 -- Server version: 10.1.21-MariaDB
 -- PHP Version: 7.1.1
 
@@ -19,10 +19,10 @@ SET time_zone = "+00:00";
 --
 -- Database: `find_my_mechanic`
 --
+
+-- --------------------------------------------------------
 CREATE DATABASE IF NOT EXISTS `find_My_Mechanic` DEFAULT CHARACTER SET = 'utf8' COLLATE utf8_general_ci;
 USE `find_My_Mechanic`;
--- --------------------------------------------------------
-
 --
 -- Table structure for table `availableservices`
 --
@@ -38,7 +38,8 @@ CREATE TABLE `availableservices` (
 --
 
 INSERT INTO `availableservices` (`ServicesId`, `ServiceName`, `Cost`) VALUES
-('A32', 'paintjob', '5000tk');
+('A32', 'paintjob', '5000tk'),
+('A33', 'Car wash', '2000');
 
 -- --------------------------------------------------------
 
@@ -63,7 +64,9 @@ CREATE TABLE `carowner` (
 --
 
 INSERT INTO `carowner` (`Name`, `Email`, `Contact`, `DOB`, `NID`, `DrivingLicence`, `Password`, `Address`, `flag`) VALUES
-('Nabil', 'nabilt59@gmail.com', '01521480480', '1994-11-20', '199646896557', '46788065', '12345', 'nikunja-2', 1);
+('abc', 'abc@gmail.com', '013133123', '1994-04-08', '123455464', 'dsg3434523', '1234', 'safbg', 1),
+('Nabil', 'nabilt59@gmail.com', '01521480480', '1994-11-20', '199646896557', '46788065', '12345', 'nikunja-2', 1),
+('Umme Ayesha Zaman', 'zaman@ymail.com', '015100000', '2017-04-11', '761237621397', 'df21312fd2', '1234', 'Rajshahi', 1);
 
 -- --------------------------------------------------------
 
@@ -82,29 +85,39 @@ CREATE TABLE `carshop` (
 --
 
 INSERT INTO `carshop` (`Email`, `Password`, `flag`) VALUES
-('tuhinbhuiyan7@gmail.com', '1234', 2),
-('nabilt59@gmail.com', '12345', 1);
+('abc@gmail.com', '1234', 1),
+('hosensarwar007@gmail.com', '1234', 2),
+('nabilt59@gmail.com', '12345', 1),
+('tuhinbhuiyan7@gmail.com', '1234', 2);
 
 -- --------------------------------------------------------
-
 
 --
 -- Table structure for table `message`
 --
 
 CREATE TABLE `message` (
-  `CarOwnerEmail` varchar(35) NOT NULL,
-  `ShopOwnerEmail` varchar(35) NOT NULL,
+  `MessageId` int(10) NOT NULL,
+  `SenderMail` varchar(25) NOT NULL,
+  `ReceiverMail` varchar(25) NOT NULL,
   `MessageBody` varchar(255) NOT NULL,
-  `Date` date NOT NULL
+  `Date` date NOT NULL,
+  `Status` varchar(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `message`
 --
 
-INSERT INTO `message` (`CarOwnerEmail`, `ShopOwnerEmail`, `MessageBody`, `Date`) VALUES
-('nabilt59@gmail.com', 'tuhinbhuiyan7@gmail.com', 'asdasdas', '2017-02-12');
+INSERT INTO `message` (`MessageId`, `SenderMail`, `ReceiverMail`, `MessageBody`, `Date`, `Status`) VALUES
+(1, 'nabilt59@gmail.com', 'hosensarwar007@gmail.com', 'Help me', '2017-04-10', 'read'),
+(2, 'hosensarwar007@gmail.com', 'nabilt59@gmail.com', 'How can I help ypu', '2017-04-10', 'read'),
+(3, 'nabilt59@gmail.com', 'hosensarwar007@gmail.com', 'My car broke down', '2017-04-10', 'read'),
+(4, 'hosensarwar007@gmail.com', 'nabilt59@gmail.com', 'Wait, I am sending a man', '2017-04-10', 'read'),
+(5, 'abc@gmail.com', 'hosensarwar007@gmail.com', 'Help', '2017-04-10', 'read'),
+(6, 'hosensarwar007@gmail.com', 'abc@gmail.com', 'How may I help you?', '2017-04-12', 'unread'),
+(7, 'hosensarwar007@gmail.com', 'nabilt59@gmail.com', 'Did you get help?', '2017-04-12', 'read'),
+(10, 'nabilt59@gmail.com', 'hosensarwar007@gmail.com', 'yes', '2017-04-12', 'read');
 
 -- --------------------------------------------------------
 
@@ -113,18 +126,23 @@ INSERT INTO `message` (`CarOwnerEmail`, `ShopOwnerEmail`, `MessageBody`, `Date`)
 --
 
 CREATE TABLE `notification` (
-  `CarOwnerEmail` varchar(30) NOT NULL,
-  `ShopOwnerEmail` varchar(30) NOT NULL,
+  `NotificationId` int(100) NOT NULL,
+  `FromEmail` varchar(30) NOT NULL,
+  `ToEmail` varchar(30) NOT NULL,
   `Type` varchar(20) NOT NULL,
-  `Date` date NOT NULL
+  `Date` date NOT NULL,
+  `Status` varchar(7) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `notification`
 --
 
-INSERT INTO `notification` (`CarOwnerEmail`, `ShopOwnerEmail`, `Type`, `Date`) VALUES
-('nabilt59@gmail.com', 'tuhinbhuiyan7@gmail.com', '1', '2017-02-12');
+INSERT INTO `notification` (`NotificationId`, `FromEmail`, `ToEmail`, `Type`, `Date`, `Status`) VALUES
+(1, 'nabilt59@gmail.com', 'hosensarwar007@gmail.com', '1', '2017-04-12', 'unread'),
+(2, 'hosensarwar007@gmail.com', 'nabilt59@gmail.com', '2', '2017-04-12', 'unread'),
+(3, 'abc@gmail.com', 'hosensarwar007@gmail.com', '1', '2017-04-12', 'unread'),
+(4, 'hosensarwar007@gmail.com', 'abc@gmail.com', '3', '2017-04-12', 'unread');
 
 -- --------------------------------------------------------
 
@@ -142,7 +160,8 @@ CREATE TABLE `ownervehiclerelation` (
 --
 
 INSERT INTO `ownervehiclerelation` (`Email`, `VehicleRegNo`) VALUES
-('nabilt59@gmail.com', 'AB-23212');
+('nabilt59@gmail.com', 'AB-23211'),
+('nabilt59@gmail.com', 'Dhk-9823');
 
 -- --------------------------------------------------------
 
@@ -164,7 +183,7 @@ CREATE TABLE `service` (
 --
 
 INSERT INTO `service` (`ServiceId`, `CarOwnerEmail`, `ShopOwnerEmail`, `VehicleRegNo`, `Date`, `Location`) VALUES
-('35636', 'nabilt59@gmail.com', 'tuhinbhuiyan7@gmail.com', 'AB-23212', '2017-02-12', 'uttara');
+('35636', 'nabilt59@gmail.com', 'tuhinbhuiyan7@gmail.com', 'AB-23211', '2017-02-12', 'uttara');
 
 -- --------------------------------------------------------
 
@@ -189,7 +208,7 @@ CREATE TABLE `shopowner` (
 --
 
 INSERT INTO `shopowner` (`ShopName`, `Email`, `Contact`, `Password`, `Latitude`, `Longitude`, `Address`, `ShopTradeLicence`, `flag`) VALUES
-('Sarwar Carwash', 'hosensarwar007@gmail.com', '01700000000', '1234', '23.128912000', '93.009122000', 'Gulshan,Dhaka', '889872', 2),
+('Sarwar Carwash', 'hosensarwar007@gmail.com', '01700000001', '1234', '23.128912000', '93.009122000', 'Gulshan,Dhaka', '889872', 2),
 ('Tuhin Enterprise', 'tuhinbhuiyan7@gmail.com', '01521498220', '1234', '9.999999999', '9.999999999', 'uttara', 'A123E', 2);
 
 -- --------------------------------------------------------
@@ -208,7 +227,8 @@ CREATE TABLE `shopservicerelation` (
 --
 
 INSERT INTO `shopservicerelation` (`ShopEmail`, `ServicesId`) VALUES
-('tuhinbhuiyan7@gmail.com', 'A32');
+('tuhinbhuiyan7@gmail.com', 'A32'),
+('hosensarwar007@gmail.com', 'A33');
 
 -- --------------------------------------------------------
 
@@ -226,7 +246,9 @@ CREATE TABLE `shopstockrelation` (
 --
 
 INSERT INTO `shopstockrelation` (`ShopEmail`, `StockId`) VALUES
-('tuhinbhuiyan7@gmail.com', '2631');
+('hosensarwar007@gmail.com', 'Part1'),
+('hosensarwar007@gmail.com', 'Part3'),
+('tuhinbhuiyan7@gmail.com', 'Part7');
 
 -- --------------------------------------------------------
 
@@ -246,7 +268,9 @@ CREATE TABLE `stock` (
 --
 
 INSERT INTO `stock` (`StockId`, `PartsName`, `PricePerUnit`, `TotalUnit`) VALUES
-('2631', 'Bumper', '5000tk', 50);
+('Part1', 'Bumper', '1200', 12),
+('Part3', 'Wheel', '10000', 12),
+('Part7', 'Head Light', '5000', 2);
 
 -- --------------------------------------------------------
 
@@ -267,7 +291,8 @@ CREATE TABLE `vehicle` (
 --
 
 INSERT INTO `vehicle` (`VehicleRegNo`, `RegistrationDate`, `InsuranceNumber`, `VehicleType`, `ModelName`) VALUES
-('AB-23212', '2017-04-12', 'AC6546V', 'Private Car', 'Toyota');
+('AB-23211', '2017-04-12', 'AC6546V', 'Private Car', 'Toyota'),
+('Dhk-9823', '2017-04-03', '24gbv4r5', 'Micro Bus', 'Toyota');
 
 --
 -- Indexes for dumped tables
@@ -286,18 +311,26 @@ ALTER TABLE `carowner`
   ADD PRIMARY KEY (`Email`);
 
 --
+-- Indexes for table `carshop`
+--
+ALTER TABLE `carshop`
+  ADD PRIMARY KEY (`Email`);
+
+--
 -- Indexes for table `message`
 --
 ALTER TABLE `message`
-  ADD KEY `CarOwnerEmail` (`CarOwnerEmail`),
-  ADD KEY `ShopOwnerEmail` (`ShopOwnerEmail`);
+  ADD PRIMARY KEY (`MessageId`),
+  ADD KEY `SenderMail` (`SenderMail`) USING BTREE,
+  ADD KEY `ReceiverMail` (`ReceiverMail`) USING BTREE;
 
 --
 -- Indexes for table `notification`
 --
 ALTER TABLE `notification`
-  ADD KEY `CarOwnerEmail` (`CarOwnerEmail`),
-  ADD KEY `ShopOwnerEmail` (`ShopOwnerEmail`);
+  ADD PRIMARY KEY (`NotificationId`),
+  ADD KEY `CarOwnerEmail` (`FromEmail`),
+  ADD KEY `ShopOwnerEmail` (`ToEmail`);
 
 --
 -- Indexes for table `ownervehiclerelation`
@@ -348,6 +381,20 @@ ALTER TABLE `vehicle`
   ADD PRIMARY KEY (`VehicleRegNo`);
 
 --
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `message`
+--
+ALTER TABLE `message`
+  MODIFY `MessageId` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+--
+-- AUTO_INCREMENT for table `notification`
+--
+ALTER TABLE `notification`
+  MODIFY `NotificationId` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
 -- Constraints for dumped tables
 --
 
@@ -355,15 +402,15 @@ ALTER TABLE `vehicle`
 -- Constraints for table `message`
 --
 ALTER TABLE `message`
-  ADD CONSTRAINT `message_ibfk_1` FOREIGN KEY (`CarOwnerEmail`) REFERENCES `carowner` (`Email`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `message_ibfk_2` FOREIGN KEY (`ShopOwnerEmail`) REFERENCES `shopowner` (`Email`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `message_ibfk_3` FOREIGN KEY (`SenderMail`) REFERENCES `carshop` (`Email`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `message_ibfk_5` FOREIGN KEY (`ReceiverMail`) REFERENCES `carshop` (`Email`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `notification`
 --
 ALTER TABLE `notification`
-  ADD CONSTRAINT `notification_ibfk_1` FOREIGN KEY (`CarOwnerEmail`) REFERENCES `carowner` (`Email`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `notification_ibfk_2` FOREIGN KEY (`ShopOwnerEmail`) REFERENCES `shopowner` (`Email`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `notification_ibfk_1` FOREIGN KEY (`FromEmail`) REFERENCES `carshop` (`Email`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `notification_ibfk_2` FOREIGN KEY (`ToEmail`) REFERENCES `carshop` (`Email`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ownervehiclerelation`
