@@ -4,7 +4,8 @@
 		$password = $_POST["password"];
 
 	function getJSONFromDB($sql){
-		include("Mysqldb.php");
+		$conn = mysqli_connect("localhost", "root", "","find_my_mechanic");
+ 		$result = mysqli_query($conn, $sql)or die(mysqli_error($conn));
 		$arr=array();
 		while($row = mysqli_fetch_assoc($result)) {
 			$arr[]=$row;
@@ -13,20 +14,22 @@
 	}
 
 	$sql="select password,flag from carshop where email = '".$email."'";
+
 	$jsonData= getJSONFromDB($sql);
 	$json=json_decode($jsonData);
 	//echo $json[0]->flag;
 	if($json[0]->flag == '2' && $json[0]->password == $password){
 		$_SESSION["shopOwnerEmail"] = $email;
-		header("Location: shopOwner/index.html");
+		header("Location: shopOwner/index.php");
 	}
 	elseif($json[0]->flag == '1' && $json[0]->password == $password){
 		$_SESSION["carOwnerEmail"] = $email;
 		header("Location: carOwner/index.php");
 	}
 	else{
+		//echo $sql;
 		//$_SESSION["error"] == "yes";
-		header("Location: Login.php"); 
+		header("Location: login.php"); 
 	}
 }
 ?>
