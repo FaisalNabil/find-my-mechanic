@@ -201,7 +201,7 @@ if (isset($_POST['viewProfile'])) {
         </nav>
         <!-- end navbar side -->
         <!--  page-wrapper -->
-        <div id="page-wrapper">
+        <div id="page-wrapper" style="background-color: #FFFFFF;">
 
             <div class="row">
                 <!-- Page Header -->
@@ -213,127 +213,81 @@ if (isset($_POST['viewProfile'])) {
 
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="panel panel-primary">
-                        <div class="panel-heading">
-                            <i class="fa fa-ship fa-fw"></i> Nearby Shops  
+                     <ul class="nav nav-tabs">
+                        <li class="active"><a data-toggle="tab" href="#active_list">Active</a></li>
+                        <li><a data-toggle="tab" href="#pending_list">Pending</a></li>
+                        <li><a data-toggle="tab" href="#disabled_list">Disabled</a></li>
+                    </ul>
+
+                      <div class="tab-content">
+                        <div id="active_list" class="tab-pane fade in active">
+                           
+                           <table class="table table-condensed">
+                                <thead>
+                                  <tr>
+                                    <th>Shop Name</th>
+                                    <th>Email</th>
+                                    <th>Action</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <td>Tuhin Enterprise</td>
+                                    <td>tuhin@gmail.com</td>
+                                    <td><button type="button" class="btn btn-info">Disable</button> <button type="button" class="btn btn-danger">Delete</button></td>
+                                  </tr>
+                                  <tr>
+                                    <td>Nabil Enterprise</td>
+                                    <td>nabilt59@gmail.com</td>
+                                    <td><button type="button" class="btn btn-info">Disable</button> <button type="button" class="btn btn-danger">Delete</button></td>
+                                  </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="pending_list" class="tab-pane fade">
+                           <table class="table table-condensed">
+                                <thead>
+                                  <tr>
+                                    <th>Shop Name</th>
+                                    <th>Email</th>
+                                    <th>Action</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <td>Tuhin Enterprise</td>
+                                    <td>tuhin@gmail.com</td>
+                                    <td><button type="button" class="btn btn-primary">View Profile</button></td>
+                                  </tr>
+                                  <tr>
+                                    <td>Tuhin Enterprise</td>
+                                    <td>tuhin@gmail.com</td>
+                                    <td><button type="button" class="btn btn-primary">View Profile</button></td>
+                                  </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="disabled_list" class="tab-pane fade">
+                          <table class="table table-condensed">
+                                <thead>
+                                  <tr>
+                                    <th>Shop Name</th>
+                                    <th>Email</th>
+                                    <th>Action</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <td>Tuhin Enterprise</td>
+                                    <td>tuhin@gmail.com</td>
+                                    <td><button type="button" class="btn btn-success">Activate</button></td>
+                                  </tr>
+                                   
+                                </tbody>
+                            </table>
                         </div>
 
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <div class="table-responsive">
-                                        <table class="table table-bordered table-hover table-striped">
-                                            <thead>
-                                                <tr>
-                                                    <th>#</th>
-                                                    <th>Shop Name</th>
-                                                    <th>Email</th>
-                                                    <th>Location</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                               <?php 
-                                                    $i = 0;
-                                                  foreach ($shopOwnerData as $value) {
-                                                      $i++;
-                                                  ?>
-
-                                                  
-                                                <tr>
-                                                    <td><?php echo $i; ?></td>
-                                                    <td><?php echo $value->ShopName; ?></td>
-                                                    <td><?php echo $value->Email; ?></td>
-                                                    <td><?php echo $value->Address; ?></td>
-                                                    <td>
-                                                    <button class="btn btn-primary" data-toggle="modal" data-target="#shopOwnerModal" name="viewProfile">View Profile</button>
-                                                     <!-- Modal -->
-    <div class="modal fade" id="shopOwnerModal" role="dialog">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Shop Profile</h4>
-        </div>        
-        <div class="modal-body">
-           <form class="form-horizontal">
-            <div class="form-group">
-              <label class="control-label col-sm-2" for="name">Name:</label>
-              <div class="col-sm-10">
-                  <label for="shopName"><?php echo $value->ShopName;; ?></label>
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="control-label col-sm-2" for="address">Address:</label>
-              <div class="col-sm-10">          
-                  <label for="address"><?php echo $value->Address; ?></label>
-              </div>
-            </div>
-             
-            <div class="form-group">
-              <label class="control-label col-sm-2" for="services">Services & Parts:</label>
-              <div class="col-sm-10">          
-                    <table class="table table-bordered">
-                        <thead>
-                          <tr>
-                            <th>#</th>
-                            <th>Service Available</th>
-                            <th>Available Parts</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>1</td>
-                            <td>Oil & Filter Change</td>
-                            <td>Bumper. Unexposed bumper. Exposed bumper.</td>
-                     
-                          </tr>
-                          <tr>
-                            <td>2</td>
-                            <td>Brakes, Power Steering</td>
-                            <td>Cowl screen.</td>
-                     
-                          </tr>
-                          <tr>
-                            <td>3</td>
-                            <td>Body & Paint Work</td>
-                            <td>Decklid</td>
-                     
-                          </tr>
-                        </tbody>
-                    </table>
-              </div>
-            </div>
-          </form>
-        </div>
-
-        <div class="modal-footer">
-          <button type="button" class="btn btn-success pull-left">Approved</button>
-          <button type="button" class="btn btn-danger pull-left">Delete</button>
-          <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-    </div><!-- End Modal -->
-                                                    <button class="btn btn-warning">Pending</button>
-                                                    <button class="btn btn-danger">Delete</button>
-
-                                                    </td>
-                                                </tr>
-                                                <?php 
-                                                   }
-                                                  ?>
-                                            </tbody>
-                                        </table>
-                                    </div>
-
-                                </div>
-
-                            </div>
-                            <!-- /.row -->
-                        </div>
-                        <!-- /.panel-body -->
-                    </div> 
+                      </div>
                 </div>
             </div>
         </div>
