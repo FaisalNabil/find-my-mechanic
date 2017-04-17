@@ -10,7 +10,7 @@
 
     <link href="assets/css/style.css" rel="stylesheet" />
     <link href="assets/css/main-style.css" rel="stylesheet" />
-
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
 </head>
 <?php
   $nameError = $phoneError = $emailError = $passError = $conPassError = "";
@@ -38,10 +38,15 @@
       $phone = $_POST["shopOwnerPhone"];
     }
 
+    if(strlen($_POST["shopOwnerPWD"]) < 6){
+    $error += 1;
+    $passError = "minimum 6 charter";
+  }else{
     $password = $_POST["shopOwnerPWD"];
+  }
 
     if($password != $_POST["shopOwnerCPWD"]){
-      $error +=1;
+      $error += 1;
       $conPassError = "Password not match";
     }
 
@@ -51,27 +56,61 @@
 
     $longitude = $_POST["shopOwnerLongitude"];
 
-    $address = $_POST["shopOwnerAddress"];
-   
+    $address = htmlspecialchars(addslashes(trim($_POST["shopOwnerAddress"])));;
+  
     if($error == 0){
-      include("Mysqldb.php");
-      
-      $sql = "insert into shopowner(ShopName,Email,Contact,Password,Latitude,Longitude,Address,ShopTradeLicence,flag) values ('".$name."','".$email."','".$phone."','".$password."','".$latitude."','".$longitude."','".$address."','".$stl."',2);";
+    $conn = mysqli_connect("localhost", "root", "", "find_My_Mechanic");
+    if (!$conn) {
+            die("Connection failed: " . mysqli_connect_error());
+    }
+    
+    $sql = "insert into shopowner(ShopName,Email,Contact,Password,Latitude,Longitude,Address,ShopTradeLicence,flag,status) values ('".$name."','".$email."','".$phone."','".$password."','".$latitude."','".$longitude."','".$address."','".$stl."',2);";
 
-      $sql .= "insert into carshop(Email,Password,flag) values ('".$email."','".$password."',2);";
+    $sql .= "insert into carshop(Email,Password,flag) values ('".$email."','".$password."',2,'Pending');";
 
-      if (mysqli_multi_query($conn, $sql)) {
-        $_SESSION["shopOwnerSignupEmail"] = $email;
-          header("Location: shopOwner/index.html");
-      }else{
-          echo mysqli_error($conn);
-      }
+    if (mysqli_multi_query($conn, $sql)) {
+      $_SESSION["shopOwnerSignupEmail"] = $email;
+      header("Location: shopOwner/index.html");
+    }else{
+      echo mysqli_error($conn);
+    }
 
-      mysqli_close($conn);
+    mysqli_close($conn);
     }
   }
 ?>
-
+<script>
+  function passwordCheck(str){
+    cpwd = document.forms[0].elements[3].value;
+    pmsg = document.getElementById("ipwd");
+    if(cpwd.length < 6){
+      pmsg.innerHTML = "minimun 6 char";
+    }
+    else{
+      pmsg.innerHTML = "";
+    }
+  }
+  function conPasswordCheck(str){
+    cpwd = document.forms[0].elements[3].value;
+    conPwd= document.forms[0].elements[4].value;
+    con = document.getElementById("conP");
+    if(cpwd != conPwd){
+      con.innerHTML = "password are not match";
+    }
+    else{
+      con.innerHTML = "";
+    }
+  }
+  $(document).ready(function(){
+    $("input").focus(function(){
+      $(this).css("background-color","#cccccc");
+    });
+    $("input").blur(function(){
+      $(this).css("background-color", "#ffffff");
+    });
+  });
+  
+</script>
 <body class="body-Login-back">
 
     <div class="container">
@@ -88,32 +127,37 @@
                              <div class="form-group">
                                 <label class="control-label col-sm-2" for="shpName">Shop Name:</label>
                                 <div class="col-sm-10">
-                                  <input type="text" class="form-control" id="shpName" name = "shopOwnerName" placeholder="Enter Shop Name" required><span><?php echo $nameError; ?></span>
+                                  <input type="text" class="form-control" id="shpName" name = "shopOwnerName" placeholder="Enter Shop Name" required>
+                                  <span style="color:red"><?php echo $nameError; ?></span> <!--Name Error Show-->
                                 </div>
                               </div>
 
                               <div class="form-group">
                                 <label class="control-label col-sm-2" for="email">Email:</label>
                                 <div class="col-sm-10">
-                                  <input type="email" class="form-control" id="email" name = "shopOwnerEmail" placeholder="Enter email" required><span><?php echo $emailError; ?></span>
+                                  <input type="email" class="form-control" id="email" name = "shopOwnerEmail" placeholder="Enter email" required>
+                                  <span style="color:red"><?php echo $emailError; ?></span> <!--Email Error Show-->
                                 </div>
                               </div>
                               <div class="form-group">
                                 <label class="control-label col-sm-2" for="pwd">Contact:</label>
                                 <div class="col-sm-10">
-                                  <input type="text" class="form-control" id="pwd" name = "shopOwnerPhone" placeholder="Enter Contact Number" required><span><?php echo $phoneError; ?></span>
+                                  <input type="text" class="form-control" id="pwd" name = "shopOwnerPhone" placeholder="Enter Contact Number" required>
+                                  <span style="color:red"><?php echo $phoneError; ?></span> <!--Phone Error Show-->
                                 </div>
                               </div>
                               <div class="form-group">
                                 <label class="control-label col-sm-2" for="pwd">Password:</label>
                                 <div class="col-sm-10">
-                                  <input type="password" class="form-control" id="pwd" name = "shopOwnerPWD" placeholder="Enter Password" required><span><?php echo $passError; ?></span>
+                                  <input type="password" class="form-control" id="pwd" onkeyup = "passwordCheck(shopOwnerPWD)" name = "shopOwnerPWD" placeholder="Enter Password" required>
+                                  <span id = "ipwd" style="color:red"><?php echo $passError; ?></span> <!--Password Error Show-->
                                 </div>
                               </div>
                               <div class="form-group">
                                 <label class="control-label col-sm-2" for="pwd">Confirm Password:</label>
                                 <div class="col-sm-10">
-                                  <input type="password" class="form-control" id="pwd" name = "shopOwnerCPWD" placeholder="Enter Password Again" required><span><?php echo $conPassError; ?></span>
+                                  <input type="password" class="form-control" id="pwd" onkeyup = "conPasswordCheck(shopOwnerCPWD)" name = "shopOwnerCPWD" placeholder="Enter Password Again" required>
+                                  <span id = "conP" style="color:red"><?php echo $conPassError; ?></span> <!--confirm password Error Show-->
                                 </div>
                               </div>
 
@@ -131,7 +175,7 @@
                               <div class="form-group">
                                 <label class="control-label col-sm-2" for="maps-latitude">Google Maps Latitude:</label>
                                 <div class="col-sm-10">
-                                  <input type="text" class="form-control" id="maps-latitude" name = "shopOwnerLatitude"     placeholder="Enter Google Maps Latitude" required>
+                                  <input type="text" class="form-control" id="maps-latitude" name = "shoOwnerLatitude"     placeholder="Enter Google Maps Latitude" required>
                                 </div>
                               </div>
                               <div class="form-group">

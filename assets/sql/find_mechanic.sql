@@ -77,18 +77,19 @@ INSERT INTO `carowner` (`Name`, `Email`, `Contact`, `DOB`, `NID`, `DrivingLicenc
 CREATE TABLE `carshop` (
   `Email` varchar(35) NOT NULL,
   `Password` varchar(15) NOT NULL,
-  `flag` int(1) NOT NULL
+  `flag` int(1) NOT NULL,
+  `Status` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `carshop`
 --
 
-INSERT INTO `carshop` (`Email`, `Password`, `flag`) VALUES
-('abc@gmail.com', '1234', 1),
-('hosensarwar007@gmail.com', '1234', 2),
-('nabilt59@gmail.com', '12345', 1),
-('tuhinbhuiyan7@gmail.com', '1234', 2);
+INSERT INTO `carshop` (`Email`, `Password`, `flag`, `Status`) VALUES
+('abc@gmail.com', '1234', 1, 'pending'),
+('hosensarwar007@gmail.com', '1234', 2, 'pending'),
+('nabilt59@gmail.com', '12345', 1, 'Active'),
+('tuhinbhuiyan7@gmail.com', '1234', 2, 'Active');
 
 -- --------------------------------------------------------
 
