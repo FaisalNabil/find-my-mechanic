@@ -31,7 +31,84 @@ $OwnerVehicleRelationData = json_decode($jsonownerVehiclerelationDataString);*/
       <?php 
             $currentPage = 'home';
          include 'TemplateFile/header.php'; 
+
+         
       ?>
+            <script>
+                var x = document.getElementById("demo");
+
+                function getLocation() {
+                    if (navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(showPosition);
+                    } else { 
+                        x.innerHTML = "Geolocation is not supported by this browser.";
+                    }
+                }
+
+                function showPosition(position) {
+                 
+                    var lat = position.coords.latitude;
+                    var lon = position.coords.longitude;
+
+                     window.location.href = "index.php?CurentLatitude="+ lat + "&CurrentLongitude=" + lon
+                }
+            </script>
+            <?php 
+
+                  if (isset($_GET['CurentLatitude']) && isset($_GET['CurrentLongitude'])) {
+                $lat =  $_GET['CurentLatitude'];   
+
+                //echo "<br>";
+                $lon =  $_GET['CurrentLongitude'];  
+              $jsonShopOwnerDataString = getJSONFromDB("select ShopName,Latitude,Longitude,Email from shopowner");
+                 //echo $jsonShopOwnerDataString;
+                $ShopOwnerData = json_decode($jsonShopOwnerDataString);
+
+
+                function getaddress($lat,$lng)
+                {
+                  $url = 'http://maps.googleapis.com/maps/api/geocode/json?latlng='.trim($lat).','.trim($lng).'&sensor=false';
+                  $json = @file_get_contents($url);
+                  $data=json_decode($json);
+                  $status = $data->status;
+                  if($status=="OK")
+                    return $data->results[0]->formatted_address;
+                  else
+                    return false;
+                }
+                function distance($lat1, $lon1, $curlat, $curlon,$unit) {
+
+                  $theta = $lon1 - $curlon;
+                  $dist = sin(deg2rad($lat1)) * sin(deg2rad($curlat)) +  cos(deg2rad($lat1)) * cos(deg2rad($curlat)) * cos(deg2rad($theta));
+                  $dist = acos($dist);
+                  $dist = rad2deg($dist);
+                  $miles = $dist * 60 * 1.1515;
+                  $unit = strtoupper($unit);
+
+                  if ($unit == "K") {
+                  return ($miles * 1.609344);
+                  } else if ($unit == "N") {
+                    return ($miles * 0.8684);
+                  } else {
+                    return $miles;
+                  }
+                  
+                } 
+                 
+
+                for($i = 0; $i<sizeof($ShopOwnerData); $i++)        
+                  {
+                  $km[] = distance($lat, $lon, $ShopOwnerData[$i]->Latitude, $ShopOwnerData[$i]->Longitude,"K");  
+                 }
+
+                 
+
+
+              }
+
+            ?>
+
+
         <!--  page-wrapper -->
         <div id="page-wrapper">
 
@@ -48,7 +125,27 @@ $OwnerVehicleRelationData = json_decode($jsonownerVehiclerelationDataString);*/
                 <div class="col-lg-12 text-center">
                     <div class="alert alert-info">
                         <i class="fa fa-folder-open"></i><b>&nbsp;Hello ! </b>Welcome Back <b>Faisal Nabil </b>
-                        <i class="fa fa-map-marker"></i> <b>&nbsp; Now you are in <span class="location-color">Dhaka</span></b>
+                        <i class="fa fa-map-marker"></i> <b>&nbsp; Now you are in <span class="location-color">
+
+                        <?php 
+                        if (isset($_GET['CurentLatitude']) && isset($_GET['CurrentLongitude'])) {
+
+                            $lat= $_GET['CurentLatitude']; //latitude
+                            $lng= $_GET['CurrentLongitude']; //longitude
+
+                            $address= getaddress($lat,$lng);
+                            if($address)
+                            {
+                            echo $address;
+                            }
+                            else
+                            {
+                            echo "Not found";
+                            }
+                          }
+                        ?>
+                          
+                        </span></b>
                     </div>
                 </div>
                 <!--end  Welcome -->
@@ -59,12 +156,17 @@ $OwnerVehicleRelationData = json_decode($jsonownerVehiclerelationDataString);*/
                 <!--quick Help section -->
                 <div class="col-lg-12 text-center">
                     <div class="alert alert-info">
-                        <button class="btn btn-primary btn-lg">Search</button>
+                        <button class="btn btn-primary btn-lg" onclick="getLocation()">Search</button>
                     </div>
                 </div>
                 <!--end quick Help section -->
             </div>
-           <?php 
+            <!-- <p id="demo"></p> -->
+
+           <?php
+              //print_r($km);
+               
+
             /*$info = "";
              if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                
@@ -107,6 +209,7 @@ $OwnerVehicleRelationData = json_decode($jsonownerVehiclerelationDataString);*/
                 }
                 
              }*/
+
            ?> 
             <div class="row">
                 <div class="col-lg-6 col-lg-offset-2">
@@ -137,14 +240,16 @@ $OwnerVehicleRelationData = json_decode($jsonownerVehiclerelationDataString);*/
                                             </thead>
                                             <tbody>
                                               <?php 
-                                                /*$i = 0;
-                                                foreach ($ShopOwnerData as $value) {
-                                                    $i++;*/
+                                               if (isset($_GET['CurentLatitude']) && isset($_GET['CurrentLongitude'])) {
+
+                                                  for($i = 0; $i<sizeof($ShopOwnerData); $i++) {
+                                                     
+                                                 
                                                ?>
                                                 <tr>
-                                                    <td><?php //echo $i; ?></td>
-                                                    <td><?php //echo $ShopOwnerData[0]->ShopName ;?></td>
-                                                    <td>2 km</td>
+                                                    <td><?php echo ($i+1) ; ?></td>
+                                                    <td><?php echo $ShopOwnerData[$i]->ShopName ;?></td>
+                                                    <td><?php echo sprintf('%0.4f',$km[$i]); ?></td>
                                                     <td><button class="btn btn-success" data-toggle="modal" data-target="#requestSendModal">Send Request</button>
                                                <!-- Modal -->
   <div class="modal fade" id="requestSendModal" role="dialog">
@@ -269,7 +374,8 @@ $OwnerVehicleRelationData = json_decode($jsonownerVehiclerelationDataString);*/
                                                 </tr>
 
                                                 <?php 
-                                                  //}
+                                                  }
+                                                }
                                                 ?>
                                                
                                             </tbody>
