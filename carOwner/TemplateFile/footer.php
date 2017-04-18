@@ -6,6 +6,7 @@
     <script src="../assets/plugins/bootstrap/bootstrap.min.js"></script>
     <script src="../assets/plugins/jquery.plugin.min.js"></script>
      <script src="../assets/plugins/jquery.datepick.js"></script>
+     <script src="../assets/js/custom.js"></script>
 
     <script>
     $(function() {
