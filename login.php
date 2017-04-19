@@ -33,7 +33,9 @@
                         <form role="form" action = "" method = "Post">
                              
                                 <div class="form-group">
+                                    <span id = "lcolor"><?php echo $statusError; ?></span>
                                     <input class="form-control" placeholder="E-mail" name="email" type="email" value = "<?php echo $email; ?>" required>
+                                    <span id = "lcolor"><?php echo $emptyData; ?></span>
                                 </div>
                                 <div class="form-group">
                                     <input class="form-control" placeholder="Password" name="password" type="password" required>
