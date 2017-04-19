@@ -1,7 +1,7 @@
 <?php 
-session_start();
 
-include("phpFiles/SelectProfileData.php"); 
+
+//include("phpFiles/SelectProfileData.php"); 
 
 $jsonCarOwnerDataString = getJSONFromDB("select Password from carowner where Email='".$_SESSION["carOwnerEmail"]."'");
 

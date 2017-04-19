@@ -50,7 +50,7 @@ $OwnerVehicleRelationData = json_decode($jsonownerVehiclerelationDataString);*/
                     var lat = position.coords.latitude;
                     var lon = position.coords.longitude;
 
-                     window.location.href = "index.php?CurentLatitude="+ lat + "&CurrentLongitude=" + lon
+                     window.location.href = "index.php?CurentLatitude="+ lat + "&CurrentLongitude=" + lon;
                 }
             </script>
             <?php 
