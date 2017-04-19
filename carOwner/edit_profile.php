@@ -1,9 +1,8 @@
 
+<?php
 
-<?php 
-session_start();
 
-include("phpFiles/SelectProfileData.php"); 
+include "TemplateFile/header.php"; 
 
 $jsonString = getJSONFromDB("select * from carowner where Email='".$_SESSION["carOwnerEmail"]."'");
 
@@ -46,11 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 ?>
-        <?php
-
-             
-             include "TemplateFile/header.php"; 
-        ?>
+         
 
          <div id="page-wrapper">
             <div class="row">

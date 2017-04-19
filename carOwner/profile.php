@@ -1,7 +1,14 @@
-<?php 
-session_start();
 
-include("phpFiles/SelectProfileData.php"); 
+<?php 
+              
+             
+             include "TemplateFile/header.php"; 
+
+       ?>
+<?php 
+//session_start();
+
+//include("phpFiles/SelectProfileData.php"); 
 
 $jsonCarOwnerDataString = getJSONFromDB("select * from carowner where Email='".$_SESSION["carOwnerEmail"]."'");
 
@@ -103,13 +110,6 @@ xmlhttp = new XMLHttpRequest();
     xmlhttp.send();
     }
 </script>
-
-      <?php 
-              
-             
-             include "TemplateFile/header.php"; 
-
-       ?>
 
         <!--  page-wrapper -->
         <div id="page-wrapper">

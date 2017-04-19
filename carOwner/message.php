@@ -1,5 +1,10 @@
 <?php  
-    require("phpFiles/SelectProfileData.php");
+      
+    $currentPage = 'message';
+             
+    include "TemplateFile/header.php"; 
+
+       
     require("phpFiles/updateDatabase.php");
 
     $jsonInboxString = getJSONFromDB("SELECT (SELECT ShopName FROM shopowner where Email=message.SenderMail) AS name,SenderMail,Date,MessageBody,Status FROM message WHERE ReceiverMail='".$_SESSION["carOwnerEmail"]."'   ORDER BY Date DESC");
@@ -47,13 +52,6 @@
     xmlhttp.send();
     }
 </script>
-
-       <?php 
-             $currentPage = 'message';
-             
-             include "TemplateFile/header.php"; 
-
-       ?>
 
         <!--  page-wrapper -->
         <div id="page-wrapper" style="background-color: #FFFFFF;" >
