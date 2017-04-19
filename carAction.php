@@ -51,7 +51,7 @@
             die("Connection failed: " . mysqli_connect_error());
     }
       
-      $sql = "insert into carowner(Name,Email,Contact,DOB,NID,DrivingLicence,Password,Address,flag) values ('".$name."','".$email."','".$phone."','".$dob."','".$nid."','".$drivingLicence."','".$password."','".$address."',1);";
+      $sql = "insert into carowner(Name,Email,Contact,DOB,NID,DrivingLicence,Password,Address,flag) values ('".$name."','".$email."','".$phone."','".$dob."','".$nid."','".$drivingLicence."','".$password."','".$address."',1,'pending');";
 
       $sql .= "insert into carshop(Email,Password,flag,status) values ('".$email."','".$password."',1,'pending');";
 

@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 16, 2017 at 07:14 AM
+-- Generation Time: Apr 19, 2017 at 10:14 AM
 -- Server version: 10.1.21-MariaDB
--- PHP Version: 7.1.1
+-- PHP Version: 7.0.15
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -21,8 +21,21 @@ SET time_zone = "+00:00";
 --
 
 -- --------------------------------------------------------
-CREATE DATABASE IF NOT EXISTS `find_My_Mechanic` DEFAULT CHARACTER SET = 'utf8' COLLATE utf8_general_ci;
-USE `find_My_Mechanic`;
+
+--
+-- Table structure for table `admin`
+--
+
+CREATE TABLE `admin` (
+  `AdminName` varchar(30) NOT NULL,
+  `Email` varchar(35) NOT NULL,
+  `flag` int(1) NOT NULL,
+  `Status` varchar(10) NOT NULL,
+  `Password` varchar(15) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
 --
 -- Table structure for table `availableservices`
 --
@@ -56,17 +69,18 @@ CREATE TABLE `carowner` (
   `DrivingLicence` varchar(20) NOT NULL,
   `Password` varchar(20) NOT NULL,
   `Address` varchar(100) NOT NULL,
-  `flag` int(1) NOT NULL
+  `flag` int(1) NOT NULL,
+  `Status` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `carowner`
 --
 
-INSERT INTO `carowner` (`Name`, `Email`, `Contact`, `DOB`, `NID`, `DrivingLicence`, `Password`, `Address`, `flag`) VALUES
-('abc', 'abc@gmail.com', '013133123', '1994-04-08', '123455464', 'dsg3434523', '1234', 'safbg', 1),
-('Nabil', 'nabilt59@gmail.com', '01521480480', '1994-11-20', '199646896557', '46788065', '12345', 'nikunja-2', 1),
-('Umme Ayesha Zaman', 'zaman@ymail.com', '015100000', '2017-04-11', '761237621397', 'df21312fd2', '1234', 'Rajshahi', 1);
+INSERT INTO `carowner` (`Name`, `Email`, `Contact`, `DOB`, `NID`, `DrivingLicence`, `Password`, `Address`, `flag`, `Status`) VALUES
+('abc', 'abc@gmail.com', '013133123', '1994-04-08', '123455464', 'dsg3434523', '1234', 'safbg', 1, 'Disable'),
+('Nabil', 'nabilt59@gmail.com', '01521480480', '1994-11-20', '199646896557', '46788065', '12345', 'nikunja-2', 1, 'Active'),
+('Umme Ayesha Zaman', 'zaman@ymail.com', '015100000', '2017-04-11', '761237621397', 'df21312fd2', '1234', 'Rajshahi', 1, 'Pending');
 
 -- --------------------------------------------------------
 
@@ -86,8 +100,8 @@ CREATE TABLE `carshop` (
 --
 
 INSERT INTO `carshop` (`Email`, `Password`, `flag`, `Status`) VALUES
-('abc@gmail.com', '1234', 1, 'pending'),
-('hosensarwar007@gmail.com', '1234', 2, 'pending'),
+('abc@gmail.com', '1234', 1, 'Disable'),
+('hosensarwar007@gmail.com', '1234', 2, 'Pending'),
 ('nabilt59@gmail.com', '12345', 1, 'Active'),
 ('tuhinbhuiyan7@gmail.com', '1234', 2, 'Active');
 
@@ -201,16 +215,17 @@ CREATE TABLE `shopowner` (
   `Longitude` decimal(65,9) NOT NULL,
   `Address` varchar(100) NOT NULL,
   `ShopTradeLicence` varchar(20) NOT NULL,
-  `flag` int(1) NOT NULL
+  `flag` int(1) NOT NULL,
+  `Status` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `shopowner`
 --
 
-INSERT INTO `shopowner` (`ShopName`, `Email`, `Contact`, `Password`, `Latitude`, `Longitude`, `Address`, `ShopTradeLicence`, `flag`) VALUES
-('Sarwar Carwash', 'hosensarwar007@gmail.com', '01700000001', '1234', '23.128912000', '93.009122000', 'Gulshan,Dhaka', '889872', 2),
-('Tuhin Enterprise', 'tuhinbhuiyan7@gmail.com', '01521498220', '1234', '9.999999999', '9.999999999', 'uttara', 'A123E', 2);
+INSERT INTO `shopowner` (`ShopName`, `Email`, `Contact`, `Password`, `Latitude`, `Longitude`, `Address`, `ShopTradeLicence`, `flag`, `Status`) VALUES
+('Sarwar Carwash', 'hosensarwar007@gmail.com', '01700000001', '1234', '23.128912000', '93.009122000', 'Gulshan,Dhaka', '889872', 2, 'Pending'),
+('Tuhin Enterprise', 'tuhinbhuiyan7@gmail.com', '01521498220', '1234', '9.999999999', '9.999999999', 'uttara', 'A123E', 2, 'Active');
 
 -- --------------------------------------------------------
 
@@ -298,6 +313,12 @@ INSERT INTO `vehicle` (`VehicleRegNo`, `RegistrationDate`, `InsuranceNumber`, `V
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `admin`
+--
+ALTER TABLE `admin`
+  ADD PRIMARY KEY (`Email`);
 
 --
 -- Indexes for table `availableservices`
