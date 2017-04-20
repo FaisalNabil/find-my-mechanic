@@ -24,7 +24,7 @@
             if($json[0]->Status == 'Active'){
                 if($json[0]->flag == 2 && $json[0]->password == $password){
                 $_SESSION["shopOwnerEmail"] = $email;
-                header("Location: shopOwner/index.html");
+                header("Location: shopOwner/index.php");
                 }
                 elseif($json[0]->flag == 1 && $json[0]->password == $password){
                     $_SESSION["carOwnerEmail"] = $email;

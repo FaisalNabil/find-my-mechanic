@@ -203,7 +203,7 @@ h2 {
                         <h3 class="panel-title">Please Enter Your information</h3>
                     </div>
                     <div class="panel-body">
-                          <form class="form-horizontal" action = "" method = "Post">
+                          <form class="form-horizontal" action = "shopAction.php" method = "Post">
 
                              <div class="form-group">
                                 <label class="control-label col-sm-2" for="Name">Name:</label>
