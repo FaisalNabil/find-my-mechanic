@@ -339,3 +339,7 @@ table.dataTable thead .sorting:after {
 .margin-left {
     margin-left: 95px;
 }
+.notification-details {
+    margin-left: 158px;
+    margin-top: 36px;
+}
