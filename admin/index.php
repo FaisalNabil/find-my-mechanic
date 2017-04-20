@@ -122,12 +122,12 @@
                     </a>
                     <!-- dropdown user-->
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="profile.html"><i class="fa fa-user fa-fw"></i>User Profile</a>
+                        <li><a href="profile.php"><i class="fa fa-user fa-fw"></i>User Profile</a>
                         </li>
-                        <li><a href="setting.html"><i class="fa fa-gear fa-fw"></i>Settings</a>
+                        <li><a href="setting.php"><i class="fa fa-gear fa-fw"></i>Settings</a>
                         </li>
                         <li class="divider"></li>
-                        <li><a href="../login.html"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
+                        <li><a href="../login.php"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
                         </li>
                     </ul>
                     <!-- end dropdown-user -->
@@ -163,13 +163,13 @@
                     <hr>
 
                     <li class="selected">
-                        <a href="index.html"><i class="fa fa-dashboard fa-fw"></i>Home</a>
+                        <a href="index.php"><i class="fa fa-dashboard fa-fw"></i>Home</a>
                     </li>
                     <li>
-                        <a href="shopOwnerList.html"><i class="fa fa-ship fa-fw"></i>Shop Owner List</a>
+                        <a href="shopOwnerList.php"><i class="fa fa-ship fa-fw"></i>Shop Owner List</a>
                     </li>
                     <li>
-                        <a href="carOwnerList.html"><i class="fa fa-car fa-fw"></i>Car Owner List</a>
+                        <a href="carOwnerList.php"><i class="fa fa-car fa-fw"></i>Car Owner List</a>
                     </li>
                 </ul>
                 <!-- end side-menu -->

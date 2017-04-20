@@ -2,24 +2,32 @@
 
 include("phpFiles/selectData.php");
 
-$jsonShopOwnerDataString = getJSONFromDB("select * from shopowner"); 
+$jsonShopOwnerDataString = getJSONFromDB("SELECT * FROM shopowner"); 
 $shopOwnerData = json_decode($jsonShopOwnerDataString);
 
 
-if (isset($_POST['viewProfile'])) {
-     
-      $hiddenEmail = $_POST['hiddenEmail'];
-      
-      $jsonShopOwnerDataStringbyEmail = getJSONFromDB("select * from shopowner where Email='".$hiddenEmail."'"); 
-       $shopOwnerDatabyEmail = json_decode($jsonShopOwnerDataStringbyEmail);
-
-       $sql = "select * from shopowner where Email='".$hiddenEmail."'";
-
-
-}
-
 ?>
-
+<script>
+xmlhttp = new XMLHttpRequest();
+	function update(email,status){
+		//alert(email);
+    xmlhttp.onreadystatechange = function() {
+        
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+			
+            var i=xmlhttp.responseText;
+            if(i=="success")
+                location.reload();
+			else
+				alert("Update Failed");
+        }
+    };
+    var url="phpFiles/shopPendingUpdate.php?email="+email+"&status="+status;
+    //alert(url);
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+	}
+</script>
 
 <!DOCTYPE html>
 <html>
@@ -45,7 +53,7 @@ if (isset($_POST['viewProfile'])) {
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand logo-color" href="index.html">
+                <a class="navbar-brand logo-color" href="index.php">
                     Logo Goes Here
                 </a>
             </div>
@@ -171,9 +179,6 @@ if (isset($_POST['viewProfile'])) {
                     <li>
                         <!-- user image section-->
                         <div class="user-section">
-                            <div class="user-section-inner">
-                                <img src="../assets/img/user.jpg" alt="">
-                            </div>
                             <div class="user-info">
                                 <div><strong>Admin</strong></div>
                                 <div class="user-text-online">
@@ -186,13 +191,13 @@ if (isset($_POST['viewProfile'])) {
                     <hr>
 
                     <li>
-                        <a href="index.html"><i class="fa fa-dashboard fa-fw"></i>Home</a>
+                        <a href="index.php"><i class="fa fa-dashboard fa-fw"></i>Home</a>
                     </li>
                     <li  class="selected" >
-                        <a href="shopOwnerList.html"><i class="fa fa-ship fa-fw"></i>Shop Owner List</a>
+                        <a href="shopOwnerList.php"><i class="fa fa-ship fa-fw"></i>Shop Owner List</a>
                     </li>
                     <li>
-                        <a href="carOwnerList.html"><i class="fa fa-car fa-fw"></i>Car Owner List</a>
+                        <a href="carOwnerList.php"><i class="fa fa-car fa-fw"></i>Car Owner List</a>
                     </li>
                 </ul>
                 <!-- end side-menu -->
@@ -231,16 +236,19 @@ if (isset($_POST['viewProfile'])) {
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  <tr>
-                                    <td>Tuhin Enterprise</td>
-                                    <td>tuhin@gmail.com</td>
-                                    <td><button type="button" class="btn btn-info">Disable</button> <button type="button" class="btn btn-danger">Delete</button></td>
-                                  </tr>
-                                  <tr>
-                                    <td>Nabil Enterprise</td>
-                                    <td>nabilt59@gmail.com</td>
-                                    <td><button type="button" class="btn btn-info">Disable</button> <button type="button" class="btn btn-danger">Delete</button></td>
-                                  </tr>
+									<?php
+										for($i=0;$i<sizeof($shopOwnerData);$i++){
+											if($shopOwnerData[$i]->Status=="Active"){
+									?>
+										<tr>
+											<td><?php echo $shopOwnerData[$i]->ShopName; ?></td>
+											<td><?php echo $shopOwnerData[$i]->Email; ?></td>
+											<td><button type="button" class="btn btn-info"  onclick="update('<?php echo $shopOwnerData[$i]->Email; ?>','disable')">Disable</button> <button type="button" class="btn btn-danger"  onclick="update('<?php echo $shopOwnerData[$i]->Email; ?>','remove')">Delete</button></td>
+										</tr>
+									<?php
+											}
+										}
+									?>
                                 </tbody>
                             </table>
                         </div>
@@ -254,16 +262,19 @@ if (isset($_POST['viewProfile'])) {
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  <tr>
-                                    <td>Tuhin Enterprise</td>
-                                    <td>tuhin@gmail.com</td>
-                                    <td><button type="button" class="btn btn-primary">View Profile</button></td>
-                                  </tr>
-                                  <tr>
-                                    <td>Tuhin Enterprise</td>
-                                    <td>tuhin@gmail.com</td>
-                                    <td><button type="button" class="btn btn-primary">View Profile</button></td>
-                                  </tr>
+                                  <?php
+										for($i=0;$i<sizeof($shopOwnerData);$i++){
+											if($shopOwnerData[$i]->Status=="Pending"){
+									?>
+										<tr>
+											<td><?php echo $shopOwnerData[$i]->ShopName; ?></td>
+											<td><?php echo $shopOwnerData[$i]->Email; ?></td>
+											<td><button type="button" class="btn btn-success" onclick="update('<?php echo $shopOwnerData[$i]->Email; ?>','active')">Activate</button></td>
+										</tr>
+									<?php
+											}
+										}
+									?>
                                 </tbody>
                             </table>
                         </div>
@@ -277,12 +288,19 @@ if (isset($_POST['viewProfile'])) {
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  <tr>
-                                    <td>Tuhin Enterprise</td>
-                                    <td>tuhin@gmail.com</td>
-                                    <td><button type="button" class="btn btn-success">Activate</button></td>
-                                  </tr>
-                                   
+                                  <?php
+										for($i=0;$i<sizeof($shopOwnerData);$i++){
+											if($shopOwnerData[$i]->Status=="Disable"){
+									?>
+										<tr>
+											<td><?php echo $shopOwnerData[$i]->ShopName; ?></td>
+											<td><?php echo $shopOwnerData[$i]->Email; ?></td>
+											<td><button type="button" class="btn btn-success" onclick="update('<?php echo $shopOwnerData[$i]->Email; ?>','active')">Activate</button></td>
+										</tr>
+									<?php
+											}
+										}
+									?>
                                 </tbody>
                             </table>
                         </div>

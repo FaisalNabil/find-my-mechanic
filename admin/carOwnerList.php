@@ -1,3 +1,34 @@
+<?php 
+
+include("phpFiles/selectData.php");
+
+$jsonCarOwnerDataString = getJSONFromDB("SELECT * FROM carowner"); 
+$carOwnerData = json_decode($jsonCarOwnerDataString);
+
+
+?>
+<script>
+xmlhttp = new XMLHttpRequest();
+	function update(email,status){
+		//alert(email);
+    xmlhttp.onreadystatechange = function() {
+        
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+			
+            var i=xmlhttp.responseText;
+            if(i=="success")
+                location.reload();
+			else
+				alert("Update Failed");
+        }
+    };
+    var url="phpFiles/carPendingUpdate.php?email="+email+"&status="+status;
+    //alert(url);
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+	}
+</script>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -148,9 +179,6 @@
                     <li>
                         <!-- user image section-->
                         <div class="user-section">
-                            <div class="user-section-inner">
-                                <img src="../assets/img/user.jpg" alt="">
-                            </div>
                             <div class="user-info">
                                 <div><strong>Admin</strong></div>
                                 <div class="user-text-online">
@@ -163,13 +191,13 @@
                     <hr>
 
                     <li>
-                        <a href="index.html"><i class="fa fa-dashboard fa-fw"></i>Home</a>
+                        <a href="index.php"><i class="fa fa-dashboard fa-fw"></i>Home</a>
                     </li>
                     <li>
-                        <a href="shopOwnerList.html"><i class="fa fa-ship fa-fw"></i>Shop Owner List</a>
+                        <a href="shopOwnerList.php"><i class="fa fa-ship fa-fw"></i>Shop Owner List</a>
                     </li>
                     <li class="selected">
-                        <a href="carOwnerList.html"><i class="fa fa-car fa-fw"></i>Car Owner List</a>
+                        <a href="carOwnerList.php"><i class="fa fa-car fa-fw"></i>Car Owner List</a>
                     </li>
                 </ul>
                 <!-- end side-menu -->
@@ -207,16 +235,19 @@
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  <tr>
-                                    <td>Nabil</td>
-                                    <td>nabilt59@gmail.com</td>
-                                    <td><button type="button" class="btn btn-info">Disable</button> <button type="button" class="btn btn-danger">Delete</button></td>
-                                  </tr>
-                                  <tr>
-                                    <td>Tuhin</td>
-                                    <td>tuhin59@gmail.com</td>
-                                    <td><button type="button" class="btn btn-info">Disable</button> <button type="button" class="btn btn-danger">Delete</button></td>
-                                  </tr>
+                                  <?php
+										for($i=0;$i<sizeof($carOwnerData);$i++){
+											if($carOwnerData[$i]->Status=="Active"){
+									?>
+										<tr>
+											<td><?php echo $carOwnerData[$i]->Name; ?></td>
+											<td><?php echo $carOwnerData[$i]->Email; ?></td>
+											<td><button type="button" class="btn btn-info"  onclick="update('<?php echo $carOwnerData[$i]->Email; ?>','disable')">Disable</button> <button type="button" class="btn btn-danger"  onclick="update('<?php echo $carOwnerData[$i]->Email; ?>','remove')">Delete</button></td>
+										</tr>
+									<?php
+											}
+										}
+									?>
                                 </tbody>
                             </table>
                         </div>
@@ -230,16 +261,19 @@
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  <tr>
-                                    <td>Nabil</td>
-                                    <td>nabilt59@gmail.com</td>
-                                    <td><button type="button" class="btn btn-primary">View Profile</button></td>
-                                  </tr>
-                                  <tr>
-                                    <td>Tuhin</td>
-                                    <td>tuhin59@gmail.com</td>
-                                    <td><button type="button" class="btn btn-primary">View Profile</button></td>
-                                  </tr>
+                                  <?php
+										for($i=0;$i<sizeof($carOwnerData);$i++){
+											if($carOwnerData[$i]->Status=="Pending"){
+									?>
+										<tr>
+											<td><?php echo $carOwnerData[$i]->Name; ?></td>
+											<td><?php echo $carOwnerData[$i]->Email; ?></td>
+											<td><button type="button" class="btn btn-success" onclick="update('<?php echo $carOwnerData[$i]->Email; ?>','active')">Activate</button></td>
+										</tr>
+									<?php
+											}
+										}
+									?>
                                 </tbody>
                             </table>
                         </div>
@@ -253,16 +287,19 @@
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  <tr>
-                                    <td>Nabil</td>
-                                    <td>nabilt59@gmail.com</td>
-                                    <td><button type="button" class="btn btn-success">Activate</button></td>
-                                  </tr>
-                                  <tr>
-                                    <td>Tuhin</td>
-                                    <td>tuhin59@gmail.com</td>
-                                    <td><button type="button" class="btn btn-success">Activate</button></td>
-                                  </tr>
+                                  <?php
+										for($i=0;$i<sizeof($carOwnerData);$i++){
+											if($carOwnerData[$i]->Status=="Disable"){
+									?>
+										<tr>
+											<td><?php echo $carOwnerData[$i]->Name; ?></td>
+											<td><?php echo $carOwnerData[$i]->Email; ?></td>
+											<td><button type="button" class="btn btn-success" onclick="update('<?php echo $carOwnerData[$i]->Email; ?>','active')">Activate</button></td>
+										</tr>
+									<?php
+											}
+										}
+									?>
                                 </tbody>
                             </table>
                         </div>
