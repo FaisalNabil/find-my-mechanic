@@ -13,6 +13,14 @@
         $('#popupDatepicker').datepick({dateFormat: 'yyyy-mm-dd'});
         $('#inlineDatepicker').datepick({onSelect: showDate});
     });
+        $(document).ready(function(){
+            $("span").click(function(){
+                //$(this).hide();
+                //alert("hello");
+                $('#myModal').modal('show');
+            });
+        });
+
     </script>
      
 </body>
