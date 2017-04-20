@@ -1,7 +1,5 @@
-<!DOCTYPE html>
-<html>
-<?php session_start();
-    require("shopOwnerPHP/selectFromDatabase.php"); 
+<?php include("TemplateFile/header.php"); ?>
+<?php 
 
     $jsonShopOwnerString = getJSONFromDB("SELECT * FROM shopowner WHERE Email= '".$_SESSION["shopOwnerEmail"]."'");
     //echo $_SESSION["shopOwnerEmail"];
@@ -143,71 +141,7 @@ xmlhttp = new XMLHttpRequest();
     xmlhttp.send();
     }
 </script>
-<head>
-    <?php include("TemplateFile/head.php"); ?>
-   </head>
-<body>
-    <!--  wrapper -->
-    <div id="wrapper">
-        <!-- navbar top -->
-        <nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="navbar">
-            <!-- navbar-header -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand logo-color" href="index.php">
-                    Logo Goes Here
-                </a>
-            </div>
-            <!-- end navbar-header -->
-            <!-- navbar-top-links -->
-            <?php include("TemplateFile/messageTemplate.php"); ?>
-            <!-- end navbar-top-links -->
 
-        </nav>
-        <!-- end navbar top -->
-
-        <!-- navbar side -->
-        <nav class="navbar-default navbar-static-side" role="navigation">
-            <!-- sidebar-collapse -->
-            <div class="sidebar-collapse">
-                <!-- side-menu -->
-                <ul class="nav" id="side-menu">
-                    <li>
-                        <!-- user image section-->
-                        <div class="user-section">
-                            <div class="user-info">
-                                <div><?php echo $jsonShopOwnerData[0]->ShopName; ?></div>
-                                <div class="user-text-online">
-                                    <span class="user-circle-online btn btn-success btn-circle "></span>&nbsp;Online
-                                </div>
-                            </div>
-                        </div>
-                        <!--end user image section-->
-                    </li>
-                    <hr>
-
-                    <li>
-                        <a href="index.php"><i class="fa fa-dashboard fa-fw"></i>Home</a>
-                    </li>
-                    <li>
-                        <a href="message.php"><i class="fa fa-comment fa-fw"></i>Messages</a>
-                    </li>
-                    <li>
-                        <a href="notification.php"><i class="fa fa-bell fa-fw"></i>Notification</a>
-                    </li>
-                    <li>
-                        <a href="entry.php"><i class="fa fa-edit fa-fw"></i>Available Stock</a>
-                    </li>
-                </ul>
-                <!-- end side-menu -->
-            </div>
-            <!-- end sidebar-collapse -->
-        </nav>
         <!-- end navbar side -->
         <!--  page-wrapper -->
         <div id="page-wrapper">
@@ -391,13 +325,4 @@ xmlhttp = new XMLHttpRequest();
              
         </div>
         <!-- end page-wrapper -->
-
-    </div>
-    <!-- end wrapper -->
-
-    <script src="../assets/plugins/jquery-1.10.2.js"></script>
-    <script src="../assets/plugins/bootstrap/bootstrap.min.js"></script>
-     
-</body>
-
-</html>
+<?php include 'TemplateFile/footer.php'; ?>

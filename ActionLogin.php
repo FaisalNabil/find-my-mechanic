@@ -32,7 +32,7 @@
                 }
                 elseif($json[0]->flag == 3 && $json[0]->password == $password){
                     $_SESSION["adminEmail"] = $email;
-                    header("Location: admin/index.html");
+                    header("Location: admin/index.php");
                 }
                 else{
                     $loginfailed = "Username and password are not match"; 

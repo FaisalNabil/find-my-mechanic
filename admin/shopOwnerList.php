@@ -158,7 +158,7 @@ xmlhttp = new XMLHttpRequest();
                         <li><a href="setting.html"><i class="fa fa-gear fa-fw"></i>Settings</a>
                         </li>
                         <li class="divider"></li>
-                        <li><a href="../login.html"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
+                        <li><a href="../login.php"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
                         </li>
                     </ul>
                     <!-- end dropdown-user -->
