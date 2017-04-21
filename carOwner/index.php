@@ -57,7 +57,7 @@ $OwnerVehicleRelationData = json_decode($jsonownerVehiclerelationDataString);*/
             </script>
             <?php 
 
-                  if (isset($_GET['CurentLatitude']) && isset($_GET['CurrentLongitude'])) {
+            if (isset($_GET['CurentLatitude']) && isset($_GET['CurrentLongitude'])) {
                 $lat =  $_GET['CurentLatitude'];   
 
                 //echo "<br>";
@@ -274,16 +274,15 @@ $OwnerVehicleRelationData = json_decode($jsonownerVehiclerelationDataString);*/
                                                     <td><?php echo sprintf('%0.4f',$km[$i]); ?></td>
                                                     <td>
 
-                                                    <form action="">
-                                                        <button class="btn btn-success" data-toggle="modal" data-target="#myModal">Send Request</button>
+                                                        <button class="btn btn-success" data-toggle="modal" data-target="#requestSendModal">Send Request</button>
                       
-                                                         <button id="myButton" class="btn btn-primary"  onclick='viewProfile("<?php echo $ShopOwnerData[$i]->Email ?>")'>View Profile</button>
-                                                    </form>
+                                                         <button id="myButton" class="btn btn-primary"  onclick="viewProfile('<?php echo $ShopOwnerData[$i]->Email ;?>')" >View Profile</button>
+                                                    
 
   <!-- Modal -->
    
 
-  <!-- <div class="modal fade" id="requestSendModal" role="dialog" >
+ <div class="modal fade" id="requestSendModal" role="dialog" >
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
@@ -325,80 +324,9 @@ $OwnerVehicleRelationData = json_decode($jsonownerVehiclerelationDataString);*/
         </div>
       </div>
     </div>
-  </div> -->
+  </div>
                                                         <!-- Modal -->
-<!-- <div class="modal fade" id="viewProfile" role="dialog">
-<div class="modal-dialog modal-lg">
-  <div class="modal-content">
-    <div class="modal-header">
-      <button type="button" class="close" data-dismiss="modal">&times;</button>
-      <h4 class="modal-title">Shop Profile</h4>
-    </div>
-    <div class="modal-body">
-       <form class="form-horizontal">
-        <div class="form-group">
-          <label class="control-label col-sm-2" for="name">Name:</label>
-          <div class="col-sm-10">
-              <label for="shopName"><?php// echo $ShopOwnerData[0]->ShopName ; ?></label>
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="control-label col-sm-2" for="address">Address:</label>
-          <div class="col-sm-10">          
-              <label for="address"><?php //echo $ShopOwnerData[0]->Address ; ?></label>
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="control-label col-sm-2" for="services">Services & Parts:</label>
-          <div class="col-sm-10">          
-                <table class="table table-bordered">
-                    <thead>
-                      <tr>
-                        <th>#</th>
-                        <th>Service Available</th>
-                        <th>Service Cost</th>
-                        <th>Available Parts</th>                         
-                        <th>Price</th>                         
-                      </tr>
-                    </thead>
-                    <tbody>
-                    <?php
-                        /*$i = 0; 
-                        foreach ($AvailableServiceData as $value) {
-                             $i++;*/
-                        ?>
-                        <tr>
-                            <td><?php //echo $i; ?></td>
-                            <td><?php// echo $value->ServiceName ; ?></td>
-                            <td><?php //echo $value->Cost ; ?></td>
-
-                            <?php //foreach($StockData as $stock ){?>
-
-                               <td><?php //echo $stock->PartsName ; ?></td>
-                               <td><?php //echo $stock->PricePerUnit ; ?></td>
-
-                            <?php 
-                             //}
-                            ?>
-
-                        </tr>
-                    <?php 
-                        //}
-                    ?>
-                       
-                       
-                    </tbody>
-                </table>
-          </div>
-        </div>
-    </form>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-  </div>
-</div>  
-</div>
-</div>End Modal -->
+ 
                                                     </td>
                                                 </tr>
 
