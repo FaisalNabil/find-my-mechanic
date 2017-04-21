@@ -1,7 +1,7 @@
 <?php 
 
+    include 'TemplateFile/header.php';
 
-//include("phpFiles/SelectProfileData.php"); 
 
 $jsonCarOwnerDataString = getJSONFromDB("select Password from carowner where Email='".$_SESSION["carOwnerEmail"]."'");
 
@@ -58,8 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 } 
 
 ?>
-    <?php include 'TemplateFile/header.php'; ?>
-
+  
         <div id="page-wrapper">
             <div class="row">
                 <!-- Page Header -->
