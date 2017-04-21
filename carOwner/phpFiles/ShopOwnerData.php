@@ -1,5 +1,5 @@
-<?php
-function getJSONFromDB($sql){
+<?php session_start();
+function selectDB($sql){
 	
 	include 'Mysqldb.php';
 	
@@ -10,5 +10,9 @@ function getJSONFromDB($sql){
 	}
 	return json_encode($arr);
 }
+
+$sql="SELECT * FROM shopowner WHERE Email='".$_REQUEST['email']."' ";
+
+echo selectDB($sql);
 
 ?>
