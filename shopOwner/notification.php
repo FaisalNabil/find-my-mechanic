@@ -33,6 +33,7 @@
     }
 
     else if(isset($_POST['reject']) && $_SERVER["REQUEST_METHOD"] == "POST"){
+      $notificationid=$_POST['NotificationId'];
       $email=$_POST['Email'];
       $serviceid=$_POST['ServiceId'];
       $sql="INSERT INTO notification(FromEmail, ToEmail, Type, Date, Status, ServiceId) VALUES ('".$_SESSION["shopOwnerEmail"]."','".$email."','3','".date("Y-m-d")."','unread', '".$serviceid."')";
