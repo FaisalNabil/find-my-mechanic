@@ -7,11 +7,9 @@
     <script src="../assets/plugins/jquery.plugin.min.js"></script>
      <script src="../assets/plugins/jquery.datepick.js"></script>
      <script src="../assets/js/custom.js"></script>
-
     <script>
     $(function() {
         $('#popupDatepicker').datepick({dateFormat: 'yyyy-mm-dd'});
-        $('#inlineDatepicker').datepick({onSelect: showDate});
     });
         $(document).ready(function(){
             $("span").click(function(){

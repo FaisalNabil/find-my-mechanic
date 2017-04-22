@@ -8,8 +8,8 @@ function updateDB($sql){
 	return $result;
 }
 if($_REQUEST['status']=="active"){
-	$sql="UPDATE carowner SET status='Active' WHERE Email='".$_REQUEST['email']."'";
-	$resql="UPDATE carshop SET status='Active' WHERE Email='".$_REQUEST['email']."'"
+	$sql="UPDATE carowner SET Status='Active' WHERE Email='".$_REQUEST['email']."'";
+	$resql="UPDATE carshop SET Status='Active' WHERE Email='".$_REQUEST['email']."'";
 	if(updateDB($sql)==1){
 		if(updateDB($resql)==1){
 			echo "success";
@@ -20,8 +20,8 @@ if($_REQUEST['status']=="active"){
 }
 
 else if($_REQUEST['status']=="pending"){
-	$sql="UPDATE carowner SET status='Pending' WHERE Email='".$_REQUEST['email']."'";
-	$resql="UPDATE carshop SET status='Pending' WHERE Email='".$_REQUEST['email']."'"
+	$sql="UPDATE carowner SET Status='Pending' WHERE Email='".$_REQUEST['email']."'";
+	$resql="UPDATE carshop SET Status='Pending' WHERE Email='".$_REQUEST['email']."'";
 	if(updateDB($sql)==1){
 		if(updateDB($resql)==1){
 			echo "success";
@@ -32,8 +32,8 @@ else if($_REQUEST['status']=="pending"){
 }
 
 else if($_REQUEST['status']=="disable"){
-	$sql="UPDATE carowner SET status='Disable' WHERE Email='".$_REQUEST['email']."'";
-	$resql="UPDATE carshop SET status='Disable' WHERE Email='".$_REQUEST['email']."'"
+	$sql="UPDATE carowner SET Status='Disable' WHERE Email='".$_REQUEST['email']."'";
+	$resql="UPDATE carshop SET Status='Disable' WHERE Email='".$_REQUEST['email']."'";
 	if(updateDB($sql)==1){
 		if(updateDB($resql)==1){
 			echo "success";
@@ -45,7 +45,7 @@ else if($_REQUEST['status']=="disable"){
 
 else if($_REQUEST['status']=="remove"){
 	$sql="DELETE FROM carowner WHERE Email='".$_REQUEST['email']."'";
-	$resql="DELETE FROM carshop WHERE Email='".$_REQUEST['email']."'"
+	$resql="DELETE FROM carshop WHERE Email='".$_REQUEST['email']."'";
 	if(updateDB($sql)==1){
 		if(updateDB($resql)==1){
 			echo "success";

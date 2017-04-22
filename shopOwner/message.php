@@ -1,7 +1,10 @@
+ <?php 
+ob_start();
+  $currentPage = 'message';
 
-<?php include("TemplateFile/header.php"); ?>
-<?php
-    require("shopOwnerPHP/updateDatabase.php");
+  include("TemplateFile/header.php");
+  
+  require("shopOwnerPHP/updateDatabase.php");
 
     $jsonOutboxString = getJSONFromDB("SELECT (SELECT name FROM carowner where Email=message.ReceiverMail) AS name,Date,MessageBody,Status FROM message WHERE SenderMail='".$_SESSION["shopOwnerEmail"]."'  ORDER BY Date DESC"); //outbox messages
     
@@ -12,8 +15,9 @@
         $sendermail=$_POST['SenderMail'];
 
         $sql="INSERT INTO message(SenderMail, ReceiverMail, MessageBody, Date, Status) VALUES ('".$_SESSION["shopOwnerEmail"]."','".$sendermail."','".$reply."','".date("Y-m-d")."','unread')";
+
         if(updateDB($sql)==1)
-            header("Refreash:0");
+            header("Refresh:0");
     }
 
 ?>

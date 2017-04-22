@@ -1,134 +1,111 @@
 <?php 
+      $currentPage = 'home';
+   include 'TemplateFile/header.php'; 
+
+   if(isset($_POST['send']) && $_SERVER["REQUEST_METHOD"] == "POST"){
+      $vehicleRegNo=$_POST['Cars'];
+      $messageBody=$_POST['messageBody'];
+      $lat=$_POST['lat'];
+      $long=$_POST['long'];
+      $email=$_POST['email'];
+      $serviceId=substr($_SESSION["carOwnerEmail"], 0,1).substr($email, 0,1).date("Y-m-d");
 
 
-//include("phpFiles/SelectProfileData.php"); 
+      require ("phpFiles/updateDatabase.php");
 
-/*$jsonCarOwnerDataString = getJSONFromDB("select ShopName,Email,Address from shopowner where Email='".$_SESSION["carOwnerEmail"]."'");
+      $sql="INSERT INTO service(ServiceId, CarOwnerEmail, ShopOwnerEmail, VehicleRegNo, Date, Latitude, Longitude) VALUES ('".$serviceId."', '".$_SESSION["carOwnerEmail"]."', '".$email."', '".$vehicleRegNo."', '".date("Y-m-d")."', '".$lat."', '".$long."' )";
 
-$ShopOwnerData = json_decode($jsonCarOwnerDataString);*/
+      $msgsql="INSERT INTO message(SenderMail, ReceiverMail, MessageBody, Date, Status) VALUES ('".$_SESSION["carOwnerEmail"]."','".$email."','".$messageBody."','".date("Y-m-d")."','unread')";
 
+      $notificationsql="INSERT INTO notification(FromEmail, ToEmail, Type, Date, Status, ServiceId) VALUES ('".$_SESSION["carOwnerEmail"]."','".$email."','1','".date("Y-m-d")."','unread', '".$serviceId."')";
 
-/*$jsonCarOwnerDataString = getJSONFromDB("select* from carowner ");*/
-
-/*$AvailableServiceData = json_decode($jsonAvailableServiceDataString);*/
-
-/*
-
-$jsonAvailableServiceDataString = getJSONFromDB("select* from availableservices where ServicesId='A32'");
-
-$AvailableServiceData = json_decode($jsonAvailableServiceDataString);
-
-$jsonStockDataString = getJSONFromDB("select* from stock where StockId='2631'");*/
-
-/*$StockData = json_decode($jsonStockDataString);
-
-$jsonownerVehiclerelationDataString = getJSONFromDB("select* from ownervehiclerelation where Email='nabilt59@gmail.com'");
-
-$OwnerVehicleRelationData = json_decode($jsonownerVehiclerelationDataString);*/
-
-
+      //echo $notificationsql;
+      if(updateDB($sql)==1){
+        if(updateDB($msgsql)==1){
+          if(updateDB($notificationsql)==1){
+            $info="";
+          }
+        }
+      }
+      else{
+          $info="";
+      }
+      
+    }
 ?>
+      <script>
+          var x = document.getElementById("demo");
+
+          function getLocation() {
+              if (navigator.geolocation) {
+                  navigator.geolocation.getCurrentPosition(showPosition);
+              } else { 
+                  x.innerHTML = "Geolocation is not supported by this browser.";
+              }
+          }
+
+          function showPosition(position) {
+           
+              var lat = position.coords.latitude;
+              var lon = position.coords.longitude;
+
+               window.location.href = "index.php?CurentLatitude="+ lat + "&CurrentLongitude=" + lon;
+          }
+      </script>
       <?php 
-            $currentPage = 'home';
-            
-         include 'TemplateFile/header.php'; 
-
-         
-      ?>
-            <script>
-                var x = document.getElementById("demo");
-
-                function getLocation() {
-                    if (navigator.geolocation) {
-                        navigator.geolocation.getCurrentPosition(showPosition);
-                    } else { 
-                        x.innerHTML = "Geolocation is not supported by this browser.";
-                    }
-                }
-
-                function showPosition(position) {
-                 
-                    var lat = position.coords.latitude;
-                    var lon = position.coords.longitude;
-
-                     window.location.href = "index.php?CurentLatitude="+ lat + "&CurrentLongitude=" + lon;
-                }
-                 
-            </script>
-            <?php 
 
             if (isset($_GET['CurentLatitude']) && isset($_GET['CurrentLongitude'])) {
-                $lat =  $_GET['CurentLatitude'];   
+          $lat =  $_GET['CurentLatitude'];   
 
-                //echo "<br>";
-                $lon =  $_GET['CurrentLongitude'];  
-              $jsonShopOwnerDataString = getJSONFromDB("select ShopName,Latitude,Longitude,Email from shopowner");
-                 //echo $jsonShopOwnerDataString;
-                $ShopOwnerData = json_decode($jsonShopOwnerDataString);
-
-
-                function getaddress($lat,$lng)
-                {
-                  $url = 'http://maps.googleapis.com/maps/api/geocode/json?latlng='.trim($lat).','.trim($lng).'&sensor=false';
-                  $json = @file_get_contents($url);
-                  $data=json_decode($json);
-                  $status = $data->status;
-                  if($status=="OK")
-                    return $data->results[0]->formatted_address;
-                  else
-                    return false;
-                }
-                function distance($lat1, $lon1, $curlat, $curlon,$unit) {
-
-                  $theta = $lon1 - $curlon;
-                  $dist = sin(deg2rad($lat1)) * sin(deg2rad($curlat)) +  cos(deg2rad($lat1)) * cos(deg2rad($curlat)) * cos(deg2rad($theta));
-                  $dist = acos($dist);
-                  $dist = rad2deg($dist);
-                  $miles = $dist * 60 * 1.1515;
-                  $unit = strtoupper($unit);
-
-                  if ($unit == "K") {
-                  return ($miles * 1.609344);
-                  } else if ($unit == "N") {
-                    return ($miles * 0.8684);
-                  } else {
-                    return $miles;
-                  }
-                  
-                } 
-                 
-
-                for($i = 0; $i<sizeof($ShopOwnerData); $i++)        
-                  {
-                  $km[] = distance($lat, $lon, $ShopOwnerData[$i]->Latitude, $ShopOwnerData[$i]->Longitude,"K");  
-                 }
-
-                 
+          //echo "<br>";
+          $lon =  $_GET['CurrentLongitude'];  
+        $jsonShopOwnerDataString = getJSONFromDB("select ShopName,Latitude,Longitude,Email from shopowner");
+           //echo $jsonShopOwnerDataString;
+          $ShopOwnerData = json_decode($jsonShopOwnerDataString);
 
 
-              }
+          function getaddress($lat,$lng)
+          {
+            $url = 'http://maps.googleapis.com/maps/api/geocode/json?latlng='.trim($lat).','.trim($lng).'&sensor=false';
+            $json = @file_get_contents($url);
+            $data=json_decode($json);
+            $status = $data->status;
+            if($status=="OK")
+              return $data->results[0]->formatted_address;
+            else
+              return false;
+          }
+          function distance($lat1, $lon1, $curlat, $curlon,$unit) {
 
-            ?>
-            <!-- <script>
-                        xmlhttp = new XMLHttpRequest();
-                function viewProfile(shopownerEmail){
+            $theta = $lon1 - $curlon;
+            $dist = sin(deg2rad($lat1)) * sin(deg2rad($curlat)) +  cos(deg2rad($lat1)) * cos(deg2rad($curlat)) * cos(deg2rad($theta));
+            $dist = acos($dist);
+            $dist = rad2deg($dist);
+            $miles = $dist * 60 * 1.1515;
+            $unit = strtoupper($unit);
+
+            if ($unit == "K") {
+            return ($miles * 1.609344);
+            } else if ($unit == "N") {
+              return ($miles * 0.8684);
+            } else {
+              return $miles;
+            }
             
-                  xmlhttp.onreadystatechange = function() {
-                      
-                      if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                          
-                          var i=xmlhttp.responseText;
-                          alert(i);
-                              //m.innerHTML=i;
-                              
-                      }
-                  };
-                var url="phpFiles/ShopOwnerData.php?email="+shopownerEmail;
-                alert(url);
-                xmlhttp.open("GET", url, true);
-                xmlhttp.send();
-                }
-            </script> -->
+          } 
+           
+
+          for($i = 0; $i<sizeof($ShopOwnerData); $i++)        
+            {
+            $km[] = distance($lat, $lon, $ShopOwnerData[$i]->Latitude, $ShopOwnerData[$i]->Longitude,"K");  
+           }
+
+           
+
+
+        }
+
+      ?>
 
 
         <!--  page-wrapper -->
@@ -185,54 +162,6 @@ $OwnerVehicleRelationData = json_decode($jsonownerVehiclerelationDataString);*/
             </div>
             <!-- <p id="demo"></p> -->
 
-
-           <?php
-
-                
-            /*$info = "";
-             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-               
-                 include 'phpFiles/Mysqldb.php';
-
-                 $messageBody = '';
-                 $carOwnerEmail = '';
-                 $shopownerEmail = '';
-                 $date = '';
-                 $info = '';
-                 $sql = '';
-
-                if (!empty($_POST['messageBody'])){
-                    
-                     $messageBody    = htmlspecialchars(addslashes(trim($_POST['messageBody'])));
-
-                     $carOwnerEmail  = 'nabilt59@gmail.com';// Value Come from SESSION
-                     $shopownerEmail = $ShopOwnerData[0]->Email;
-                     $date           = date("Y-m-d");
-
-                     $sql = "insert into message values('$carOwnerEmail','$shopownerEmail','$messageBody','$date')"; 
-                     
-                      
-                   
-                    if (mysqli_query($conn, $sql)) {
-                    $info = 
-                    '<div class="alert alert-success alert-dismissable">
-                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                        <strong>Success!</strong>Message Send Successfully.
-                     </div>';
-                    } else {
-                        echo "Error: " . $sql . "<br>" . mysqli_error($conn);
-                    }
-                }else{
-                    $info = 
-                    '<div class="alert alert-danger alert-dismissable">
-                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                        <strong>Warning!</strong> You can\'t send blank message.
-                     </div>';
-                }
-                
-             }*/
-
-           ?> 
             <div class="row">
                 <div class="col-lg-6 col-lg-offset-2">
                     <?php //echo $info ; 
@@ -271,18 +200,10 @@ $OwnerVehicleRelationData = json_decode($jsonownerVehiclerelationDataString);*/
                                                 <tr>
                                                     <td><?php echo ($i+1) ; ?></td>
                                                     <td><?php echo $ShopOwnerData[$i]->ShopName ;?></td>
-                                                    <td><?php echo sprintf('%0.4f',$km[$i]); ?></td>
-                                                    <td>
-
-                                                        <button class="btn btn-success" data-toggle="modal" data-target="#requestSendModal">Send Request</button>
-                      
-                                                         <button id="myButton" class="btn btn-primary"  onclick="viewProfile('<?php echo $ShopOwnerData[$i]->Email ;?>')" >View Profile</button>
-                                                    
-
-  <!-- Modal -->
-   
-
- <div class="modal fade" id="requestSendModal" role="dialog" >
+                                                    <td><?php echo sprintf('%0.2f',$km[$i]); ?></td>
+                                                    <td><button class="btn btn-success" data-toggle="modal" data-target="#requestSendModal<?php echo $i ?>">Send Request</button>
+                                               <!-- Modal -->
+  <div class="modal fade" id="requestSendModal<?php echo $i ?>" role="dialog">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
@@ -294,14 +215,15 @@ $OwnerVehicleRelationData = json_decode($jsonownerVehiclerelationDataString);*/
                  <div class="form-group">        
                   <label class="control-label col-sm-2">Select Your Car:</label>
                   <div class="col-sm-10">
-                        <select>
+                        <select name="Cars">
                            <?php 
-                                //foreach ($OwnerVehicleRelationData as $value) {
-  
+                                $jsonCarDetailsString = getJSONFromDB("SELECT * FROM vehicle JOIN ownervehiclerelation ON vehicle.VehicleRegNo=ownervehiclerelation.VehicleRegNo WHERE ownervehiclerelation.Email='".$_SESSION["carOwnerEmail"]."'");
+                                $carDetailsData = json_decode($jsonCarDetailsString);
+                            for($cars=0;$cars<sizeof($carDetailsData);$cars++){
                             ?>
-                               <option value="<?php //echo $value->VehicleRegNo ;?>"><?php //echo $value->VehicleRegNo ;?></option>     
+                               <option value="<?php echo $carDetailsData[$cars]->VehicleRegNo ;?>"><?php echo $carDetailsData[$cars]->ModelName ;?></option>     
                             <?php 
-                             //}
+                             }
                             ?>
                         </select>
                   </div>
@@ -312,9 +234,12 @@ $OwnerVehicleRelationData = json_decode($jsonownerVehiclerelationDataString);*/
                     <textarea class="form-control" rows="5" id="Message" name="messageBody"></textarea>
                   </div>
                 </div>
+                    <input type="hidden" name="lat" value="<?php echo $lat ?>">
+                    <input type="hidden" name="long" value="<?php echo $lon ?>">
+                    <input type="hidden" name="email" value="<?php echo $ShopOwnerData[$i]->Email ?>">
                 <div class="form-group">        
                   <div class="col-sm-offset-2 col-sm-10">
-                    <button type="submit" class="btn btn-success btn-lg">Send</button>
+                    <button type="submit" class="btn btn-success btn-lg" name="send">Send</button>
                   </div>
                 </div>
             </form>
@@ -325,8 +250,9 @@ $OwnerVehicleRelationData = json_decode($jsonownerVehiclerelationDataString);*/
       </div>
     </div>
   </div>
-                                                        <!-- Modal -->
- 
+                                                    
+                                                    <!-- End Modal -->
+                                                    <button id="myButton" class="btn btn-primary"  onclick="viewProfile('<?php echo $ShopOwnerData[$i]->Email ;?>')" >View Profile</button>
                                                     </td>
                                                 </tr>
 

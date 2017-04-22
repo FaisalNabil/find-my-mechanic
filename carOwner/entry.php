@@ -1,6 +1,5 @@
-<?php 
+<?php
 session_start();
-
 $info = "";
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 

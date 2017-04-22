@@ -2,16 +2,80 @@
 <?php 
 
     //for retriving notification
-    $sql="SELECT (SELECT name FROM carowner where Email=notification.FromEmail) AS name,Date FROM notification WHERE ToEmail='".$_SESSION["shopOwnerEmail"]."'";
+    $sql="SELECT (SELECT name FROM carowner WHERE Email=notification.FromEmail) AS name,Date,Status,Type,ServiceId,NotificationId FROM notification WHERE ToEmail='".$_SESSION["shopOwnerEmail"]."'";
 
     $jsonNotificationString = getJSONFromDB($sql);
 
     $notificationData = json_decode($jsonNotificationString);
 
-    //for user name
-    $jsonShopOwnerString = getJSONFromDB("SELECT ShopName FROM shopowner WHERE Email='".$_SESSION["shopOwnerEmail"]."'");
+    include("shopOwnerPHP/updateDatabase.php");
 
-    $jsonShopOwnerData = json_decode($jsonShopOwnerString);
+    if(isset($_POST['accept']) && $_SERVER["REQUEST_METHOD"] == "POST"){
+      $notificationid=$_POST['NotificationId'];
+      $email=$_POST['Email'];
+      $serviceid=$_POST['ServiceId'];
+
+      $sql="INSERT INTO notification(FromEmail, ToEmail, Type, Date, Status, ServiceId) VALUES ('".$_SESSION["shopOwnerEmail"]."','".$email."','2','".date("Y-m-d")."','unread', '".$serviceid."')";
+      $resql="UPDATE service SET SecretKey=12345 WHERE ServiceId='".$serviceid."' ";
+
+      $notificationsql="UPDATE notification SET Status='read' WHERE NotificationId=".$notificationid;
+
+      //echo $sql."<br>";
+      //echo $resql."<br>";
+      //echo $notificationsql."<br>";
+
+      if(updateDB($sql)==1){
+        if(updateDB($resql)==1){
+          if(updateDB($notificationsql)==1)
+            echo "done";
+        }
+      }
+    }
+
+    else if(isset($_POST['reject']) && $_SERVER["REQUEST_METHOD"] == "POST"){
+      $email=$_POST['Email'];
+      $serviceid=$_POST['ServiceId'];
+      $sql="INSERT INTO notification(FromEmail, ToEmail, Type, Date, Status, ServiceId) VALUES ('".$_SESSION["shopOwnerEmail"]."','".$email."','3','".date("Y-m-d")."','unread', '".$serviceid."')";
+      //$resql="UPDATE service SET SecretKey=12345 WHERE ServiceId='".$serviceid."' ";
+
+      $notificationsql="UPDATE notification SET Status='read' WHERE NotificationId='".$notificationid."' ";
+
+      if(updateDB($sql)==1){
+        if(updateDB($notificationsql)==1)
+            echo "done";
+      }
+    }
+
+
+                              function getaddress($lat,$lng)
+                              {
+                                $url = 'http://maps.googleapis.com/maps/api/geocode/json?latlng='.trim($lat).','.trim($lng).'&sensor=false';
+                                $json = @file_get_contents($url);
+                                $data=json_decode($json);
+                                $status = $data->status;
+                                if($status=="OK")
+                                  return $data->results[0]->formatted_address;
+                                else
+                                  return false;
+                              }
+                              function distance($lat1, $lon1, $curlat, $curlon,$unit) {
+
+                                $theta = $lon1 - $curlon;
+                                $dist = sin(deg2rad($lat1)) * sin(deg2rad($curlat)) +  cos(deg2rad($lat1)) * cos(deg2rad($curlat)) * cos(deg2rad($theta));
+                                $dist = acos($dist);
+                                $dist = rad2deg($dist);
+                                $miles = $dist * 60 * 1.1515;
+                                $unit = strtoupper($unit);
+
+                                if ($unit == "K") {
+                                return ($miles * 1.609344);
+                                } else if ($unit == "N") {
+                                  return ($miles * 0.8684);
+                                } else {
+                                  return $miles;
+                                }
+                                
+                              }
 
  ?>
 
@@ -35,11 +99,18 @@
 
                 <?php
                 for($i=0;$i<sizeof($notificationData);$i++){
-                  
+                  if($notificationData[$i]->Status=="unread"){
                  ?>
-                     <span data-toggle="modal" data-target="#myModal"> <b style="color:red"><?php echo $notificationData[$i]->name; ?></b> has requested for your help! <strong style="color:green; margin-left: 20px;"><?php echo $notificationData[$i]->Date; ?></strong ></span>
+                     <span data-toggle="modal" data-target="#myModal<?php echo $i; ?>"> <b style="color:red"><?php echo $notificationData[$i]->name; ?></b> <?php if($notificationData[$i]->Type=="1") 
+                                        echo "has requested for your help!";
+                                     else if($notificationData[$i]->Type=="2") 
+                                        echo "has accepted your request!";
+                                     else if($notificationData[$i]->Type=="3") 
+                                        echo "has rejected your request!";
+                                     ?>  
+                                     <strong style="color:green; margin-left: 20px;"><?php echo $notificationData[$i]->Date; ?></strong ></span>
                      <!-- Modal -->
-                        <div class="modal fade" id="myModal" role="dialog">
+                        <div class="modal fade" id="myModal<?php echo $i; ?>" role="dialog">
                           <div class="modal-dialog">
                           
                             <!-- Modal content-->
@@ -48,23 +119,40 @@
                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                                 <h4 class="modal-title">Notification Details</h4>
                               </div>
+                              <?php
+                              $jsonServiceString = getJSONFromDB("SELECT (SELECT name FROM carowner WHERE carowner.Email=service.CarOwnerEmail) AS name, ServiceId, CarOwnerEmail, VehicleRegNo, Date, Latitude, Longitude FROM service WHERE ServiceId='".$notificationData[$i]->ServiceId."' ");
+
+                              $jsonServiceData = json_decode($jsonServiceString);
+
+                              $jsonCarString = getJSONFromDB("SELECT (SELECT VehicleType FROM vehicle WHERE vehicle.vehicleRegNo=service.VehicleRegNo) AS type, (SELECT ModelName FROM vehicle WHERE vehicle.vehicleRegNo=service.VehicleRegNo) AS ModelName FROM service WHERE ServiceId='".$notificationData[$i]->ServiceId."' ");
+
+                              $jsonCarData = json_decode($jsonCarString);
+
+
+                              $location=getaddress($jsonServiceData[0]->Latitude,$jsonServiceData[0]->Longitude);
+
+                              $dista=distance($jsonShopOwnerData[0]->Latitude,$jsonShopOwnerData[0]->Longitude,$jsonServiceData[0]->Latitude,$jsonServiceData[0]->Longitude,"K");
+                               ?>
                               <div class="modal-body">
                                   <ul style="list-style-type: none;">
-                                      <li><b>Name: </b> <span>Sarwar CarWash</span></li>
-                                      <li><b>Email: </b> <span>hosensarwar007@gmail.com</span></li>
+                                      <li><b>Name: </b> <span><?php echo $jsonServiceData[0]->name; ?></span></li>
+                                      <li><b>Email: </b> <span><?php echo $jsonServiceData[0]->CarOwnerEmail; ?></span></li>
                                       <li><b>Car Details: </b>
                                           <ul style="list-style-type: none;">
-                                              <li><b>Type: </b> <span>Micro Bus</span></li>
-                                              <li><b>Model Name: </b> <span>Toyota</span></li>
+                                              <li><b>Type: </b> <span><?php echo $jsonCarData[0]->type; ?></span></li>
+                                              <li><b>Model Name: </b> <span><?php echo $jsonCarData[0]->ModelName; ?></span></li>
                                           </ul>
                                       </li>
-                                      <li><b>Location:</b> <span>Sector-3, Uttara, Dahka</span></li>
-                                      <li><b>Distance:</b> <span>12km</span></li>
+                                      <li><b>Location:</b> <span><?php echo $location; ?></span></li>
+                                      <li><b>Distance:</b> <span><?php echo $dista; ?></span></li>
                                   </ul>
-                                  <form action="" class="notification-details">
+                                  <form method="POST" action="" class="notification-details">
                                        <div class="form-group">
-                                           <button class="btn btn-success">Accept</button>
-                                           <button class="btn btn-danger">Reject</button>
+                                           <input type="hidden" name="NotificationId" value="<?php echo $notificationData[$i]->NotificationId; ?>">
+                                           <input type="hidden" name="Email" value="<?php echo $jsonServiceData[0]->CarOwnerEmail; ?>">
+                                           <input type="hidden" name="ServiceId" value="<?php echo $jsonServiceData[0]->ServiceId; ?>">
+                                           <button class="btn btn-success" type="submit" name="accept">Accept</button>
+                                           <button class="btn btn-danger" type="submit" name="reject">Reject</button>
                                        </div>
                                   </form>
                               </div>
@@ -75,8 +163,10 @@
                             
                           </div>
                         </div>
+                        
                      <hr>
                 <?php
+                    }
                   }
                 ?>
 
@@ -85,6 +175,4 @@
             
         </div>
         <!-- end page-wrapper -->
-
-
 <?php include 'TemplateFile/footer.php'; ?>

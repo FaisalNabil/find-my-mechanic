@@ -13,13 +13,20 @@
         $('#popupDatepicker').datepick({dateFormat: 'yyyy-mm-dd'});
          
     });
+    $(document).ready(function(){
+            $("span").click(function(){
+                //$(this).hide();
+                //alert("hello");
+                $('#myModal').modal('show');
+            });
+        });
      
     function viewProfile(Email){
         
         var data = {"Email" : Email};
 
         jQuery.ajax({
-          url : '/find-my-mechanic/carOwner/TemplateFile/indexViewProfileModal.php',
+          url : '/carOwner/TemplateFile/indexViewProfileModal.php',
           method : "post",
           data : data,
           success : function(data){

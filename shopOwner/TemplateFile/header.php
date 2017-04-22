@@ -1,6 +1,5 @@
 <?php session_start();
 
-
 include("shopOwnerPHP/selectFromDatabase.php"); 
 
 $jsonShopOwnerString = getJSONFromDB("SELECT * FROM shopowner WHERE Email='".$_SESSION["shopOwnerEmail"]."'");
@@ -78,7 +77,7 @@ $jsonShopOwnerData = json_decode($jsonShopOwnerString);
                         <a href="notification.php"><i class="fa fa-bell fa-fw"></i>Notification</a>
                     </li>
                     <li class="<?php if($currentPage =='entry'){echo 'selected';}?>">
-                        <a href="entry.php"><i class="fa fa-edit fa-fw"></i>Entry</a>
+                        <a href="entry.php"><i class="fa fa-edit fa-fw"></i>Stock Details</a>
                     </li>
                 </ul>
                 <!-- end side-menu -->

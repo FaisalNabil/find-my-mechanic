@@ -1,7 +1,5 @@
-
 <?php 
 session_start();
-ob_start();
 
 include("phpFiles/SelectProfileData.php"); 
 
@@ -41,115 +39,7 @@ $carOwnerData = json_decode($jsonCarOwnerDataString);
                     Logo Goes Here
                 </a>
             </div>
-            <!-- end navbar-header -->
-            <!-- navbar-top-links -->
-            <ul class="nav navbar-top-links navbar-right">
-                <!-- main dropdown -->
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <span class="top-label label label-danger">3</span><i class="fa fa-envelope fa-3x"></i>
-                    </a>
-                    <!-- dropdown-messages -->
-                    <ul class="dropdown-menu dropdown-messages">
-                        <li>
-                            <a href="message-reply.html">
-                                <div>
-                                    <strong><span class=" label label-danger">Faisal</span></strong>
-                                    <span class="pull-right text-muted">
-                                        <em>1 minutes ago</em>
-                                    </span>
-                                </div>
-                                <div>How can I help you?</div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="message-reply.html">
-                                <div>
-                                    <strong><span class=" label label-info">Tuhin</span></strong>
-                                    <span class="pull-right text-muted">
-                                        <em>5 hours ago</em>
-                                    </span>
-                                </div>
-                                <div>How can I help you?</div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="message-reply.html">
-                                <div>
-                                    <strong><span class=" label label-success">Sarwar</span></strong>
-                                    <span class="pull-right text-muted">
-                                        <em>Yesterday</em>
-                                    </span>
-                                </div>
-                                <div>How can I help you?</div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a class="text-center" href="message.html">
-                                <strong>Read All Messages</strong>
-                                <i class="fa fa-angle-right"></i>
-                            </a>
-                        </li>
-                    </ul>
-                    <!-- end dropdown-messages -->
-                </li>
-
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <span class="top-label label label-warning">2</span>  <i class="fa fa-bell fa-3x"></i>
-                    </a>
-                    <!-- dropdown Notifications-->
-                    <ul class="dropdown-menu dropdown-alerts">
-                        <li>
-                            <a href="notification.html">
-                                <div>
-                                    <i class="fa fa-comment fa-fw"></i>Help Request Sent Successfully
-                                    <span class="pull-right text-muted small"> 1 minutes ago</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="notification.html">
-                                <div>
-                                    <i class="fa fa-comment fa-fw"></i>Tuhin Accept Your Request
-                                    <span class="pull-right text-muted small"> 0 minutes ago</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a class="text-center" href="notification.html">
-                                <strong>See All Notifications</strong>
-                                <i class="fa fa-angle-right"></i>
-                            </a>
-                        </li>
-                    </ul>
-                    <!-- end dropdown-Notifications -->
-                </li>
-
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-user fa-3x"></i>
-                    </a>
-                    <!-- dropdown user-->
-                    <ul class="dropdown-menu dropdown-user">
-                        <li><a href="profile.php"><i class="fa fa-user fa-fw"></i>User Profile</a>
-                        </li>
-                        <li><a href="setting.php"><i class="fa fa-gear fa-fw"></i>Settings</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li><a href="../login.php"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
-                        </li>
-                    </ul>
-                    <!-- end dropdown-user -->
-                </li>
-                <!-- end main dropdown -->
-            </ul>
-            <!-- end navbar-top-links -->
+            <?php include("TemplateFile/messageTemplate.php"); ?>
 
         </nav>
         <!-- end navbar top -->
@@ -163,9 +53,6 @@ $carOwnerData = json_decode($jsonCarOwnerDataString);
                     <li>
                         <!-- user image section-->
                         <div class="user-section">
-                            <div class="user-section-inner">
-                                <img src="../assets/img/user.jpg" alt="">
-                            </div>
                             <div class="user-info">
                                 <div><?php echo $carOwnerData[0]->Name; ?></strong></div>
                                 <div class="user-text-online">
@@ -188,7 +75,7 @@ $carOwnerData = json_decode($jsonCarOwnerDataString);
                         <a href="notification.php"><i class="fa fa-bell fa-fw"></i>Notification</a>
                     </li>
                     <li class="<?php if($currentPage =='entry'){echo 'selected';}?>">
-                        <a href="entry.php"><i class="fa fa-edit fa-fw"></i>Entry</a>
+                        <a href="entry.php"><i class="fa fa-edit fa-fw"></i>Register New Vehicle</a>
                     </li>
                 </ul>
                 <!-- end side-menu -->
