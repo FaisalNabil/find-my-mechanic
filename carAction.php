@@ -1,5 +1,5 @@
 <?php
-  $nameError = $phoneError = $emailError = $passError = $conPassError = "";
+  $nameError = $phoneError = $emailError = $passError = $conPassError = $nidError = "";
   $error = 0;
   
   if($_SERVER["REQUEST_METHOD"] == "POST"){
@@ -29,7 +29,12 @@
     $error += 1;
     $passError = "minimum 6 charter";
     }else{
-    $password = $_POST["carOwnerPWD"];
+      if(!preg_match("/^.*(?=.{6,15})(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).*$/",$_POST["carOwnerPWD"])){
+        $error +=1;
+        $passError = "Password must be at least 5 characters and must contain at least one lower case letter, one upper case letter and one digit!";
+      }else{
+        $password = $_POST["carOwnerPWD"];
+      }
     }
   
     if($password != $_POST["carOwnerCPWD"]){
@@ -39,32 +44,36 @@
   
     $dob = $_POST["carOwnerDOB"];
 
-    $nid = $_POST["carOwnerNid"];
+    if(strlen($_POST["carOwnerNid"]) == 13 || strlen($_POST["carOwnerNid"]) == 17){
+      $nid = $_POST["carOwnerNid"];
+    }else{
+      $error +=1;
+      $nidError = "Nid must be 13 or 17 characters";
+    }
 
     $drivingLicence = $_POST["carOwnerDriving"];
 
     $address =  htmlspecialchars(addslashes(trim($_POST["carOwnerAddress"])));
     
     if($error == 0){
-    $conn = mysqli_connect("localhost", "root", "", "find_My_Mechanic");
-    if (!$conn) {
-            die("Connection failed: " . mysqli_connect_error());
-    }
-      
-      $sql = "insert into carowner(Name,Email,Contact,DOB,NID,DrivingLicence,Password,Address,flag) values ('".$name."','".$email."','".$phone."','".$dob."','".$nid."','".$drivingLicence."','".$password."','".$address."',1,'pending');";
-
-      $sql .= "insert into carshop(Email,Password,flag,status) values ('".$email."','".$password."',1,'pending');";
-
-      if (mysqli_multi_query($conn, $sql)) {
-        $_SESSION["carOwnerSignupEmail"] = $email;
-          header("Location: carOwner/index.php");
-      } 
-      else {
-          echo mysqli_error($conn);
+      $conn = mysqli_connect("localhost", "root", "", "find_My_Mechanic");
+      if (!$conn) {
+              die("Connection failed: " . mysqli_connect_error());
       }
+        
+        $sql = "insert into carowner(Name,Email,Contact,DOB,NID,DrivingLicence,Password,Address,flag) values ('".$name."','".$email."','".$phone."','".$dob."','".$nid."','".$drivingLicence."','".$password."','".$address."',1,'pending');";
 
-      mysqli_close($conn);
+        $sql .= "insert into carshop(Email,Password,flag,status) values ('".$email."','".$password."',1,'pending');";
 
+        if (mysqli_multi_query($conn, $sql)) {
+          $_SESSION["carOwnerSignupEmail"] = $email;
+            header("Location: carOwner/index.php");
+        } 
+        else {
+            echo mysqli_error($conn);
+        }
+
+        mysqli_close($conn);
     }
   }
 

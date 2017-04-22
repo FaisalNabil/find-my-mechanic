@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="assets/css/style.css">
-   
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
   <style>
         
 /* ------------------------------- */
@@ -123,17 +123,106 @@ h2 {
 ?>
 
 <script>
-  function passwordCheck(str){
-    cpwd = document.forms[0].elements[3].value;
-    pmsg = document.getElementById("ipwd");
-    if(cpwd.length < 6){
-      pmsg.innerHTML = "minimun 6 char";
+
+  xmlhttp = new XMLHttpRequest();
+  //Checks Email
+  function emailvCheck(id){ 
+    str=document.getElementById(id).value;
+
+    xmlhttp.onreadystatechange = function() {
+        
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200 && id!="") {
+            
+            m=document.getElementById("emailError");
+            var i=xmlhttp.responseText;
+            if(str == null || str == ""){
+              m.innerHTML = "Email must be filled out";
+            }
+            else if(i==str){
+                m.innerHTML="*Email exist, Try another one";
+            }
+            else{
+                m.innerHTML="";
+            }            
+        }
+    };
+    var url="shopValidation/emailCheck.php?shopOwnerEmail="+str;
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+  }
+
+  //phone number check
+  function numbervCheck(id){
+    str=document.getElementById(id).value;
+    m=document.getElementById("phoneError");
+
+    if(isNaN(str)){
+      m.innerHTML = "only numbers are allowed";
     }
-    else{
-      pmsg.innerHTML = "";
+    else if(str == null || str ==""){
+      m.innerHTML = "Contact number must be filled out";
+    }else{
+      m.innerHTML="";
     }
   }
-  function conPasswordCheck(str){
+  //shop trade licence check
+  function tradevCheck(id){
+    str=document.getElementById(id).value;
+
+    xmlhttp.onreadystatechange = function() {
+        
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200 && id!="") {
+            
+            m=document.getElementById("tdnError");
+            var i=xmlhttp.responseText;
+            if(str == null || str == ""){
+              m.innerHTML = "Trade Licence must be filled out";
+            }
+            else if(i==str){
+                m.innerHTML="*Trade Licence number exist, Try another one";
+            }
+            else{
+                m.innerHTML="";
+            }         
+        }
+    };
+    var url="shopValidation/tradeLicenceCheck.php?shopOwnerTDN="+str;
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+  }
+  //shop name check
+  function nameCheck(){
+    var name = document.forms[0].elements[0].value;
+    var mn=  /^[a-zA-Z ]*$/;
+    m=document.getElementById("nameError");
+    if (name== null || name == "") {
+      m.innerHTML = "*Name must be filled out";
+    }else{
+      if(name.match(mn)){
+        m.innerHTML = "";
+      }else{
+        m.innerHTML = "Only letters and space are allowed";
+      }
+    }
+  }
+  //password check
+  function passwordCheck(){
+    var paswd=  /^.*(?=.{6,})(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).*$/;
+
+    cpwd = document.forms[0].elements[3].value;
+    pmsg = document.getElementById("ipwd");
+    if (cpwd == null || cpwd == "") {
+      pmsg.innerHTML = "*password must be filled out";
+    }else{
+      if(cpwd.match(paswd)){
+      pmsg.innerHTML = "";
+      }else{
+        pmsg.innerHTML = "Password must be at least 6 characters and must contain at least one lower case letter, one upper case letter and one digit!";
+      }
+    }
+  }
+
+  function conPasswordCheck(){
     cpwd = document.forms[0].elements[3].value;
     conPwd= document.forms[0].elements[4].value;
     con = document.getElementById("conP");
@@ -207,37 +296,37 @@ h2 {
                              <div class="form-group">
                                 <label class="control-label col-sm-2" for="shpName">Shop Name:</label>
                                 <div class="col-sm-10">
-                                  <input type="text" class="form-control" id="shpName" name = "shopOwnerName" placeholder="Enter Shop Name" required>
-                                  <span style="color:red"><?php echo $nameError; ?></span> <!--Name Error Show-->
+                                  <input type="text" class="form-control" id="shpName" name = "shopOwnerName" placeholder="Enter Shop Name" onkeyup = "nameCheck()" required>
+                                  <span id = "nameError" style="color:red"><?php echo $nameError; ?></span> <!--Name Error Show-->
                                 </div>
                               </div>
 
                               <div class="form-group">
                                 <label class="control-label col-sm-2" for="email">Email:</label>
                                 <div class="col-sm-10">
-                                  <input type="email" class="form-control" id="email" name = "shopOwnerEmail" placeholder="Enter email" required>
-                                  <span style="color:red"><?php echo $emailError; ?></span> <!--Email Error Show-->
+                                  <input type="email" class="form-control" id="email" name = "shopOwnerEmail" placeholder="Enter email" onkeyup = "emailvCheck('email')" required>
+                                  <span id = "emailError" style="color:red"><?php echo $emailError; ?></span> <!--Email Error Show-->
                                 </div>
                               </div>
                               <div class="form-group">
                                 <label class="control-label col-sm-2" for="pwd">Contact:</label>
                                 <div class="col-sm-10">
-                                  <input type="text" class="form-control" id="pwd" name = "shopOwnerPhone" placeholder="Enter Contact Number" required>
-                                  <span style="color:red"><?php echo $phoneError; ?></span> <!--Phone Error Show-->
+                                  <input type="text" class="form-control" id="pwd" name = "shopOwnerPhone" placeholder="Enter Contact Number" onkeyup = "numbervCheck('pwd')" required>
+                                  <span id = "phoneError" style="color:red"><?php echo $phoneError; ?></span> <!--Phone Error Show-->
                                 </div>
                               </div>
                               <div class="form-group">
                                 <label class="control-label col-sm-2" for="pwd">Password:</label>
                                 <div class="col-sm-10">
-                                  <input type="password" class="form-control" id="pwd" onkeyup = "passwordCheck(shopOwnerPWD)" name = "shopOwnerPWD" placeholder="Enter Password" required>
+                                  <input type="password" class="form-control" id="pwd" onkeyup = "passwordCheck()" name = "shopOwnerPWD" placeholder="Enter Password" required>
                                   <span id = "ipwd" style="color:red"><?php echo $passError; ?></span> <!--Password Error Show-->
                                 </div>
                               </div>
                               <div class="form-group">
                                 <label class="control-label col-sm-2" for="pwd">Confirm Password:</label>
                                 <div class="col-sm-10">
-                                  <input type="password" class="form-control" id="pwd" onkeyup = "conPasswordCheck(shopOwnerCPWD)" name = "shopOwnerCPWD" placeholder="Enter Password Again" required>
-                                  <span id = "conP" style="color:red"><?php echo $conPassError; ?></span> <!--confirm password Error Show-->
+                                  <input type="password" class="form-control" id="pwd" onkeyup = "conPasswordCheck()" name = "shopOwnerCPWD" placeholder="Enter Password Again" required>
+                                  <span id = "conP" style="color:red"><?php echo $passError; ?></span> <!--confirm password Error Show-->
                                 </div>
                               </div>
 
@@ -245,7 +334,8 @@ h2 {
                                 <label class="control-label col-sm-2" for="shoptradeLicence">Shop Trade Licence:</label>
                                 <div class="col-sm-10">
                                   <input type="text" class="form-control" id="shoptradeLicence" name = "shopOwnerTDN"
-                                  placeholder="Enter Shop Trade Licence" required>
+                                  placeholder="Enter Shop Trade Licence" onkeyup = "tradevCheck('shoptradeLicence')" required>
+                                  <span id = "tdnError" style="color:red"></span>
                                 </div>
                               </div>
 
