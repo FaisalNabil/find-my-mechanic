@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="assets/css/style.css">
   <link href="assets/css/jquery.datepick.css" rel="stylesheet" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
   <style>
         
 /* ------------------------------- */
@@ -121,19 +122,108 @@ h2 {
   include("carAction.php");
 ?>
 <script>
-  function passwordCheck(str){
-    var xhttp;
+  xmlhttp = new XMLHttpRequest();
+  //Checks Email
+  function emailvCheck(id){ 
+    str=document.getElementById(id).value;
+
+    xmlhttp.onreadystatechange = function() {
+        
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200 && id!="") {
+            
+            m=document.getElementById("emailError");
+            var i=xmlhttp.responseText;
+            if(str == null || str == ""){
+              m.innerHTML = "Email must be filled out";
+            }
+            else if(i==str){
+                m.innerHTML="*Email exist, Try another one";
+            }
+            else{
+                m.innerHTML="";
+            }         
+        }
+    };
+    var url="carValidation/emailCheck.php?carOwnerEmail="+str;
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+  }
+  //nid check
+  function nidvCheck(id){ 
+    str=document.getElementById(id).value;
+
+    xmlhttp.onreadystatechange = function() {
+        
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200 && id!="") {
+            
+            m=document.getElementById("nidError");
+            var i=xmlhttp.responseText;
+            if(str == null || str == ""){
+              m.innerHTML = "Nid must be filled out";
+            }
+            else if(str.length == 13 || str.length == 17){
+              if(i==str){
+                m.innerHTML="*Nid exist, Try another one";
+              }else{
+                m.innerHTML="";
+              }
+            }else{
+              m.innerHTML = "Nid must be 13 or 17 characters";
+            }         
+        }
+    };
+    var url="carValidation/nidCheck.php?carOwnerNid="+str;
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+  }
+  //phone number check
+  function numbervCheck(id){
+    str=document.getElementById(id).value;
+    m=document.getElementById("phoneError");
+
+    if(isNaN(str)){
+      m.innerHTML = "only numbers are allowed";
+    }
+    else if(str == null || str ==""){
+      m.innerHTML = "Contact number must be filled out";
+    }else{
+      m.innerHTML="";
+    }
+  }
+  //shop name check
+  function nameCheck(){
+    var name = document.forms[0].elements[0].value;
+    var mn=  /^[a-zA-Z ]*$/;
+    m=document.getElementById("nameError");
+    if (name== null || name == "") {
+      m.innerHTML = "*Name must be filled out";
+    }else{
+      if(name.match(mn)){
+        m.innerHTML = "";
+      }else{
+        m.innerHTML = "Only letters and space are allowed";
+      }
+    }
+  }
+  //password check
+  function passwordCheck(){
+    var paswd=  /^.*(?=.{6,})(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).*$/;
+
     cpwd = document.forms[0].elements[6].value;
     pmsg = document.getElementById("ipwd");
-    if(cpwd.length < 6){
-      pmsg.innerHTML = "minimun 6 char";
-    }
-    else{
+
+    if (cpwd == null || cpwd == "") {
+      pmsg.innerHTML = "*password must be filled out";
+    }else{
+      if(cpwd.match(paswd)){
       pmsg.innerHTML = "";
+      }else{
+        pmsg.innerHTML = "Password must be at least 6 characters and must contain at least one lower case letter, one upper case letter and one digit!";
+      }
     }
   }
   
-  function conPasswordCheck(str){
+  function conPasswordCheck(){
     cpwd = document.forms[0].elements[6].value;
     conPwd= document.forms[0].elements[7].value;
     con = document.getElementById("conP");
@@ -208,23 +298,23 @@ h2 {
                              <div class="form-group">
                                 <label class="control-label col-sm-2" for="Name">Name:</label>
                                 <div class="col-sm-10">
-                                  <input type="text" class="form-control" name = "carOwnerName" id="name" placeholder="Enter Name" required>
-                                  <span style="color:red"><?php echo $nameError; ?></span> <!--Name Error Show-->
+                                  <input type="text" class="form-control" name = "carOwnerName" id="name" placeholder="Enter Name" onkeyup = "nameCheck()" required>
+                                  <span id = "nameError" style="color:red"><?php echo $nameError; ?></span> <!--Name Error Show-->
                                 </div>
                               </div>
 
                               <div class="form-group">
                                 <label class="control-label col-sm-2" for="email">Email:</label>
                                 <div class="col-sm-10">
-                                  <input type="email" class="form-control" name = "carOwnerEmail" id="email" placeholder="Enter email" required>
-                                  <span style="color:red"><?php echo $emailError; ?></span> <!--Email Error Show-->
+                                  <input type="email" class="form-control" name = "carOwnerEmail" id="email" placeholder="Enter email" onkeyup = "emailvCheck('email')" required>
+                                  <span id = "emailError" style="color:red"><?php echo $emailError; ?></span> <!--Email Error Show-->
                                 </div>
                               </div>
                               <div class="form-group">
                                 <label class="control-label col-sm-2" for="pwd">Contact:</label>
                                 <div class="col-sm-10">
-                                  <input type="text" class="form-control" name = "carOwnerPhone" id="pwd" placeholder="Enter Contact Number" required="">
-                                  <span style="color:red"><?php echo $phoneError; ?></span> <!--phone Error Show-->
+                                  <input type="text" class="form-control" name = "carOwnerPhone" id="pwd" placeholder="Enter Contact Number" onkeyup = "numbervCheck('pwd')" required="">
+                                  <span id = "phoneError" style="color:red"><?php echo $phoneError; ?></span> <!--phone Error Show-->
                                 </div>
                               </div>
                               <div class="form-group">
@@ -236,26 +326,28 @@ h2 {
                               <div class="form-group">
                                 <label class="control-label col-sm-2" for="nid">NID:</label>
                                 <div class="col-sm-10">
-                                  <input type="number" class="form-control" id="nid" name = "carOwnerNid" placeholder="Enter NID Number" required>
+                                  <input type="number" class="form-control" id="nid" name = "carOwnerNid" placeholder="Enter NID Number" onkeyup = "nidvCheck('nid')" required>
+                                  <span id = "nidError" style="color:red"><?php echo $nidError; ?></span><!--NID Error show -->
                                 </div>
                               </div>
                               <div class="form-group">
                                 <label class="control-label col-sm-2" for="dlc">Driving Licence:</label>
                                 <div class="col-sm-10">
-                                  <input type="text" class="form-control" id="dlc" name = "carOwnerDriving" placeholder="Enter Driving Licence" required="">
+                                  <input type="text" class="form-control" id="dlc" name = "carOwnerDriving" placeholder="Enter Driving Licence" onkeyup = "licencevCheck('dlc')" required>
+                                  <span id = "licenceError" style="color:red"></span><!--Driving Licence Error show -->
                                 </div>
                               </div>
                               <div class="form-group">
                                 <label class="control-label col-sm-2" for="pwd">Password:</label>
                                 <div class="col-sm-10">
-                                  <input type="password" class="form-control" id="pwd" onkeyup = "passwordCheck(carOwnerPWD)" name = "carOwnerPWD" placeholder="Enter Password" required>
+                                  <input type="password" class="form-control" id="pwd" onkeyup = "passwordCheck()" name = "carOwnerPWD" placeholder="Enter Password" required>
                                   <span id = "ipwd" style="color:red"><?php echo $passError; ?></span>
                                 </div>
                               </div>
                               <div class="form-group">
                                 <label class="control-label col-sm-2" for="pwd">Confirm Password:</label>
                                 <div class="col-sm-10">
-                                  <input type="password" class="form-control" id="pwd" onkeyup = "conPasswordCheck(carOwnerCPWD)" name = "carOwnerCPWD" placeholder="Enter Password Again" required>
+                                  <input type="password" class="form-control" id="pwd" onkeyup = "conPasswordCheck()" name = "carOwnerCPWD" placeholder="Enter Password Again" required>
                                   <span id = "conP" style="color:red"><?php echo $conPassError; ?></span>
                                 </div>
                               </div>

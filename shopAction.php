@@ -28,7 +28,12 @@
 	    $error += 1;
 	    $passError = "minimum 6 charter";
 	  	}else{
-	    	$password = $_POST["shopOwnerPWD"];
+	    	if(!preg_match("/^.*(?=.{6,15})(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).*$/",$_POST["shopOwnerPWD"])){
+        		$error +=1;
+        		$passError = "Password must be at least 5 characters and must contain at least one lower case letter, one upper case letter and one digit!";
+      		}else{
+        		$password = $_POST["shopOwnerPWD"];
+      		}
 	  	}
 
 	    if($password != $_POST["shopOwnerCPWD"]){
@@ -45,23 +50,23 @@
 	    $address = htmlspecialchars(addslashes(trim($_POST["shopOwnerAddress"])));;
 	  
 	    if($error == 0){
-	    $conn = mysqli_connect("localhost", "root", "", "find_My_Mechanic");
-	    if (!$conn) {
-	            die("Connection failed: " . mysqli_connect_error());
-	    }
-	    
-	    $sql = "insert into shopowner(ShopName,Email,Contact,Password,Latitude,Longitude,Address,ShopTradeLicence,flag,status) values ('".$name."','".$email."','".$phone."','".$password."','".$latitude."','".$longitude."','".$address."','".$stl."',2);";
+		    $conn = mysqli_connect("localhost", "root", "", "find_My_Mechanic");
+		    if (!$conn) {
+		            die("Connection failed: " . mysqli_connect_error());
+		    }
+		    
+		    $sql = "insert into shopowner(ShopName,Email,Contact,Password,Latitude,Longitude,Address,ShopTradeLicence,flag,status) values ('".$name."','".$email."','".$phone."','".$password."','".$latitude."','".$longitude."','".$address."','".$stl."',2,'Pending');";
 
-	    $sql .= "insert into carshop(Email,Password,flag) values ('".$email."','".$password."',2,'Pending');";
+		    $sql .= "insert into carshop(Email,Password,flag) values ('".$email."','".$password."',2,'Pending');";
 
-	    if (mysqli_multi_query($conn, $sql)) {
-	      $_SESSION["shopOwnerSignupEmail"] = $email;
-	      header("Location: shopOwner/index.html");
-	    }else{
-	      echo mysqli_error($conn);
-	    }
+		    if (mysqli_multi_query($conn, $sql)) {
+		      $_SESSION["shopOwnerSignupEmail"] = $email;
+		      header("Location: shopOwner/index.html");
+		    }else{
+		      echo mysqli_error($conn);
+		    }
 
-	    mysqli_close($conn);
-	    }
+		    mysqli_close($conn);
+		}
   	}
 ?>
