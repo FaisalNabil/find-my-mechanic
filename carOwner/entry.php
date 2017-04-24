@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
        ?>
 
         <!--  page-wrapper -->
-        <div id="page-wrapper">
+  <div id="page-wrapper">
             <div class="row">
                 <!-- Page Header -->
                 <div class="col-lg-12">
@@ -126,6 +126,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
         <!-- end page-wrapper -->
 
-    </div>
-    <!-- end wrapper -->
  <?php include 'TemplateFile/footer.php'; ?>

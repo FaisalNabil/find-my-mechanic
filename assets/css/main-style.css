@@ -70,13 +70,7 @@ padding: 20px 15px;
          .green {
             background-color:rgb(144, 236, 192);
         }
-          .red {
-            background-color:rgb(255, 102, 133);
-        }
-        .yellow {
-            background-color:rgb(237, 253, 46);
-        }
-
+         
   /* No border */
 .no-boder {
     border:0px solid #5bc0de !important;
@@ -87,14 +81,8 @@ padding: 20px 15px;
     background-color:rgb(83, 163, 163);
 }
 
-.navbar-brand {
-    padding-left:20px;
-}
-.navbar-brand img {
-    height:30px;
-}
 .top-label {
-    position: absolute;
+position: absolute;
 top: 50%;
 right: 50%;
 margin-top: -24px;

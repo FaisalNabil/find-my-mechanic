@@ -110,7 +110,7 @@
 
         <!--  page-wrapper -->
         <div id="page-wrapper">
-
+            <div class="test">
             <div class="row">
                 <!-- Page Header -->
                 <div class="col-lg-12">
@@ -275,9 +275,7 @@
                     <!--End simple table example -->
                 </div>
             </div>
+            </div>
         </div>
         <!-- end page-wrapper -->
-
-    </div>
-    <!-- end wrapper -->
    <?php include 'TemplateFile/footer.php'; ?>

@@ -1,4 +1,8 @@
-<?php include("TemplateFile/header.php"); ?>
+<?php 
+$currentPage = 'notification';
+include("TemplateFile/header.php"); 
+
+?>
 <?php 
 
     //for retriving notification
