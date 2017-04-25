@@ -23,7 +23,7 @@
         //echo $sql;
         if(updateDB($sql)==1){
             updateDB($sqlRelation);
-            echo "<script type='text/javascript'>alert('Successfully updated');</script>";
+            //echo "<script type='text/javascript'>alert('Successfully updated');</script>";
             header("Refresh:0");
             
         }
@@ -45,7 +45,7 @@
         $sqlRelation="INSERT INTO shopservicerelation (ServicesId, ShopEmail) VALUES('".$addserviceid."','".$_SESSION["shopOwnerEmail"]."')";
         
         if(updateDB($sql)==1){
-            echo "<script type='text/javascript'>alert('Successfully Inserted');</script>";
+            //echo "<script type='text/javascript'>alert('Successfully Inserted');</script>";
             updateDB($sqlRelation);
             header("Refresh:0");
         }

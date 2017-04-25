@@ -1,4 +1,8 @@
-<?php include("TemplateFile/header.php"); ?>
+<?php 
+ $currentPage = 'entry';
+ include("TemplateFile/header.php"); 
+
+ ?>
 <?php 
 
     $jsonShopOwnerString = getJSONFromDB("select * from stock JOIN shopstockrelation ON stock.StockId=shopstockrelation.StockId WHERE shopstockrelation.ShopEmail='".$_SESSION["shopOwnerEmail"]."'");
