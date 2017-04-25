@@ -3,7 +3,38 @@
   $currentPage = 'home';
   include("TemplateFile/header.php");
 
+    $jsonOngoingString = getJSONFromDB("SELECT (SELECT name FROM carowner WHERE Email=service.CarOwnerEmail) AS name,ServiceId,VehicleRegNo,SecretKey FROM service WHERE ShopOwnerEmail='".$_SESSION["shopOwnerEmail"]."' AND Status='Accepted' ORDER BY Date DESC"); 
+    
+    $jsonOngoingData = json_decode($jsonOngoingString);
+
 ?>
+
+<script type="text/javascript">
+        xmlhttp = new XMLHttpRequest();
+    function jobDone(id){
+        //alert(id);
+        //str=document.getElementById(id).innerText;
+        //alert(str);
+
+    xmlhttp.onreadystatechange = function() {
+        
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            
+            var i=xmlhttp.responseText;
+            //alert(i);
+            if(i=="success"){
+                location.reload();
+            }
+                //m.innerHTML=i;
+                
+        }
+    };
+    var url="shopOwnerPHP/jobDone.php?sid="+id;
+    //alert(url);
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+    }
+    </script>
 
         <!-- end navbar side -->
         <!--  page-wrapper -->
@@ -15,28 +46,33 @@
                 </div>
                 <!--End Page Header -->
             </div>
+            <div>
+                <h3>Ongoing Jobs</h3><hr>
+            </div>
             <div class="row">
-                <div class="col-md-6">
-                    <div class="alert alert-success">
-                        <strong>Success!</strong> JOb Completed Successfully.
-                        <button class="btn btn-primary job-done-btn">Job Done</button>
+                <div class="col-md-7">
+                    <?php 
+                    if(sizeof($jsonOngoingData)>0){
+                        for($i=0;$i<sizeof($jsonOngoingData);$i++){
+                            ?>
+                            <div class="col-md-20">
+                                <div class="alert alert-success">
+                                Job for <strong><?php echo $jsonOngoingData[$i]->name;?></strong> with vehicle <strong><?php echo $jsonOngoingData[$i]->VehicleRegNo;?></strong> has secret key <strong><?php echo $jsonOngoingData[$i]->SecretKey;?></strong>
+                                <button class="btn btn-primary job-done-btn" onclick="jobDone('<?php echo $jsonOngoingData[$i]->ServiceId; ?>')">Job Done</button>
+                                </div>
+                            </div> 
+                        <?php
+                        }
+                    }
+                    else{
+                        ?>
+                    
+                    <div class="col-md-7">
+                        <div class="alert alert-danger"><strong>  You have no ongoing jobs!!</strong></div>
                     </div>
-                    <div class="alert alert-success">
-                        <strong>Success!</strong> JOb Completed Successfully.
-                        <button class="btn btn-primary job-done-btn ">Job Done</button>
-                    </div>
-                    <div class="alert alert-success">
-                        <strong>Success!</strong> JOb Completed Successfully.
-                        <button class="btn btn-primary job-done-btn">Job Done</button>
-                    </div>
-                    <div class="alert alert-success">
-                        <strong>Success!</strong> JOb Completed Successfully.
-                        <button class="btn btn-primary job-done-btn">Job Done</button>
-                    </div>
-                    <div class="alert alert-success">
-                        <strong>Success!</strong> JOb Completed Successfully.
-                        <button class="btn btn-primary job-done-btn">Job Done</button>
-                    </div>
+                    <?php
+                }
+                    ?>
                 </div>
 
             </div>

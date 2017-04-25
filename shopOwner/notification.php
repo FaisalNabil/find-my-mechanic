@@ -6,7 +6,7 @@
 <?php 
 
     //for retriving notification
-    $sql="SELECT (SELECT name FROM carowner WHERE Email=notification.FromEmail) AS name,Date,Status,Type,ServiceId,NotificationId FROM notification WHERE ToEmail='".$_SESSION["shopOwnerEmail"]."'";
+    $sql="SELECT (SELECT name FROM carowner WHERE Email=notification.FromEmail) AS name,Date,Status,Type,ServiceId,NotificationId FROM notification WHERE ToEmail='".$_SESSION["shopOwnerEmail"]."' ORDER BY Date DESC";
 
     $jsonNotificationString = getJSONFromDB($sql);
 
@@ -20,7 +20,7 @@
       $serviceid=$_POST['ServiceId'];
 
       $sql="INSERT INTO notification(FromEmail, ToEmail, Type, Date, Status, ServiceId) VALUES ('".$_SESSION["shopOwnerEmail"]."','".$email."','2','".date("Y-m-d")."','unread', '".$serviceid."')";
-      $resql="UPDATE service SET SecretKey=12345 WHERE ServiceId='".$serviceid."' ";
+      $resql="UPDATE service SET SecretKey=12345,Status='Accepted' WHERE ServiceId='".$serviceid."' ";
 
       $notificationsql="UPDATE notification SET Status='read' WHERE NotificationId=".$notificationid;
 
@@ -41,13 +41,15 @@
       $email=$_POST['Email'];
       $serviceid=$_POST['ServiceId'];
       $sql="INSERT INTO notification(FromEmail, ToEmail, Type, Date, Status, ServiceId) VALUES ('".$_SESSION["shopOwnerEmail"]."','".$email."','3','".date("Y-m-d")."','unread', '".$serviceid."')";
-      //$resql="UPDATE service SET SecretKey=12345 WHERE ServiceId='".$serviceid."' ";
+      $resql="UPDATE service SET SecretKey=12345,Status='Rejected' WHERE ServiceId='".$serviceid."' ";
 
       $notificationsql="UPDATE notification SET Status='read' WHERE NotificationId='".$notificationid."' ";
 
       if(updateDB($sql)==1){
-        if(updateDB($notificationsql)==1)
+        if(updateDB($resql)==1){
+          if(updateDB($notificationsql)==1)
             echo "done";
+        }
       }
     }
 

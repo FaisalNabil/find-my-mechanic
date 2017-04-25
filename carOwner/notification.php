@@ -6,7 +6,7 @@ include("TemplateFile/header.php");
 <?php 
 
     //for retriving notification
-    $sql="SELECT (SELECT ShopName FROM shopowner WHERE Email=notification.FromEmail) AS name,Date,Status,Type,ServiceId,NotificationId FROM notification WHERE ToEmail='".$_SESSION["carOwnerEmail"]."'";
+    $sql="SELECT (SELECT ShopName FROM shopowner WHERE Email=notification.FromEmail) AS name,Date,Status,Type,ServiceId,NotificationId FROM notification WHERE ToEmail='".$_SESSION["carOwnerEmail"]."' ORDER BY Date DESC";
 
     $jsonNotificationString = getJSONFromDB($sql);
 

@@ -13,7 +13,7 @@
 
       require ("phpFiles/updateDatabase.php");
 
-      $sql="INSERT INTO service(ServiceId, CarOwnerEmail, ShopOwnerEmail, VehicleRegNo, Date, Latitude, Longitude) VALUES ('".$serviceId."', '".$_SESSION["carOwnerEmail"]."', '".$email."', '".$vehicleRegNo."', '".date("Y-m-d")."', '".$lat."', '".$long."' )";
+      $sql="INSERT INTO service(ServiceId, CarOwnerEmail, ShopOwnerEmail, VehicleRegNo, Date, Latitude, Longitude, Status) VALUES ('".$serviceId."', '".$_SESSION["carOwnerEmail"]."', '".$email."', '".$vehicleRegNo."', '".date("Y-m-d")."', '".$lat."', '".$long."', 'Pending' )";
 
       $msgsql="INSERT INTO message(SenderMail, ReceiverMail, MessageBody, Date, Status) VALUES ('".$_SESSION["carOwnerEmail"]."','".$email."','".$messageBody."','".date("Y-m-d")."','unread')";
 
