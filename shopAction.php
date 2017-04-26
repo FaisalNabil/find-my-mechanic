@@ -55,13 +55,13 @@
 		            die("Connection failed: " . mysqli_connect_error());
 		    }
 		    
-		    $sql = "insert into shopowner(ShopName,Email,Contact,Password,Latitude,Longitude,Address,ShopTradeLicence,flag,status) values ('".$name."','".$email."','".$phone."','".$password."','".$latitude."','".$longitude."','".$address."','".$stl."',2,'Pending');";
+		    $sql = "insert into shopowner(ShopName,Email,Contact,Password,Latitude,Longitude,Address,ShopTradeLicence,flag,Status) values ('".$name."','".$email."','".$phone."','".$password."','".$latitude."','".$longitude."','".$address."','".$stl."',2,'Pending');";
 
 		    $sql .= "insert into carshop(Email,Password,flag) values ('".$email."','".$password."',2,'Pending');";
 
 		    if (mysqli_multi_query($conn, $sql)) {
 		      $_SESSION["shopOwnerSignupEmail"] = $email;
-		      header("Location: shopOwner/index.html");
+		      header("Location: login.php");
 		    }else{
 		      echo mysqli_error($conn);
 		    }

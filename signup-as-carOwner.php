@@ -134,7 +134,7 @@ h2 {
             m=document.getElementById("emailError");
             var i=xmlhttp.responseText;
             if(str == null || str == ""){
-              m.innerHTML = "Email must be filled out";
+              	m.innerHTML = "Email must be filled out";
             }
             else if(i==str){
                 m.innerHTML="*Email exist, Try another one";
@@ -293,7 +293,7 @@ h2 {
                         <h3 class="panel-title">Please Enter Your information</h3>
                     </div>
                     <div class="panel-body">
-                          <form class="form-horizontal" action = "shopAction.php" method = "Post">
+                          <form class="form-horizontal" action = "carAction.php" method = "Post">
 
                              <div class="form-group">
                                 <label class="control-label col-sm-2" for="Name">Name:</label>

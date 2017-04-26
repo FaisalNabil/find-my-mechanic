@@ -61,13 +61,13 @@
               die("Connection failed: " . mysqli_connect_error());
       }
         
-        $sql = "insert into carowner(Name,Email,Contact,DOB,NID,DrivingLicence,Password,Address,flag) values ('".$name."','".$email."','".$phone."','".$dob."','".$nid."','".$drivingLicence."','".$password."','".$address."',1,'pending');";
+        $sql = "insert into carowner(Name,Email,Contact,DOB,NID,DrivingLicence,Password,Address,flag,Status) values ('".$name."','".$email."','".$phone."','".$dob."','".$nid."','".$drivingLicence."','".$password."','".$address."',1,'pending');";
 
         $sql .= "insert into carshop(Email,Password,flag,status) values ('".$email."','".$password."',1,'pending');";
 
         if (mysqli_multi_query($conn, $sql)) {
           $_SESSION["carOwnerSignupEmail"] = $email;
-            header("Location: carOwner/index.php");
+            header("Location: login.php");
         } 
         else {
             echo mysqli_error($conn);
