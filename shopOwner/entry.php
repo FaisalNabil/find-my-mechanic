@@ -1,16 +1,16 @@
 <?php 
  $currentPage = 'entry';
+ $info="";
  include("TemplateFile/header.php"); 
-
  ?>
 <?php 
 
-    $jsonShopOwnerString = getJSONFromDB("select * from stock JOIN shopstockrelation ON stock.StockId=shopstockrelation.StockId WHERE shopstockrelation.ShopEmail='".$_SESSION["shopOwnerEmail"]."'");
+    $jsonShopOwnerString = getJSONFromDB("SELECT * FROM stock JOIN shopstockrelation ON stock.StockId=shopstockrelation.StockId WHERE shopstockrelation.ShopEmail='".$_SESSION["shopOwnerEmail"]."'");
 
     $stockDetailData = json_decode($jsonShopOwnerString);
 
-    if(isset($_POST['editSubmit']) && $_POST['PartsId']!="" && $_SERVER["REQUEST_METHOD"] == "POST"){
-        $stockid=$_POST['PartsId'];
+    if(isset($_POST['editSubmit']) && $_POST['PartsName']!="" && $_POST['UnitPrice']!="" && $_POST['TotalUnit']!="" && $_SERVER["REQUEST_METHOD"] == "POST"){
+        //$stockid=$_POST['PartsId'];
         $stockname=$_POST['PartsName'];
         $unitprice=$_POST['UnitPrice'];
         $totalunit=$_POST['TotalUnit'];
@@ -18,24 +18,28 @@
         
         require ("shopOwnerPHP/updateDatabase.php");
 
-        $sql="UPDATE stock SET StockId='".$stockid."', PartsName ='".$stockname."', PricePerUnit ='".$unitprice."', TotalUnit ='".$totalunit."'  WHERE StockId='".$hiddenpartsid."'";
-        $sqlRelation="UPDATE shopstockrelation SET StockId='".$stockid."' WHERE ShopEmail='".$_SESSION["shopOwnerEmail"]."' AND StockId='".$hiddenpartsid."'";
+        $sql="UPDATE stock SET PartsName ='".$stockname."', PricePerUnit ='".$unitprice."', TotalUnit ='".$totalunit."'  WHERE StockId='".$hiddenpartsid."'";
 
-        //echo $sql;
         if(updateDB($sql)==1){
             header("Refresh:0");
-            updateDB($sqlRelation);
         }
         else {
             $info=
-                    '<div class="alert alert-info alert-dismissable">
+                    '<div class="alert alert-danger alert-dismissable">
                         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                         Data Updating <strong>Failed!</strong>
                      </div>';
         }
     }
-    if(isset($_POST['addanothersubmit']) && $_POST['AddPartsId']!="" && $_SERVER["REQUEST_METHOD"] == "POST"){
-        $addstockid=$_POST['AddPartsId'];
+    else if(isset($_POST['editSubmit'])) {
+        $info=
+                    '<div class="alert alert-danger alert-dismissable">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Please Fill All Data</strong>
+                     </div>';
+    }
+    if(isset($_POST['addanothersubmit']) && $_POST['AddPartsName']!="" && $_POST['AddTotalUnit']!="" && $_POST['AddUnitPrice']!="" && $_SERVER["REQUEST_METHOD"] == "POST"){
+        $addstockid=date("md")+time();
         $addstockname=$_POST['AddPartsName'];
         $addtotalunit=$_POST['AddTotalUnit'];
         $addunitprice=$_POST['AddUnitPrice'];
@@ -50,30 +54,32 @@
         //echo $sqlRelation;
 
         if(updateDB($sql)==1){
-            header("Refresh:0");
             updateDB($sqlRelation);
+            header("Refresh:0");
         }
         else{
             header("Refresh:0");
             $info=
-                    '<div class="alert alert-info alert-dismissable">
+                    '<div class="alert alert-danger alert-dismissable">
                         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                         <strong>Adding!</strong> Failed.
                      </div>';
         }
         
+    }else if(isset($_POST['addanothersubmit'])) {
+        $info=
+                    '<div class="alert alert-danger alert-dismissable">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Please Fill All Data</strong>
+                     </div>';
     }
-
-    $jsonShopOwnerString = getJSONFromDB("SELECT ShopName FROM shopowner WHERE Email='".$_SESSION["shopOwnerEmail"]."'");
-
-    $jsonShopOwnerData = json_decode($jsonShopOwnerString);
 ?>
 
 <script type="text/javascript">
 xmlhttp = new XMLHttpRequest();
     function deletefunction(obj,id){
         //alert(id);
-        str=document.getElementById(id).innerText;
+        //str=document.getElementById(id).innerText;
         //alert(str);
 
     xmlhttp.onreadystatechange = function() {
@@ -89,69 +95,12 @@ xmlhttp = new XMLHttpRequest();
                 
         }
     };
-    var url="shopOwnerPHP/stockRowDelete.php?sid="+str;
+    var url="shopOwnerPHP/stockRowDelete.php?sid="+id;
     //alert(url);
     xmlhttp.open("GET", url, true);
     xmlhttp.send();
     }
 
-    function partIdCheck(id){
-        //alert(id);
-        str=document.getElementById(id).value;
-        //alert(str);
-
-    xmlhttp.onreadystatechange = function() {
-        
-        if (xmlhttp.readyState == 4 && xmlhttp.status == 200 && id!="") {
-            
-            m=document.getElementById("errorMessage");
-            var i=xmlhttp.responseText;
-            //alert(i);
-            if(i==str){
-                m.innerHTML="*Stock Id exist, Try another one";
-                m.style.color= "red";
-            }
-            else{
-                m.innerHTML="Good Choice!!";
-                m.style.color= "green";
-            }   
-                
-        }
-    };
-    var url="shopOwnerPHP/stockIdCheckAJAX.php?sid="+str;
-    //alert(url);
-    xmlhttp.open("GET", url, true);
-    xmlhttp.send();
-    }
-
-    function partIdCheckOnAdd(id){
-        //alert(id);
-        str=document.getElementById(id).value;
-        //alert(str);
-
-    xmlhttp.onreadystatechange = function() {
-        
-        if (xmlhttp.readyState == 4 && xmlhttp.status == 200 && id!="") {
-            
-            m=document.getElementById("addErrorMessage");
-            var i=xmlhttp.responseText;
-            //alert(i);
-            if(i==str){
-                m.innerHTML="*Stock Id exist, Try another one";
-                m.style.color= "red";
-            }
-            else{
-                m.innerHTML="Good Choice!!";
-                m.style.color= "green";
-            }   
-                
-        }
-    };
-    var url="shopOwnerPHP/stockIdCheckAJAX.php?sid="+str;
-    //alert(url);
-    xmlhttp.open("GET", url, true);
-    xmlhttp.send();
-    }
 </script>
 
         <!-- end navbar side -->
@@ -164,6 +113,7 @@ xmlhttp = new XMLHttpRequest();
                 </div>
                  <div class="col-lg-12">
                     <h3 class="alert alert-info">Stock Details</h3>
+                    <?php echo $info; ?>
                     <div class="panel panel-primary">
                         <div class="panel-heading">
                             <i class="fa fa-truck fa-fw"></i> Stock  
@@ -176,7 +126,7 @@ xmlhttp = new XMLHttpRequest();
                                          <table class="table table-bordered" id="stockTable">
                                             <thead>
                                               <tr>
-                                                <th>Stock Id</th>
+                                                <th>#</th>
                                                 <th>Parts Name</th>
                                                 <th>Unit Price</th>
                                                 <th>Total Unit Left</th>
@@ -188,13 +138,13 @@ xmlhttp = new XMLHttpRequest();
                                                 for($i=0;$i<sizeof($stockDetailData);$i++){
                                                ?>     
                                               <tr>
-                                                <td id="stockid<?php echo $i ?>"><?php echo $stockDetailData[$i]->StockId; ?></td>
+                                                <td id="stockid<?php echo $i ?>"><?php echo $i+1; ?></td>
                                                 <td><?php echo $stockDetailData[$i]->PartsName; ?></td>
                                                 <td><?php echo $stockDetailData[$i]->PricePerUnit; ?></td>
                                                 <td><?php echo $stockDetailData[$i]->TotalUnit; ?></td>
-                                                <td><button class="btn btn-info" data-toggle="modal" data-target="#myModal<?php echo $i; ?>">Edit</button> 
+                                                <td><button class="btn btn-info" data-toggle="modal" data-target="#stockModal<?php echo $i; ?>">Edit</button> 
                                                     <!-- Modal -->
-                                                    <div class="modal fade" id="myModal<?php echo $i; ?>" role="dialog">
+                                                    <div class="modal fade" id="stockModal<?php echo $i; ?>" role="dialog">
                                                         <div class="modal-dialog modal-lg">
                                                           <div class="modal-content">
                                                             <div class="modal-header">
@@ -203,13 +153,7 @@ xmlhttp = new XMLHttpRequest();
                                                             </div>
                                                             <div class="modal-body">
                                                                   <form class="form-horizontal" method="POST" action="">
-                                                                      <div class="form-group">
-                                                                        <label class="control-label col-sm-2" for="parts_id">Parts Id:</label>
-                                                                        <div class="col-sm-5">
-                                                                          <input type="text" class="form-control" name="PartsId" id="parts_id<?php echo $i ?>" value="<?php echo $stockDetailData[$i]->StockId; ?>" onkeyup="partIdCheck('parts_id<?php echo $i; ?>')"><span id="errorMessage"></span>
-                                                                        </div>
-                                                                      </div>
-
+                                                                      
                                                                       <div class="form-group">
                                                                         <label class="control-label col-sm-2" for="parts_name">Parts Name:</label>
                                                                         <div class="col-sm-5">
@@ -245,7 +189,7 @@ xmlhttp = new XMLHttpRequest();
                                                           </div>
                                                         </div>
                                                     </div><!-- End Modal -->
-                                                    <button class="btn btn-danger" onclick="deletefunction(this,'stockid<?php echo $i;?>') ">Delete</button>
+                                                    <button class="btn btn-danger" onclick="deletefunction(this,'<?php echo $stockDetailData[$i]->StockId;?>') ">Delete</button>
                                                 </td>
                                               </tr>
                                               <?php
@@ -260,8 +204,8 @@ xmlhttp = new XMLHttpRequest();
 
                             </div>
                             <!-- row -->
-                            <button class="btn btn-warning" data-toggle="modal" data-target="#myModal2">Add Another One</button>
-                            <div class="modal fade" id="myModal2" role="dialog">
+                            <button class="btn btn-warning" data-toggle="modal" data-target="#addStockModal">Add Another One</button>
+                            <div class="modal fade" id="addStockModal" role="dialog">
                                                         <div class="modal-dialog modal-lg">
                                                           <div class="modal-content">
                                                             <div class="modal-header">
@@ -270,12 +214,6 @@ xmlhttp = new XMLHttpRequest();
                                                             </div>
                                                             <div class="modal-body">
                                                                   <form class="form-horizontal" method="POST" action="">
-                                                                      <div class="form-group">
-                                                                        <label class="control-label col-sm-2" for="add_parts_id" >Parts Id:</label>
-                                                                        <div class="col-sm-5">
-                                                                          <input type="text" class="form-control" name="AddPartsId" id="add_parts_id" onkeyup="partIdCheckOnAdd('add_parts_id')" placeholder="Enter Parts Id"><span id="addErrorMessage"></span>
-                                                                        </div>
-                                                                      </div>
                                                                       <div class="form-group">
                                                                         <label class="control-label col-sm-2" for="add_parts_name">Parts Name:</label>
                                                                         <div class="col-sm-5">

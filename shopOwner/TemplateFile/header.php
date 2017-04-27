@@ -1,4 +1,5 @@
 <?php session_start();
+
 ob_start();
 include("shopOwnerPHP/selectFromDatabase.php"); 
 
@@ -11,6 +12,9 @@ $jsonShopOwnerData = json_decode($jsonShopOwnerString);
 <!DOCTYPE html>
 <html>
 <head>
+<?php if (!isset($_SESSION["shopOwnerEmail"])) {
+    header("Location:../login.php");
+} ?>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WebTechnology Final Project</title>
@@ -20,7 +24,8 @@ $jsonShopOwnerData = json_decode($jsonShopOwnerString);
     
     <link href="../assets/css/style.css" rel="stylesheet" />
     <link href="../assets/css/main-style.css" rel="stylesheet" />
-   </head>
+</head>
+
 <body>
     <!--  wrapper -->
     <div id="wrapper">
@@ -67,7 +72,6 @@ $jsonShopOwnerData = json_decode($jsonShopOwnerString);
                     <hr>
 
                     <li class="<?php if($currentPage =='home'){echo 'selected';}?>">
-
                         <a href="index.php"><i class="fa fa-dashboard fa-fw"></i>Home</a>
                     </li>
                     <li class="<?php if($currentPage =='message'){echo 'selected';}?>">

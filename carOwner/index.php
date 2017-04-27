@@ -1,5 +1,6 @@
 <?php 
       $currentPage = 'home';
+      $info="";
    include 'TemplateFile/header.php'; 
 
    if(isset($_POST['send']) && $_SERVER["REQUEST_METHOD"] == "POST"){
@@ -8,7 +9,8 @@
       $lat=$_POST['lat'];
       $long=$_POST['long'];
       $email=$_POST['email'];
-      $serviceId=substr($_SESSION["carOwnerEmail"], 0,1).substr($email, 0,1).date("Y-m-d");
+      $var=date("md")+time();
+      $serviceId=substr($_SESSION["carOwnerEmail"], 0,1).substr($email, 0,1).(string)$var;
 
 
       require ("phpFiles/updateDatabase.php");
@@ -21,14 +23,23 @@
 
       //echo $notificationsql;
       if(updateDB($sql)==1){
-        if(updateDB($msgsql)==1){
-          if(updateDB($notificationsql)==1){
-            $info="";
+        if(updateDB($notificationsql)==1){
+          $info=
+                    '<div class="alert alert-success alert-dismissable">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Request Sent Successfully</strong>
+                     </div>';
+          if($messageBody!=""){
+            updateDB($msgsql);
           }
         }
       }
       else{
-          $info="";
+          $info=
+                    '<div class="alert alert-danger alert-dismissable">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Request Sending was Unsuccessfull</strong>
+                     </div>';
       }
       
     }
@@ -123,7 +134,7 @@
                 <!-- Welcome -->
                 <div class="col-lg-12 text-center">
                     <div class="alert alert-info">
-                        <i class="fa fa-folder-open"></i><b>&nbsp;Hello ! </b>Welcome Back <b>Faisal Nabil </b>
+                        <i class="fa fa-folder-open"></i><b>&nbsp;Hello ! </b>Welcome Back <b><?php echo $carOwnerData[0]->Name; ?></b>
                         <i class="fa fa-map-marker"></i> <b>&nbsp; Now you are in <span class="location-color">
 
                         <?php 
@@ -164,7 +175,7 @@
 
             <div class="row">
                 <div class="col-lg-6 col-lg-offset-2">
-                    <?php //echo $info ; 
+                    <?php echo $info ; 
                     ?>
                 </div>
             </div>
@@ -200,7 +211,7 @@
                                                 <tr>
                                                     <td><?php echo ($i+1) ; ?></td>
                                                     <td><?php echo $ShopOwnerData[$i]->ShopName ;?></td>
-                                                    <td><?php echo sprintf('%0.2f',$km[$i]); ?></td>
+                                                    <td><?php echo sprintf('%0.2f',$km[$i]); ?> km</td>
                                                     <td><button class="btn btn-success" data-toggle="modal" data-target="#requestSendModal<?php echo $i ?>">Send Request</button>
                                                <!-- Modal -->
   <div class="modal fade" id="requestSendModal<?php echo $i ?>" role="dialog">

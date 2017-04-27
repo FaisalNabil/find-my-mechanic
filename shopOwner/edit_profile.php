@@ -1,4 +1,7 @@
-<?php include("TemplateFile/header.php"); ?>
+<?php 
+  $info="";
+  include("TemplateFile/header.php");
+?>
 <?php  
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST')
@@ -26,9 +29,20 @@
             echo "<script type='text/javascript'>alert('Successfully updated');</script>";
             header("Refresh:0");
         } else {
-            echo "<script type='text/javascript'>alert('Updated Failed');</script>";
+            $info=
+                    '<div class="alert alert-danger alert-dismissable">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        Data Updating <strong>Failed!</strong>
+                     </div>';
         }
     }
+    else if(isset($_POST['editSubmit'])){
+            $info=
+                    '<div class="alert alert-danger alert-dismissable">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        Data Updating <strong>Failed!</strong>
+                     </div>';
+        }
 
 ?>
         <!-- end navbar side -->
@@ -39,6 +53,7 @@
                 <!-- Page Header -->
                 <div class="col-lg-12">
                     <h1 class="page-header">Profile</h1>
+                    <?php echo $info; ?>
                 </div>
                 <!--End Page Header -->
             </div>
@@ -102,7 +117,7 @@
 
                                               <div class="form-group">
                                                 <div class="col-sm-offset-2 col-sm-2">
-                                                  <button type="submit" class="btn btn-primary">Save Changes</button>
+                                                  <button type="submit" name="editSubmit" class="btn btn-primary">Save Changes</button>
                                                 </div>
                                               </div>
                                          </form>

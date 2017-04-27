@@ -3,6 +3,10 @@
   $currentPage = 'history';
   include("TemplateFile/header.php");
 
+  $jsonServiceString = getJSONFromDB("SELECT (SELECT name FROM carowner WHERE Email=service.CarOwnerEmail) AS name,Date,VehicleRegNo,SecretKey,Status FROM service WHERE ShopOwnerEmail='".$_SESSION["shopOwnerEmail"]."' ORDER BY Date DESC");
+
+  $jsonServiceData = json_decode($jsonServiceString);
+
 ?>
 
         <!-- end navbar side -->
@@ -26,11 +30,30 @@
                 </div>
                  
             </div>
-
-            <div class="row">
-               
-
-            </div>
+            <?php 
+            for($i=0;$i<sizeof($jsonServiceData);$i++){
+                ?>
+                <div class="row">
+                    <div class="col-md-8">
+                       <div class="alert alert-info">
+                            <strong>Name: </strong><span><?php echo $jsonServiceData[$i]->name; ?></span>
+                            <em class="pull-right"><?php echo $jsonServiceData[$i]->Date; ?></em>
+                            <div>
+                                <strong>Vehicle Registration Number: </strong><span><?php echo $jsonServiceData[$i]->VehicleRegNo; ?></span>
+                            </div>
+                            <div>
+                                <div class="pull-right">
+                                    <span class=" label label-danger"><?php echo $jsonServiceData[$i]->Status; ?></span>
+                                </div>
+                            </div>
+                       </div>
+                    </div>
+                </div>
+                <hr style="color: black">
+            <?php    
+            }
+            ?>
+            
 
             <div class="row">
                 <div class="col-md-12">

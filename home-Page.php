@@ -1,3 +1,11 @@
+<?php 
+if(isset($_POST['send']) && $_SERVER["REQUEST_METHOD"] == "POST"){
+  $email=$_POST['Email'];
+  $message=$_POST['Message'];
+
+  $sql="INSERT INTO message(SenderMail, ReceiverMail, MessageBody, Date, Status) VALUES ('nabil@admin.com','".$email."','".$message."','".date("Y-m-d")."','unread')";
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -192,16 +200,16 @@ h2 {
   <h2 class="text-center">SUPPORT</h2>
       <div class="row">
         <div class="col-md-5 col-md-offset-4">
-          <form>
+          <form action="" method="post">
             <div class="form-group">
               <label for="email">Email:</label>
-              <input type="email" class="form-control" id="email" placeholder="Enter Your Email">
+              <input type="email" class="form-control" id="email" placeholder="Enter Your Email" name="Email">
             </div>
             <div class="form-group">
               <label for="message">Message:</label>
-              <textarea class="form-control" rows="5" id="message"></textarea>
+              <input type="textarea" name="Message" class="form-control" rows="5" id="message">
             </div>
-            <button type="submit" class="btn btn-primary">Send</button>
+            <button type="submit" class="btn btn-primary" name="Send">Send</button>
           </form>
         </div>
       </div>

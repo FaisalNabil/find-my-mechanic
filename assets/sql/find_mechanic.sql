@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 22, 2017 at 05:19 PM
+-- Generation Time: Apr 27, 2017 at 07:57 PM
 -- Server version: 10.1.21-MariaDB
 -- PHP Version: 7.1.1
 
@@ -21,7 +21,6 @@ SET time_zone = "+00:00";
 --
 CREATE DATABASE IF NOT EXISTS `find_My_Mechanic` DEFAULT CHARACTER SET = 'utf8' COLLATE utf8_general_ci;
 USE `find_My_Mechanic`;
-
 -- --------------------------------------------------------
 
 --
@@ -50,7 +49,7 @@ INSERT INTO `admin` (`AdminName`, `Email`, `flag`, `Status`, `Password`) VALUES
 --
 
 CREATE TABLE `availableservices` (
-  `ServicesId` varchar(10) NOT NULL,
+  `ServicesId` varchar(11) NOT NULL,
   `ServiceName` varchar(40) NOT NULL,
   `Cost` varchar(15) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -60,8 +59,7 @@ CREATE TABLE `availableservices` (
 --
 
 INSERT INTO `availableservices` (`ServicesId`, `ServiceName`, `Cost`) VALUES
-('A32', 'paintjob', '5000tk'),
-('A33', 'Car wash', '2000');
+('1493309253', 'Oil change', '2000');
 
 -- --------------------------------------------------------
 
@@ -135,19 +133,12 @@ CREATE TABLE `message` (
 --
 
 INSERT INTO `message` (`MessageId`, `SenderMail`, `ReceiverMail`, `MessageBody`, `Date`, `Status`) VALUES
-(1, 'nabilt59@gmail.com', 'hosensarwar007@gmail.com', 'Help me', '2017-04-10', 'read'),
-(2, 'hosensarwar007@gmail.com', 'nabilt59@gmail.com', 'How can I help ypu', '2017-04-10', 'read'),
-(3, 'nabilt59@gmail.com', 'hosensarwar007@gmail.com', 'My car broke down', '2017-04-10', 'read'),
-(4, 'hosensarwar007@gmail.com', 'nabilt59@gmail.com', 'Wait, I am sending a man', '2017-04-10', 'read'),
-(5, 'abc@gmail.com', 'hosensarwar007@gmail.com', 'Help', '2017-04-10', 'read'),
-(6, 'hosensarwar007@gmail.com', 'abc@gmail.com', 'How may I help you?', '2017-04-12', 'read'),
-(7, 'hosensarwar007@gmail.com', 'nabilt59@gmail.com', 'Did you get help?', '2017-04-12', 'read'),
-(10, 'nabilt59@gmail.com', 'hosensarwar007@gmail.com', 'yes', '2017-04-12', 'read'),
-(11, 'nabilt59@gmail.com', 'hosensarwar007@gmail.com', 'Help please. I have a flat tyre', '2017-04-20', 'read'),
-(32, 'nabilt59@gmail.com', 'hosensarwar007@gmail.com', 'help,i am dead', '2017-04-20', 'read'),
-(43, 'nabilt59@gmail.com', 'hosensarwar007@gmail.com', 'help', '2017-04-21', 'read'),
-(44, 'nabilt59@gmail.com', 'tuhinbhuiyan7@gmail.com', 'Help me', '2017-04-22', 'read'),
-(45, 'abc@gmail.com', 'hosensarwar007@gmail.com', 'help please', '2017-04-22', 'read');
+(49, 'nabilt59@gmail.com', 'hosensarwar007@gmail.com', 'Hi,Can you help me?', '2017-04-27', 'read'),
+(50, 'nabilt59@gmail.com', 'hosensarwar007@gmail.com', 'Send help', '2017-04-27', 'read'),
+(51, 'nabilt59@gmail.com', 'hosensarwar007@gmail.com', '', '2017-04-27', 'read'),
+(52, 'nabilt59@gmail.com', 'hosensarwar007@gmail.com', '', '2017-04-27', 'read'),
+(53, 'nabilt59@gmail.com', 'hosensarwar007@gmail.com', '', '2017-04-27', 'read'),
+(54, 'nabilt59@gmail.com', 'hosensarwar007@gmail.com', '', '2017-04-27', 'read');
 
 -- --------------------------------------------------------
 
@@ -170,12 +161,16 @@ CREATE TABLE `notification` (
 --
 
 INSERT INTO `notification` (`NotificationId`, `FromEmail`, `ToEmail`, `Type`, `Date`, `Status`, `ServiceId`) VALUES
-(9, 'nabilt59@gmail.com', 'hosensarwar007@gmail.com', '1', '2017-04-21', 'unread', 'nh2017-04-21'),
-(10, 'hosensarwar007@gmail.com', 'nabilt59@gmail.com', '2', '2017-04-21', 'unread', 'nh2017-04-21'),
-(11, 'nabilt59@gmail.com', 'tuhinbhuiyan7@gmail.com', '1', '2017-04-22', 'unread', 'nt2017-04-22'),
-(12, 'tuhinbhuiyan7@gmail.com', 'nabilt59@gmail.com', '2', '2017-04-22', 'unread', 'nt2017-04-22'),
-(13, 'abc@gmail.com', 'hosensarwar007@gmail.com', '1', '2017-04-22', 'read', 'ah2017-04-22'),
-(22, 'hosensarwar007@gmail.com', 'abc@gmail.com', '2', '2017-04-22', 'read', 'ah2017-04-22');
+(23, 'nabilt59@gmail.com', 'hosensarwar007@gmail.com', '1', '2017-04-27', 'read', 'nh2017-04-27'),
+(24, 'hosensarwar007@gmail.com', 'nabilt59@gmail.com', '2', '2017-04-27', 'unread', 'nh2017-04-27'),
+(25, 'nabilt59@gmail.com', 'hosensarwar007@gmail.com', '1', '2017-04-27', 'read', '1493314486'),
+(26, 'nabilt59@gmail.com', 'hosensarwar007@gmail.com', '1', '2017-04-27', 'read', '1493315057'),
+(27, 'nabilt59@gmail.com', 'hosensarwar007@gmail.com', '1', '2017-04-27', 'unread', '1493315164'),
+(28, 'nabilt59@gmail.com', 'hosensarwar007@gmail.com', '1', '2017-04-27', 'unread', 'nh1493315346'),
+(29, 'nabilt59@gmail.com', 'hosensarwar007@gmail.com', '1', '2017-04-27', 'unread', 'nh1493315355'),
+(30, 'nabilt59@gmail.com', 'hosensarwar007@gmail.com', '1', '2017-04-27', 'unread', 'nh1493315549'),
+(31, 'hosensarwar007@gmail.com', 'nabilt59@gmail.com', '3', '2017-04-27', 'unread', '1493314486'),
+(32, 'hosensarwar007@gmail.com', 'nabilt59@gmail.com', '2', '2017-04-27', 'unread', '1493315057');
 
 -- --------------------------------------------------------
 
@@ -211,17 +206,22 @@ CREATE TABLE `service` (
   `Date` date NOT NULL,
   `Latitude` varchar(100) NOT NULL,
   `Longitude` varchar(100) NOT NULL,
-  `SecretKey` int(5) NOT NULL
+  `SecretKey` int(5) NOT NULL,
+  `Status` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `service`
 --
 
-INSERT INTO `service` (`ServiceId`, `CarOwnerEmail`, `ShopOwnerEmail`, `VehicleRegNo`, `Date`, `Latitude`, `Longitude`, `SecretKey`) VALUES
-('ah2017-04-22', 'abc@gmail.com', 'hosensarwar007@gmail.com', '23542fdsg4', '2017-04-22', '23.8296669', '90.41901159999999', 12345),
-('nh2017-04-21', 'nabilt59@gmail.com', 'hosensarwar007@gmail.com', 'Dhk-9823', '2017-04-21', '23.8296371', '90.4190818', 12345),
-('nt2017-04-22', 'nabilt59@gmail.com', 'tuhinbhuiyan7@gmail.com', 'Dhk-9823', '2017-04-22', '23.829444199999998', '90.4188492', 12345);
+INSERT INTO `service` (`ServiceId`, `CarOwnerEmail`, `ShopOwnerEmail`, `VehicleRegNo`, `Date`, `Latitude`, `Longitude`, `SecretKey`, `Status`) VALUES
+('1493314486', 'nabilt59@gmail.com', 'hosensarwar007@gmail.com', 'Dhk-9823', '2017-04-27', '23.810332', '90.4125181', 12345, 'Rejected'),
+('1493315057', 'nabilt59@gmail.com', 'hosensarwar007@gmail.com', 'AB-23211', '2017-04-27', '23.810332', '90.4125181', 12345, 'Accepted'),
+('1493315164', 'nabilt59@gmail.com', 'hosensarwar007@gmail.com', 'AB-23211', '2017-04-27', '23.810332', '90.4125181', 0, 'Pending'),
+('nh1493315346', 'nabilt59@gmail.com', 'hosensarwar007@gmail.com', 'AB-23211', '2017-04-27', '23.810332', '90.4125181', 0, 'Pending'),
+('nh1493315355', 'nabilt59@gmail.com', 'hosensarwar007@gmail.com', 'AB-23211', '2017-04-27', '23.810332', '90.4125181', 0, 'Pending'),
+('nh1493315549', 'nabilt59@gmail.com', 'hosensarwar007@gmail.com', 'AB-23211', '2017-04-27', '23.810332', '90.4125181', 0, 'Pending'),
+('nh2017-04-27', 'nabilt59@gmail.com', 'hosensarwar007@gmail.com', 'AB-23211', '2017-04-27', '23.810332', '90.4125181', 12345, 'Done');
 
 -- --------------------------------------------------------
 
@@ -258,7 +258,7 @@ INSERT INTO `shopowner` (`ShopName`, `Email`, `Contact`, `Password`, `Latitude`,
 
 CREATE TABLE `shopservicerelation` (
   `ShopEmail` varchar(30) NOT NULL,
-  `ServicesId` varchar(10) NOT NULL
+  `ServicesId` varchar(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -266,8 +266,7 @@ CREATE TABLE `shopservicerelation` (
 --
 
 INSERT INTO `shopservicerelation` (`ShopEmail`, `ServicesId`) VALUES
-('tuhinbhuiyan7@gmail.com', 'A32'),
-('hosensarwar007@gmail.com', 'A33');
+('hosensarwar007@gmail.com', '1493309253');
 
 -- --------------------------------------------------------
 
@@ -277,18 +276,8 @@ INSERT INTO `shopservicerelation` (`ShopEmail`, `ServicesId`) VALUES
 
 CREATE TABLE `shopstockrelation` (
   `ShopEmail` varchar(35) NOT NULL,
-  `StockId` varchar(10) NOT NULL
+  `StockId` varchar(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `shopstockrelation`
---
-
-INSERT INTO `shopstockrelation` (`ShopEmail`, `StockId`) VALUES
-('hosensarwar007@gmail.com', 'Part1'),
-('hosensarwar007@gmail.com', 'Part3'),
-('tuhinbhuiyan7@gmail.com', 'Part7'),
-('hosensarwar007@gmail.com', 'A5');
 
 -- --------------------------------------------------------
 
@@ -297,21 +286,11 @@ INSERT INTO `shopstockrelation` (`ShopEmail`, `StockId`) VALUES
 --
 
 CREATE TABLE `stock` (
-  `StockId` varchar(10) NOT NULL,
+  `StockId` varchar(11) NOT NULL,
   `PartsName` varchar(30) NOT NULL,
   `PricePerUnit` varchar(15) NOT NULL,
   `TotalUnit` int(15) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `stock`
---
-
-INSERT INTO `stock` (`StockId`, `PartsName`, `PricePerUnit`, `TotalUnit`) VALUES
-('A5', 'Seat Cover', '1200', 33),
-('Part1', 'Bumper', '1200', 12),
-('Part3', 'Wheel', '10000', 12),
-('Part7', 'Head Light', '5000', 2);
 
 -- --------------------------------------------------------
 
@@ -436,22 +415,15 @@ ALTER TABLE `vehicle`
 -- AUTO_INCREMENT for table `message`
 --
 ALTER TABLE `message`
-  MODIFY `MessageId` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `MessageId` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
 --
 -- AUTO_INCREMENT for table `notification`
 --
 ALTER TABLE `notification`
-  MODIFY `NotificationId` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `NotificationId` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 --
 -- Constraints for dumped tables
 --
-
---
--- Constraints for table `message`
---
-ALTER TABLE `message`
-  ADD CONSTRAINT `message_ibfk_3` FOREIGN KEY (`SenderMail`) REFERENCES `carshop` (`Email`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `message_ibfk_5` FOREIGN KEY (`ReceiverMail`) REFERENCES `carshop` (`Email`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `notification`

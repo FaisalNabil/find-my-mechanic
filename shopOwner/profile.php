@@ -1,4 +1,7 @@
-<?php include("TemplateFile/header.php"); ?>
+<?php 
+  $info="";
+  include("TemplateFile/header.php"); 
+?>
 <?php 
 
     $jsonShopOwnerString = getJSONFromDB("SELECT * FROM shopowner WHERE Email= '".$_SESSION["shopOwnerEmail"]."'");
@@ -9,137 +12,94 @@
 
     $avilableserviceData = json_decode($jsonServiceString);
 
-    if(isset($_POST['editSubmit']) && $_SERVER["REQUEST_METHOD"] == "POST"){
-        $serviceid=$_POST['ServiceId'];
+    if(isset($_POST['editSubmit']) && $_POST['ServiceName']!="" && $_POST['Cost']!="" && $_SERVER["REQUEST_METHOD"] == "POST"){
+        //$serviceid=$_POST['ServiceId'];
         $servicename=$_POST['ServiceName'];
         $cost=$_POST['Cost'];
         $serviceidhidden=$_POST['ServiceIdHidden'];
         
         require ("shopOwnerPHP/updateDatabase.php");
 
-        $sql="UPDATE availableservices SET ServicesId='".$serviceid."', ServiceName='".$servicename."', Cost='".$cost."' WHERE ServicesId='".$serviceidhidden."' ";
-        $sqlRelation="UPDATE shopservicerelation SET ServicesId='".$serviceid."' WHERE ShopEmail= '".$_SESSION["shopOwnerEmail"]."' AND ServicesId='".$serviceidhidden."'";
-
+        $sql="UPDATE availableservices SET ServiceName='".$servicename."', Cost='".$cost."' WHERE ServicesId='".$serviceidhidden."' ";
         //echo $sql;
         if(updateDB($sql)==1){
-            updateDB($sqlRelation);
             //echo "<script type='text/javascript'>alert('Successfully updated');</script>";
             header("Refresh:0");
             
         }
         else{
-            echo "<script type='text/javascript'>alert('Updated Failed');</script>";
+            $info=
+                    '<div class="alert alert-danger alert-dismissable">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        Data Updating <strong>Failed!</strong>
+                     </div>';
         }
         
     }
+    else if(isset($_POST['editSubmit'])) {
+        $info=
+                    '<div class="alert alert-danger alert-dismissable">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Please Fill All Data</strong>
+                     </div>';
+    }
 
-    if(isset($_POST['addanothersubmit']) && $_SERVER["REQUEST_METHOD"] == "POST"){
-        $addserviceid=$_POST['Addserviceid'];
+    if(isset($_POST['addanothersubmit']) && $_POST['Addservicename']!="" && $_POST['Addservicecost']!="" && $_SERVER["REQUEST_METHOD"] == "POST"){
+        $addserviceid=date("md")+time();
         $addservicename=$_POST['Addservicename'];
         $addcost=$_POST['Addservicecost'];
         
         require ("shopOwnerPHP/updateDatabase.php");
 
-        $sql="INSERT INTO availableservices (ServicesId, ServiceName, Cost) VALUES ('".$addserviceid."','".$addservicename."','".$addcost."')";
+        $sql="INSERT INTO availableservices (ServicesId, ServiceName, Cost) VALUES ('".$addserviceid."', '".$addservicename."','".$addcost."')";
 
         $sqlRelation="INSERT INTO shopservicerelation (ServicesId, ShopEmail) VALUES('".$addserviceid."','".$_SESSION["shopOwnerEmail"]."')";
-        
+        echo $sqlRelation;
         if(updateDB($sql)==1){
             //echo "<script type='text/javascript'>alert('Successfully Inserted');</script>";
             updateDB($sqlRelation);
             header("Refresh:0");
         }
         else{
-            echo "<script type='text/javascript'>alert('Insert Failed');</script>";
+            $info=
+                    '<div class="alert alert-danger alert-dismissable">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Adding!</strong> Failed.
+                     </div>';
         }
         
+    }else if(isset($_POST['addanothersubmit'])) {
+        $info=
+                    '<div class="alert alert-danger alert-dismissable">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Please Fill All Data</strong>
+                     </div>';
     }
-
-    $jsonShopOwnerString = getJSONFromDB("SELECT ShopName FROM shopowner WHERE Email='".$_SESSION["shopOwnerEmail"]."'");
-
-    $jsonShopOwnerData = json_decode($jsonShopOwnerString);
 ?>
 
 <script type="text/javascript">
 xmlhttp = new XMLHttpRequest();
     function deletefunction(obj,id){ //Delete operation
         //alert(id);
-        str=document.getElementById(id).innerText;
+        //str=document.getElementById(id).innerText;
         //alert(str);
 
     xmlhttp.onreadystatechange = function() {
         
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
             
-            m=document.getElementById(id);
+            //m=document.getElementById(id);
             var i=xmlhttp.responseText;
             if(i==1)
                 document.getElementById("serviceTable").deleteRow(obj.parentNode.parentNode.rowIndex);
         }
     };
-    var url="shopOwnerPHP/serviceRowDelete.php?sid="+str;
+    var url="shopOwnerPHP/serviceRowDelete.php?sid="+id;
     //alert(url);
     xmlhttp.open("GET", url, true);
     xmlhttp.send();
     }
 
-    function serviceIdCheck(id){   //Checks Service Id
-        //alert(id);
-        str=document.getElementById(id).value;
-        //alert(str);
-
-    xmlhttp.onreadystatechange = function() {
-        
-        if (xmlhttp.readyState == 4 && xmlhttp.status == 200 && id!="") {
-            
-            m=document.getElementById("errorMessage");
-            var i=xmlhttp.responseText;
-            //alert(i);
-            if(i==str){
-                m.innerHTML="*Service Id exist, Try another one";
-                m.style.color= "red";
-            }
-            else{
-                m.innerHTML="Good Choice!!";
-                m.style.color= "green";
-            }   
-                
-        }
-    };
-    var url="shopOwnerPHP/serviceIdCheckAJAX.php?sid="+str;
-    //alert(url);
-    xmlhttp.open("GET", url, true);
-    xmlhttp.send();
-    }
-
-    function serviceIdCheckOnAdd(id){   //checks Service id on new add
-        //alert(id);
-        str=document.getElementById(id).value;
-        //alert(str);
-
-    xmlhttp.onreadystatechange = function() {
-        
-        if (xmlhttp.readyState == 4 && xmlhttp.status == 200 && id!="") {
-            
-            m=document.getElementById("addErrorMessage");
-            var i=xmlhttp.responseText;
-            //alert(i);
-            if(i==str){
-                m.innerHTML="*Service Id exist, Try another one";
-                m.style.color= "red";
-            }
-            else{
-                m.innerHTML="Good Choice!!";
-                m.style.color= "green";
-            }   
-                
-        }
-    };
-    var url="shopOwnerPHP/serviceIdCheckAJAX.php?sid="+str;
-    //alert(url);
-    xmlhttp.open("GET", url, true);
-    xmlhttp.send();
-    }
 </script>
 
         <!-- end navbar side -->
@@ -177,7 +137,7 @@ xmlhttp = new XMLHttpRequest();
             </div>
             <div class="row">
                 <h3 class="alert alert-info">Service Details</h3>
-                
+                <?php echo $info; ?>
             </div>
             <div class="row">
                 
@@ -207,7 +167,7 @@ xmlhttp = new XMLHttpRequest();
                                                     # code...
                                                 ?>
                                                 <tr>
-                                                    <td id="serviceid<?php echo $i ?>"> <?php echo $avilableserviceData[$i]->ServicesId; ?> </td>
+                                                    <td id="serviceid<?php echo $i ?>"> <?php echo $i+1; ?> </td>
                                                     <td> <?php echo $avilableserviceData[$i]->ServiceName; ?> </td>
                                                      <td> <?php echo $avilableserviceData[$i]->Cost; ?> </td>
                                                     <td><button class="btn btn-info" data-toggle="modal" data-target="#edit_service<?php echo $i; ?>">Edit</button>
@@ -221,12 +181,12 @@ xmlhttp = new XMLHttpRequest();
                                                                 </div>
                                                                 <div class="modal-body">
                                                                       <form class="form-horizontal" method="POST" action="">
-                                                                          <div class="form-group">
+                                                                          <!-- <div class="form-group">
                                                                             <label class="control-label col-sm-2" for="service_id">Service Id:</label>
                                                                             <div class="col-sm-5">
                                                                               <input type="text" class="form-control" name="ServiceId" id="service_id<?php echo $i ?>" value="<?php echo $avilableserviceData[$i]->ServicesId; ?>" onkeyup="serviceIdCheck('service_id<?php echo $i; ?>')"><span id="errorMessage"></span>
                                                                             </div>
-                                                                          </div>
+                                                                          </div> -->
                                                                           <div class="form-group">
                                                                             <label class="control-label col-sm-2" for="service_name">Service Name:</label>
                                                                             <div class="col-sm-5">
@@ -255,7 +215,7 @@ xmlhttp = new XMLHttpRequest();
                                                             </div>
                                                         </div><!-- End Modal -->
                                                             
-                                                        <button class="btn btn-danger" onclick="deletefunction(this,'serviceid<?php echo $i; ?>')">Delete</button>
+                                                        <button class="btn btn-danger" onclick="deletefunction(this,'<?php echo $avilableserviceData[$i]->ServicesId; ?>')">Delete</button>
                                                     </td>
                                                   </tr>
                                                   <tr>
@@ -272,9 +232,9 @@ xmlhttp = new XMLHttpRequest();
 
                             </div>
                             <!-- row -->
-                            <button class="btn btn-warning" data-toggle="modal" data-target="#myModal1">Add Another One</button>
+                            <button class="btn btn-warning" data-toggle="modal" data-target="#addAnotherModal">Add Another One</button>
                             <!-- Modal -->
-                                                    <div class="modal fade" id="myModal1" role="dialog">
+                                                    <div class="modal fade" id="addAnotherModal" role="dialog">
                                                         <div class="modal-dialog modal-lg">
                                                           <div class="modal-content">
                                                             <div class="modal-header">
@@ -283,13 +243,13 @@ xmlhttp = new XMLHttpRequest();
                                                             </div>
                                                             <div class="modal-body">
                                                                   <form class="form-horizontal" method="POST" action="">
-                                                                      <div class="form-group">
+                                                                      <!-- <div class="form-group">
                                                                         <label class="control-label col-sm-2" for="add_service_id">Service Id:</label>
                                                                         <div class="col-sm-5">
                                                                           <input type="text" class="form-control" name="Addserviceid" id="add_service_id" onkeyup="serviceIdCheckOnAdd('add_service_id')" placeholder="Enter Service Id">
                                                                         </div><span id="addErrorMessage"></span>
                                                                       </div>
-
+ -->
                                                                       <div class="form-group">
                                                                         <label class="control-label col-sm-2" for="add_service_name">Service Name:</label>
                                                                         <div class="col-sm-5">
@@ -325,4 +285,4 @@ xmlhttp = new XMLHttpRequest();
              
         </div>
         <!-- end page-wrapper -->
-<?php include 'TemplateFile/footer.php'; ?>
+<?php include("TemplateFile/footer.php"); ?>

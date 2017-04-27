@@ -15,12 +15,16 @@
             $("span").click(function(){
                 //$(this).hide();
                 //alert("hello");
-                $('#myModal').modal('show');
+                $('#notificationModal').modal('show');
             });
         });
 
     </script>
- <?php  ob_end_flush(); ?>   
+ <?php  ob_end_flush(); ?>
 </body>
-
+ <?php //}
+//  else{
+//     header("Location:login.php");
+//     }
+    ?>
 </html>

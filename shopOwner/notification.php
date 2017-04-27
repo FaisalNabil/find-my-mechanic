@@ -31,7 +31,7 @@
       if(updateDB($sql)==1){
         if(updateDB($resql)==1){
           if(updateDB($notificationsql)==1)
-            echo "done";
+            header("Refresh:0");
         }
       }
     }
@@ -48,7 +48,7 @@
       if(updateDB($sql)==1){
         if(updateDB($resql)==1){
           if(updateDB($notificationsql)==1)
-            echo "done";
+            header("Refresh:0");
         }
       }
     }
@@ -97,7 +97,7 @@
             <div class="row">
                 <div class="col-lg-12 text-center" style="font-size: 18px;">
                     <div class="alert alert-info">
-                        <strong>Info!</strong> Click the notification body and show details!</a>.
+                        <strong>Info!</strong> Click the notification body and show details!</a>
                     </div>
                 </div>
             </div>
@@ -105,10 +105,12 @@
                 <div class="col-lg-5">
 
                 <?php
+                $flag=0;
                 for($i=0;$i<sizeof($notificationData);$i++){
                   if($notificationData[$i]->Status=="unread"){
+                    $flag++;
                  ?>
-                     <span data-toggle="modal" data-target="#myModal<?php echo $i; ?>"> <b style="color:red"><?php echo $notificationData[$i]->name; ?></b> <?php if($notificationData[$i]->Type=="1") 
+                     <span data-toggle="modal" data-target="#notificationModal<?php echo $i; ?>"> <b style="color:red"><?php echo $notificationData[$i]->name; ?></b> <?php if($notificationData[$i]->Type=="1") 
                                         echo "has requested for your help!";
                                      else if($notificationData[$i]->Type=="2") 
                                         echo "has accepted your request!";
@@ -117,7 +119,7 @@
                                      ?>  
                                      <strong style="color:green; margin-left: 20px;"><?php echo $notificationData[$i]->Date; ?></strong ></span>
                      <!-- Modal -->
-                        <div class="modal fade" id="myModal<?php echo $i; ?>" role="dialog">
+                        <div class="modal fade" id="notificationModal<?php echo $i; ?>" role="dialog">
                           <div class="modal-dialog">
                           
                             <!-- Modal content-->
@@ -175,6 +177,14 @@
                 <?php
                     }
                   }
+                  if($flag==0){
+                    ?>
+                    <div class="col-md-8 text-center">
+                        <div class="alert alert-danger"><strong>  You have no Notifications!</strong></div>
+                    </div>
+                    <?php
+                  }
+                  // echo sizeof($notificationData);
                 ?>
 
                 </div>
