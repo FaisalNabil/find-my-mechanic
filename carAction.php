@@ -56,7 +56,9 @@
     $address =  htmlspecialchars(addslashes(trim($_POST["carOwnerAddress"])));
     
     if($error == 0){
-      $conn = mysqli_connect("localhost", "root", "", "find_My_Mechanic");
+
+      include 'db.php';
+      
       if (!$conn) {
               die("Connection failed: " . mysqli_connect_error());
       }
