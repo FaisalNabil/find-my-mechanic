@@ -1,5 +1,13 @@
-<?php
-session_start();
+
+
+       <?php 
+             $currentPage = 'entry';
+             
+             include "TemplateFile/header.php"; 
+
+       ?>
+       <?php
+
 $info = "";
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
@@ -36,15 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 }
 
-
-
 ?>
-       <?php 
-             $currentPage = 'entry';
-             
-             include "TemplateFile/header.php"; 
-
-       ?>
 
         <!--  page-wrapper -->
   <div id="page-wrapper">
