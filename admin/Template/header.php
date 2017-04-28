@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<?php if (!isset($_SESSION["shopOwnerEmail"])) {
+<?php if (!isset($_SESSION["adminEmail"])) {
     header("Location:../login.php");
 } ?>
     <meta charset="utf-8">
