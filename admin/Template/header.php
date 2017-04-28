@@ -2,6 +2,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+<?php if (!isset($_SESSION["shopOwnerEmail"])) {
+    header("Location:../login.php");
+} ?>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WebTechnology Final Project</title>
@@ -128,7 +131,7 @@
                         <li><a href="setting.html"><i class="fa fa-gear fa-fw"></i>Settings</a>
                         </li>
                         <li class="divider"></li>
-                        <li><a href="../login.php"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
+                        <li><a href="../session_destroy.php"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
                         </li>
                     </ul>
                     <!-- end dropdown-user -->
@@ -168,6 +171,9 @@
                     </li>
                     <li class="<?php if($currentPage =='carOwner'){echo 'selected';}?>">
                         <a href="carOwnerList.php"><i class="fa fa-car fa-fw"></i>Car Owner List</a>
+                    </li>
+                    <li class="<?php if($currentPage =='message'){echo 'selected';}?>">
+                        <a href="message.php"><i class="fa fa-envelope fa-fw"></i>Messages</a>
                     </li>
                 </ul>
                 <!-- end side-menu -->

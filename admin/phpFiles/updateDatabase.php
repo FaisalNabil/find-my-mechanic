@@ -1,7 +1,7 @@
 <?php
 function updateDB($sql){
 	
-	include("Mysqldb.php");
+	include("dbMysql.php");
 	
 	$result = mysqli_query($conn, $sql)or die(mysqli_error($conn));
 	
