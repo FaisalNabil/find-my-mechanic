@@ -1,10 +1,7 @@
 <?php session_start();
 function updateDB($sql){
 	
-	$conn = mysqli_connect("localhost", "root", "", "find_My_Mechanic");
-    if (!$conn) {
-            die("Connection failed: " . mysqli_connect_error());
-    }
+	include 'Mysqldb.php';
 	
 	$result = mysqli_query($conn, $sql)or die(mysqli_error($conn));
 	

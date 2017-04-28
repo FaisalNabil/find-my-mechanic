@@ -110,6 +110,41 @@ xmlhttp = new XMLHttpRequest();
     }
 </script>
 
+<script type="text/javascript">
+
+xmlhttp = new XMLHttpRequest();
+     
+
+    function InsuranceNoCheck(id,error){   //Checks RegNo
+        //alert(id);
+        str=document.getElementById(id).value;
+        //alert(str);
+
+    xmlhttp.onreadystatechange = function() {
+        
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200 && id!="") {
+            
+            m=document.getElementById(error);
+            var i=xmlhttp.responseText;
+            //alert(i);
+            if(i==str){
+                m.innerHTML="*InsuranceNumber Already Exist, Try another one";
+                m.style.color= "red";
+            }
+            else{
+                m.innerHTML="Valid InsuranceNumber!";
+                m.style.color= "green";
+            }   
+                
+        }
+    };
+    var url="phpFiles/InsuranceNoCheckAjax.php?InsuNo="+str;
+    //alert(url);
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+    }
+</script>
+
         <!--  page-wrapper -->
         <div id="page-wrapper">
             <div class="row">                 
@@ -239,10 +274,11 @@ xmlhttp = new XMLHttpRequest();
                   <div class="form-group">
                     <label class="control-label col-sm-2" for="insoNo">Insurance NO. :</label>
                     <div class="col-sm-5">
-                      <input type="text" class="form-control" name="InsuranceNo" id="insoNo" value="<?php echo $value->InsuranceNumber; ?>">
+                      <input type="text" class="form-control" name="InsuranceNo" id="insoNo<?php echo $i; ?>" value="<?php echo $value->InsuranceNumber; ?>" onkeyup="InsuranceNoCheck('insoNo<?php echo $i; ?>','ErrorMessageInso<?php echo $i ?>')">
+                       <span id="ErrorMessageInso<?php echo $i ?>"></span>
                     </div>
                   </div>
-                  <input type="hidden" class="form-control" name="hiddenRegNo" id="insoNo" value="<?php echo $value->VehicleRegNo; ?>">
+                  <input type="hidden" class="form-control" name="hiddenRegNo" value="<?php echo $value->VehicleRegNo; ?>">
 
                   <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">

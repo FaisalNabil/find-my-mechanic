@@ -50,10 +50,8 @@
 	    $address = htmlspecialchars(addslashes(trim($_POST["shopOwnerAddress"])));;
 	  
 	    if($error == 0){
-		    $conn = mysqli_connect("localhost", "root", "", "find_My_Mechanic");
-		    if (!$conn) {
-		            die("Connection failed: " . mysqli_connect_error());
-		    }
+	    	
+		    include 'db.php';
 		    
 		    $sql = "insert into shopowner(ShopName,Email,Contact,Password,Latitude,Longitude,Address,ShopTradeLicence,flag,Status) values ('".$name."','".$email."','".$phone."','".$password."','".$latitude."','".$longitude."','".$address."','".$stl."',2,'Pending');";
 

@@ -1,13 +1,14 @@
-<?php 
- $currentPage = 'entry';
- 
-  $info = "";
- include "TemplateFile/header.php"; 
 
-?>
 
-<?php
+       <?php 
+             $currentPage = 'entry';
+             
+             include "TemplateFile/header.php"; 
 
+       ?>
+       <?php
+
+$info = "";
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     include 'phpFiles/Mysqldb.php';
@@ -43,9 +44,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 }
 
-
-
 ?>
+
         <!--  page-wrapper -->
   <div id="page-wrapper">
             <div class="row">
