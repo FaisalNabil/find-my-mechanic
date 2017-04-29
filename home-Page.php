@@ -1,14 +1,39 @@
 <?php 
-if(isset($_POST['send']) && $_SERVER["REQUEST_METHOD"] == "POST"){
+if(isset($_POST['Send']) && $_SERVER["REQUEST_METHOD"] == "POST"){
   $email=$_POST['Email'];
   $message=$_POST['Message'];
 
-  $sql="INSERT INTO message(SenderMail, ReceiverMail, MessageBody, Date, Status) VALUES ('nabil@admin.com','".$email."','".$message."','".date("Y-m-d")."','unread')";
+  function updateDB($sql){
+  
+    include("db.php");
+    
+    $result = mysqli_query($conn, $sql)or die(mysqli_error($conn));
+    
+    return $result;
+  }
+  $sql="INSERT INTO message(ReceiverMail, SenderMail, MessageBody, Date, Status) VALUES ('nabil@admin.com','".$email."','".$message."','".date("Y-m-d")."','unread')";
+  //echo $sql;
+  if(updateDB($sql)==1){
+    $info=
+          '<div class="alert alert-info alert-dismissable">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        Message sent successfully. We will reply as soon as possible.
+                        <strong>Thank You for contacting us</strong>
+                     </div>';
+  }
+  else{
+    $info=
+          '<div class="alert alert-danger alert-dismissable">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>There was an error!</strong>
+                        Please Try after sometimes
+                     </div>';
+  }
 }
 ?>
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head <?php $info="";?> >
 
   <title>Find My Mechanic</title>
   <meta charset="utf-8">
@@ -148,8 +173,8 @@ h2 {
       <ul class="nav navbar-nav navbar-right">
         <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="fa fa-user"></span> Sign Up<span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a href="signup-as-carOwner.php" style="color: black;">SignUp As CarOwner</a></li>
-            <li><a href="signup-as-shopOwner.php">SignUp As ShopOwner</a></li>
+            <li><a href="signup-as-carOwner.php" style="color: black;">SignUp <small>as</small> CarOwner</a></li>
+            <li><a href="signup-as-shopOwner.php">SignUp <small>as</small> ShopOwner</a></li>
           </ul>
         </li>
         <li><a href="login.php"><span class="fa fa-user"></span> Login</a></li>
@@ -207,9 +232,10 @@ h2 {
             </div>
             <div class="form-group">
               <label for="message">Message:</label>
-              <input type="textarea" name="Message" class="form-control" rows="5" id="message">
+              <input type="text" name="Message" class="form-control" rows="5" id="message">
             </div>
             <button type="submit" class="btn btn-primary" name="Send">Send</button>
+            <?php echo $info; ?>
           </form>
         </div>
       </div>

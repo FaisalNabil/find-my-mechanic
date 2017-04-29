@@ -1,7 +1,6 @@
 <?php 
 $currentPage="shopOwner";
 include("Template/header.php");
-include("phpFiles/selectData.php");
 
 $jsonShopOwnerDataString = getJSONFromDB("SELECT * FROM shopowner"); 
 $shopOwnerData = json_decode($jsonShopOwnerDataString);

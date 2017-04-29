@@ -1,7 +1,6 @@
 <?php 
 $currentPage="carOwner";
 include("Template/header.php");
-include("phpFiles/selectData.php");
 
 $jsonCarOwnerDataString = getJSONFromDB("SELECT * FROM carowner"); 
 $carOwnerData = json_decode($jsonCarOwnerDataString);

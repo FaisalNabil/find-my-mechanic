@@ -2,13 +2,11 @@
 ob_start();
   $currentPage = 'message';
 
-  include("TemplateFile/header.php");
-  
-  require("shopOwnerPHP/updateDatabase.php");
+  include("Template/header.php");
 
-    $jsonOutboxString = getJSONFromDB("SELECT (SELECT name FROM carowner where Email=message.ReceiverMail) AS name,Date,MessageBody,Status FROM message WHERE SenderMail='".$_SESSION["shopOwnerEmail"]."'  ORDER BY Date DESC"); //outbox messages
+    $jsonInboxString = getJSONFromDB("SELECT SenderMail,Date,MessageBody,Status FROM message WHERE ReceiverMail='".$_SESSION["adminEmail"]."'  ORDER BY Date DESC"); //inbox messages
     
-    $outboxMessageData = json_decode($jsonOutboxString);
+    $inboxMessageData = json_decode($jsonInboxString);
 
     if(isset($_POST['send']) && $_POST['reply']!="" && $_SERVER["REQUEST_METHOD"] == "POST"){
         $reply=$_POST['reply'];           //message body
@@ -24,17 +22,14 @@ ob_start();
 <script type="text/javascript">
         xmlhttp = new XMLHttpRequest();
     function statusChange(id,senderMail){
-        //alert(id);
-        str=document.getElementById(id).innerText;
-        //alert(str);
-
+        
     xmlhttp.onreadystatechange = function() {
         
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
             
             m=document.getElementById(id);
             var i=xmlhttp.responseText;
-            //alert(i);
+            alert(i);
             if(i=="success"){
                 m.innerText="";
             }
@@ -42,7 +37,7 @@ ob_start();
                 
         }
     };
-    var url="shopOwnerPHP/messageStatus.php?sender="+senderMail;
+    var url="phpFiles/messageStatus.php?sender="+senderMail;
     //alert(url);
     xmlhttp.open("GET", url, true);
     xmlhttp.send();
@@ -62,16 +57,12 @@ ob_start();
             </div>
             <div class="row">
                 <div class="col-md-12">
-                 <ul class="nav nav-tabs">
-    <li class="active"><a data-toggle="tab" href="#inbox">Inbox</a></li>
-    <li><a data-toggle="tab" href="#outbox">Outbox</a></li>
-  </ul>
   <div class="tab-content">
     <div id="inbox" class="tab-pane fade in active">
        <table class="table table-hover">
             <thead>
               <tr>
-                <th>Name</th>
+                <th>Email</th>
                 <th>Date</th>
                 <th>Action</th>
                 <th>Status</th>
@@ -82,7 +73,7 @@ ob_start();
                 for($i=0;$i<sizeof($inboxMessageData);$i++){
                 ?>
               <tr>
-                <td><?php echo $inboxMessageData[$i]->name; ?></td>
+                <td><?php echo $inboxMessageData[$i]->SenderMail; ?></td>
                 <td><?php echo $inboxMessageData[$i]->Date; ?></td>
                 <td>
                   <button type="button" onclick="statusChange('status<?php echo $i; ?>','<?php echo $inboxMessageData[$i]->SenderMail ?>')" class="btn btn-info" data-toggle="modal" data-target="#open<?php echo $i ?>">Open</button>
@@ -98,12 +89,6 @@ ob_start();
                         </div>
                         <div class="modal-body">
                             <form class="form-horizontal" action="" method="POST">
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2" for="sendeName">Sender:</label>
-                                    <div class="col-sm-10">
-                                      <span><?php echo $inboxMessageData[$i]->name ?></span>
-                                    </div>
-                                </div>
                                 <div class="form-group">
                                     <label class="control-label col-sm-2">Email:</label>
                                     <div class="col-sm-10">
@@ -143,70 +128,9 @@ ob_start();
             </tbody>
           </table>
     </div>
-
-    <div id="outbox" class="tab-pane fade">
-       <table class="table table-hover">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Date</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <?php
-                for($i=0;$i<sizeof($outboxMessageData);$i++){
-                ?>
-              <tr>
-                <td><?php echo $outboxMessageData[$i]->name; ?></td>
-                <td><?php echo $outboxMessageData[$i]->Date; ?></td>
-                <td>
-                  <button type="button" class="btn btn-info" data-toggle="modal" data-target="#outboxMessage<?php echo $i; ?>">Open</button>
-                  <!-- Modal -->
-                  <div class="modal fade" id="outboxMessage<?php echo $i; ?>" role="dialog">
-                    <div class="modal-dialog">
-                    
-                      <!-- Modal content-->
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <button type="button" class="close" data-dismiss="modal">&times;</button>
-                          <h4 class="modal-title">Message Details</h4>
-                        </div>
-                        <div class="modal-body">
-                            <form class="form-horizontal">
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2" for="receiverName">To:</label>
-                                    <div class="col-sm-10">
-                                      <span><?php echo $outboxMessageData[$i]->name; ?></span>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2" for="message">Message: </label>
-                                    <div class="col-sm-10">          
-                                       <span><?php echo $outboxMessageData[$i]->MessageBody; ?></span>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                        </div>
-                      </div>
-                      
-                    </div>
-                  </div>
-
-                </td>
-              </tr>
-              <?php
-                }
-              ?>
-            </tbody>
-          </table>
-    </div>
   </div>
                 </div>
             </div>
         </div>
         <!-- end page-wrapper -->
-<?php include 'TemplateFile/footer.php'; ?>
+<?php include 'Template/footer.php'; ?>
