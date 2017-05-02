@@ -58,10 +58,6 @@
     if($error == 0){
 
       include 'db.php';
-      
-      if (!$conn) {
-              die("Connection failed: " . mysqli_connect_error());
-      }
         
         $sql = "insert into carowner(Name,Email,Contact,DOB,NID,DrivingLicence,Password,Address,flag,Status) values ('".$name."','".$email."','".$phone."','".$dob."','".$nid."','".$drivingLicence."','".$password."','".$address."',1,'pending');";
 
