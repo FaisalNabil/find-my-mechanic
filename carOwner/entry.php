@@ -46,6 +46,75 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 ?>
 
+<script type="text/javascript">
+
+xmlhttp = new XMLHttpRequest();
+     
+
+    function RegNoCheck(id,error){   //Checks RegNo
+        //alert(id);
+        str=document.getElementById(id).value;
+        //alert(str);
+
+    xmlhttp.onreadystatechange = function() {
+        
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200 && id!="") {
+            
+            m=document.getElementById(error);
+            var i=xmlhttp.responseText;
+            //alert(i);
+            if(i==str){
+                m.innerHTML="*Registration No Already Exist, Try another one";
+                m.style.color= "red";
+            }
+            else{
+                m.innerHTML="Valid Registration No!";
+                m.style.color= "green";
+            }   
+                
+        }
+    };
+    var url="phpFiles/RegNoCheckAjax.php?RegNo="+str;
+    //alert(url);
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+    }
+</script>
+<script type="text/javascript">
+
+xmlhttp = new XMLHttpRequest();
+     
+
+    function InsuranceNoCheck(id,error){   //Checks RegNo
+        //alert(id);
+        str=document.getElementById(id).value;
+        //alert(str);
+
+    xmlhttp.onreadystatechange = function() {
+        
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200 && id!="") {
+            
+            m=document.getElementById(error);
+            var i=xmlhttp.responseText;
+            //alert(i);
+            if(i==str){
+                m.innerHTML="*InsuranceNumber Already Exist, Try another one";
+                m.style.color= "red";
+            }
+            else{
+                m.innerHTML="Valid InsuranceNumber!";
+                m.style.color= "green";
+            }   
+                
+        }
+    };
+    var url="phpFiles/InsuranceNoCheckAjax.php?InsuNo="+str;
+    //alert(url);
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+    }
+</script>
+
         <!--  page-wrapper -->
   <div id="page-wrapper">
             <div class="row">
@@ -89,7 +158,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         <div class="form-group">
                                           <label class="control-label col-sm-2" for="reg_no">Registration No:</label>
                                           <div class="col-sm-5">
-                                             <input type="text" class="form-control" id="reg_no" name="RegNo" placeholder="Enter Registration No" required="true">
+                                             <input type="text" class="form-control" name="RegNo" id="reg_no" onkeyup="RegNoCheck('reg_no','ErrorMessage')" placeholder="Enter Registration No" required="true">
+                                              <span id="ErrorMessage"></span>
                                           </div>
                                         </div>
                                         <div class="form-group">
@@ -101,7 +171,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         <div class="form-group">
                                           <label class="control-label col-sm-2" for="insurance_no">Insurance Number:</label>
                                           <div class="col-sm-5">          
-                                            <input type="text" class="form-control" id="insurance_no" name="InsuranceNo" placeholder="Enter Insurance Number" required="true">
+                                            <input type="text" class="form-control" id="insoNo" name="InsuranceNo" placeholder="Enter Insurance Number" required="true" onkeyup="InsuranceNoCheck('insoNo','ErrorMessageInso')">
+                                            <span id="ErrorMessageInso"></span>
                                           </div>
                                         </div>
                                         <div class="form-group">
