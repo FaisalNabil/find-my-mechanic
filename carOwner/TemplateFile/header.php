@@ -1,6 +1,8 @@
 <?php 
 session_start();
 
+ob_start();
+
 include("phpFiles/SelectProfileData.php"); 
 
 $jsonCarOwnerDataString = getJSONFromDB("select * from carowner where Email='".$_SESSION["carOwnerEmail"]."'");
