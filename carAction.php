@@ -64,7 +64,7 @@
         $sql .= "insert into carshop(Email,Password,flag,status) values ('".$email."','".$password."',1,'pending');";
 
         if (mysqli_multi_query($conn, $sql)) {
-          $_SESSION["carOwnerSignupEmail"] = $email;
+          //$_SESSION["carOwnerSignupEmail"] = $email;
             header("Location: login.php");
         } 
         else {

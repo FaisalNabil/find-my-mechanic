@@ -119,7 +119,25 @@ h2 {
 </style>
 
 <?php
-  include("shopAction.php");
+  $nameError = $phoneError = $emailError = $passError = $conPassError = "";
+  function getJSONFromDB($sql){
+            $conn = mysqli_connect("localhost", "root", "", "find_My_Mechanic");
+            $result = mysqli_query($conn, $sql)or die(mysqli_error($conn));
+            $arr=array();
+            while($row = mysqli_fetch_assoc($result)) {
+                $arr[]=$row;
+            }
+            return json_encode($arr);
+        }
+
+        $sql="select email from shopowner where email = '".$_REQUEST['shopOwnerEmail']."'";
+        $jsonData= getJSONFromDB($sql);
+        $json=json_decode($jsonData);
+        if($jsonData != '[]'){
+          $emailError = "Email already exits";
+        }else{
+          include("shopAction.php");
+        }
 ?>
 
 <script>
@@ -227,7 +245,7 @@ h2 {
     conPwd= document.forms[0].elements[4].value;
     con = document.getElementById("conP");
     if(cpwd != conPwd){
-      con.innerHTML = "password are not match";
+      con.innerHTML = "password do not match";
     }
     else{
       con.innerHTML = "";
@@ -291,7 +309,7 @@ h2 {
                         <h3 class="panel-title">Please Enter Your information</h3>
                     </div>
                     <div class="panel-body">
-                          <form class="form-horizontal" action = "shopAction.php" method = "Post">
+                          <form class="form-horizontal" action = "" method = "Post">
 
                              <div class="form-group">
                                 <label class="control-label col-sm-2" for="shpName">Shop Name:</label>
