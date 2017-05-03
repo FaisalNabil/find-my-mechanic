@@ -123,7 +123,7 @@
                 <!-- Welcome -->
                 <div class="col-lg-12 text-center">
                     <div class="alert alert-info">
-                        <i class="fa fa-folder-open"></i><b>&nbsp;Hello ! </b>Welcome Back <b>Faisal Nabil </b>
+                        <i class="fa fa-folder-open"></i><b>&nbsp;Hello ! </b>Welcome Back <b style="color: red;"><?php echo $carOwnerData[0]->Name; ?></b>
                         <i class="fa fa-map-marker"></i> <b>&nbsp; Now you are in <span class="location-color">
 
                         <?php 
