@@ -5,7 +5,8 @@ include("Template/header.php");
 $jsonCarOwnerDataString = getJSONFromDB("SELECT * FROM carowner"); 
 $carOwnerData = json_decode($jsonCarOwnerDataString);
 
-
+$jsonCountActiveString = getJSONFromDB("SELECT Status FROM carowner WHERE Status='Pending'");
+$jsonCountActiveData = json_decode($jsonCountActiveString);
 ?>
 <script>
 xmlhttp = new XMLHttpRequest();
@@ -43,7 +44,7 @@ xmlhttp = new XMLHttpRequest();
                 <div class="col-lg-12">
                     <ul class="nav nav-tabs">
                         <li class="active"><a data-toggle="tab" href="#active_list">Active</a></li>
-                        <li><a data-toggle="tab" href="#pending_list">Pending</a></li>
+                        <li><a data-toggle="tab" href="#pending_list">Pending</a><span class="top-label label label-danger"><?php echo count($jsonCountActiveData); ?></li>
                         <li><a data-toggle="tab" href="#disabled_list">Disabled</a></li>
                     </ul>
 
