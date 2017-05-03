@@ -24,6 +24,8 @@ function showPosition(position) {
     "<br>Longitude: " + position.coords.longitude;
 }
 </script>
-
+<?php print_r($GLOBALS);
+session_start();
+print_r($_SESSION) ; ?>
 </body>
 </html>

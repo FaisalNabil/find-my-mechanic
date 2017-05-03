@@ -163,4 +163,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             
         </div>
         <!-- end page-wrapper -->
-<?php include 'TemplateFile/footer.php'; ?>
+<?php include 'Template/footer.php'; ?>

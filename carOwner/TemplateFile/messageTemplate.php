@@ -85,7 +85,7 @@
                         <li><a href="setting.php"><i class="fa fa-gear fa-fw"></i>Settings</a>
                         </li>
                         <li class="divider"></li>
-                        <li><a href="../session_destroy.php"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
+                        <li><a href="../login.php"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
                         </li>
                     </ul>
                     <!-- end dropdown-user -->

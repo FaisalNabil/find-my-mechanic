@@ -81,7 +81,7 @@ xmlhttp = new XMLHttpRequest();
      
 
     function RegNoCheck(id,error){   //Checks RegNo
-        //alert(id);
+        alert(id);
         str=document.getElementById(id).value;
         //alert(str);
 

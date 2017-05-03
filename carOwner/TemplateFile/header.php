@@ -1,6 +1,6 @@
 <?php 
 session_start();
-ob_start();
+
 include("phpFiles/SelectProfileData.php"); 
 
 $jsonCarOwnerDataString = getJSONFromDB("select * from carowner where Email='".$_SESSION["carOwnerEmail"]."'");
@@ -12,9 +12,6 @@ $carOwnerData = json_decode($jsonCarOwnerDataString);
 <!DOCTYPE html>
 <html>
 <head>
-<?php if (!isset($_SESSION["carOwnerEmail"])) {
-    header("Location:../login.php");
-} ?>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WebTechnology Final Project</title>

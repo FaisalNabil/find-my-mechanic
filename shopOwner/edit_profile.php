@@ -45,6 +45,77 @@
         }
 
 ?>
+
+<script>
+
+  xmlhttp = new XMLHttpRequest();
+  //Checks Email
+  function emailvCheck(id){ 
+    str=document.getElementById(id).value;
+
+    xmlhttp.onreadystatechange = function() {
+        
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200 && id!="") {
+            
+            m=document.getElementById("emailError");
+            var i=xmlhttp.responseText;
+            if(str == null || str == ""){
+              m.innerHTML = "Email must be filled out";
+            }
+            else if(i==str){
+                m.innerHTML="*Email exist, Try another one";
+            }
+            else{
+                m.innerHTML="";
+            }            
+        }
+    };
+    var url="shopValidation/emailCheck.php?shopOwnerEmail="+str;
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+  }
+
+  //phone number check
+  function numbervCheck(id){
+    str=document.getElementById(id).value;
+    m=document.getElementById("phoneError");
+
+    if(isNaN(str)){
+      m.innerHTML = "only numbers are allowed";
+    }
+    else if(str == null || str ==""){
+      m.innerHTML = "Contact number must be filled out";
+    }else{
+      m.innerHTML="";
+    }
+  }
+  //shop trade licence check
+  function tradevCheck(id){
+    str=document.getElementById(id).value;
+
+    xmlhttp.onreadystatechange = function() {
+        
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200 && id!="") {
+            
+            m=document.getElementById("tdnError");
+            var i=xmlhttp.responseText;
+            if(str == null || str == ""){
+              m.innerHTML = "Trade Licence must be filled out";
+            }
+            else if(i==str){
+                m.innerHTML="*Trade Licence number exist, Try another one";
+            }
+            else{
+                m.innerHTML="";
+            }         
+        }
+    };
+    var url="../shopValidation/tradeLicenceCheck.php?shopOwnerTDN="+str;
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+  }
+  
+</script>
         <!-- end navbar side -->
          
         <!--  page-wrapper -->
@@ -83,13 +154,15 @@
                                               <div class="form-group">
                                                 <label class="control-label col-sm-2" for="contact">Contact:</label>
                                                 <div class="col-sm-5">
-                                                  <input type="text" class="form-control" id="contact" name="Contact" placeholder="" value="<?php echo $jsonShopOwnerData[0]->Contact; ?>">
+                                                  <input type="text" class="form-control" id="contact" name="Contact" placeholder="" value="<?php echo $jsonShopOwnerData[0]->Contact; ?>" onkeyup = "numbervCheck('contact')">
+                                                  <span id = "phoneError" style="color:red"></span>
                                                 </div>
                                               </div>
                                               <div class="form-group">
                                                 <label class="control-label col-sm-2" for="shoptradeLicence">Shop Trade Licence:</label>
                                                 <div class="col-sm-10">
-                                                  <input type="text" class="form-control" id="shoptradeLicence" name="ShopTradeLicence" placeholder="" value="<?php echo $jsonShopOwnerData[0]->ShopTradeLicence; ?>" required="">
+                                                  <input type="text" class="form-control" id="shoptradeLicence" name="ShopTradeLicence" placeholder="" value="<?php echo $jsonShopOwnerData[0]->ShopTradeLicence; ?>" required="" onkeyup = "tradevCheck('shoptradeLicence')">
+                                                  <span id = "tdnError" style="color:red"></span>
                                                 </div>
                                               </div>
 
@@ -106,7 +179,7 @@
                                                 </div>
                                               </div>
 
-                                              <input type="hidden" class="form-control" id="Hidden_Shop_Email" name="HiddenEmail" placeholder="" value="<?php echo $jsonShopOwnerData[0]->Email; ?>" required="">
+                                              <input type="hidden" class="form-control" id="Hidden_Shop_Email" name="HiddenEmail" placeholder="" value="<?php echo $jsonShopOwnerData[0]->Email; ?>">
 
                                               <div class="form-group">
                                                 <label class="control-label col-sm-2" for="address">Location:</label>

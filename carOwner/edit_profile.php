@@ -44,6 +44,74 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 ?>
+<script type="text/javascript">
+
+xmlhttp = new XMLHttpRequest();
+     
+
+    function drivingLicenceCheck(id,error){   //Checks RegNo
+        //alert(id);
+        str=document.getElementById(id).value;
+        //alert(str);
+
+    xmlhttp.onreadystatechange = function() {
+        
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200 && id!="") {
+            
+            m=document.getElementById(error);
+            var i=xmlhttp.responseText;
+            //alert(i);
+            if(i==str){
+                m.innerHTML="*DrivingLicence Already Exist, Try another one";
+                m.style.color= "red";
+            }
+            else{
+                m.innerHTML="Valid DrivingLicence No!";
+                m.style.color= "green";
+            }   
+                
+        }
+    };
+    var url="phpFiles/drivingLiscenceAjaxCheck.php?Licence="+str;
+    //alert(url);
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+    }
+</script>
+<script type="text/javascript">
+
+xmlhttp = new XMLHttpRequest();
+     
+
+    function NidCheck(id,error){   //Checks RegNo
+        //alert(id);
+        str=document.getElementById(id).value;
+        //alert(str);
+
+    xmlhttp.onreadystatechange = function() {
+        
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200 && id!="") {
+            
+            m=document.getElementById(error);
+            var i=xmlhttp.responseText;
+            //alert(i);
+            if(i==str){
+                m.innerHTML="*NID Already Exist, Try another one";
+                m.style.color= "red";
+            }
+            else{
+                m.innerHTML="Valid NID No!";
+                m.style.color= "green";
+            }   
+                
+        }
+    };
+    var url="phpFiles/NidAjaxCheck.php?nid="+str;
+    //alert(url);
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+    }
+</script>
          
 
          <div id="page-wrapper">
@@ -94,13 +162,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                               <div class="form-group">
                                                 <label class="control-label col-sm-2" for="nid">NID:</label>
                                                 <div class="col-sm-5">
-                                                  <input type="text" class="form-control" name="NID" id="nid" value="<?php echo $carOwnerData[0]->NID ;?>">
+                                                  <input type="text" class="form-control" name="NID" id="nid" value="<?php echo $carOwnerData[0]->NID ;?>" onkeyup="NidCheck('nid','ErrorMessage')">
+                                                  <span id="ErrorMessage"></span>
                                                 </div>
                                               </div>
                                               <div class="form-group">
                                                 <label class="control-label col-sm-2" for="dlc">Driving Liscence:</label>
                                                 <div class="col-sm-5">
-                                                  <input type="text" class="form-control" name="DrivingLicence" id="dlc" value="<?php echo $carOwnerData[0]->DrivingLicence ;?>">
+                                                  <input type="text" class="form-control" name="DrivingLicence" id="dlc" value="<?php echo $carOwnerData[0]->DrivingLicence ;?>" onkeyup="drivingLicenceCheck('dlc','ErrorMessage')">
+                                                  <span id="ErrorMessage"></span>
                                                 </div>
                                               </div>
 
