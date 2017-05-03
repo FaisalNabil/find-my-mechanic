@@ -1,7 +1,7 @@
 <?php
 function getJSONFromDB($sql){
 
-            include '../db.php';
+            $conn = mysqli_connect("localhost", "root", "", "find_My_Mechanic");
 
             $result = mysqli_query($conn, $sql)or die(mysqli_error($conn));
             $arr=array();
