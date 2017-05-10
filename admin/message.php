@@ -29,7 +29,7 @@ ob_start();
             
             m=document.getElementById(id);
             var i=xmlhttp.responseText;
-            alert(i);
+            //alert(i);
             if(i=="success"){
                 m.innerText="";
             }

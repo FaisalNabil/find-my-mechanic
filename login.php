@@ -142,9 +142,9 @@ h2 {
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav left-margin">
-        <li><a href="home-Page.html">SERVICE</a></li>
-        <li><a href="home-Page.html">TEAM</a></li>
-        <li><a href="home-Page.html">SUPPORT</a></li>
+        <li><a href="home-Page.php">SERVICE</a></li>
+        <li><a href="home-Page.php">TEAM</a></li>
+        <li><a href="home-Page.php">SUPPORT</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="fa fa-user"></span> Sign Up<span class="caret"></span></a>

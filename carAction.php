@@ -59,9 +59,9 @@
 
       include 'db.php';
         
-        $sql = "insert into carowner(Name,Email,Contact,DOB,NID,DrivingLicence,Password,Address,flag,Status) values ('".$name."','".$email."','".$phone."','".$dob."','".$nid."','".$drivingLicence."','".$password."','".$address."',1,'pending');";
+        $sql = "insert into carowner(Name,Email,Contact,DOB,NID,DrivingLicence,Password,Address,flag,Status) values ('".$name."','".$email."','".$phone."','".$dob."','".$nid."','".$drivingLicence."','".$password."','".$address."',1,'Pending');";
 
-        $sql .= "insert into carshop(Email,Password,flag,status) values ('".$email."','".$password."',1,'pending');";
+        $sql .= "insert into carshop(Email,Password,flag,status) values ('".$email."','".$password."',1,'Pending');";
 
         if (mysqli_multi_query($conn, $sql)) {
           //$_SESSION["carOwnerSignupEmail"] = $email;
