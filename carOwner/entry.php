@@ -142,6 +142,7 @@ xmlhttp = new XMLHttpRequest();
                                           <label class="control-label col-sm-2" for="vehicle_type">Vehicle Type:</label>
                                           <div class="col-sm-5">
                                             <select name="VehicleType">
+											  <option value="Private Car">Private Car</option>
                                               <option value="Micro Bus">Micro Bus</option>
                                               <option value="Truck">Truck</option>
                                               <option value="CNG">CNG</option>

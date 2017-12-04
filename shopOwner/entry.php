@@ -49,9 +49,6 @@
         $sql="INSERT INTO stock (StockId, PartsName, PricePerUnit, TotalUnit) VALUES ('".$addstockid."','".$addstockname."','".$addunitprice."','".$addtotalunit."')";
 
         $sqlRelation="INSERT INTO shopstockrelation (StockId, ShopEmail) VALUES('".$addstockid."','".$_SESSION["shopOwnerEmail"]."')";
-        
-        //echo $sql."<br>";
-        //echo $sqlRelation;
 
         if(updateDB($sql)==1){
             updateDB($sqlRelation);
@@ -78,25 +75,19 @@
 <script type="text/javascript">
 xmlhttp = new XMLHttpRequest();
     function deletefunction(obj,id){
-        //alert(id);
-        //str=document.getElementById(id).innerText;
-        //alert(str);
-
+        
     xmlhttp.onreadystatechange = function() {
         
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
             
-            //m=document.getElementById(id);
             var i=xmlhttp.responseText;
             if(i==1){
                 document.getElementById("stockTable").deleteRow(obj.parentNode.parentNode.rowIndex);
             }
-                //m.innerHTML=i;
                 
         }
     };
     var url="shopOwnerPHP/stockRowDelete.php?sid="+id;
-    //alert(url);
     xmlhttp.open("GET", url, true);
     xmlhttp.send();
     }

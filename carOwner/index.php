@@ -10,7 +10,7 @@
       $long=$_POST['long'];
       $email=$_POST['email'];
       $var=date("md")+time();
- -      $serviceId=substr($_SESSION["carOwnerEmail"], 0,1).substr($email, 0,1).(string)$var;
+      $serviceId=substr($_SESSION["carOwnerEmail"], 0,1).substr($email, 0,1).(string)$var;
 
 
       require ("phpFiles/updateDatabase.php");
@@ -24,22 +24,22 @@
       //echo $notificationsql;
       if(updateDB($sql)==1){
         if(updateDB($notificationsql)==1){
- -          $info=
- -                    '<div class="alert alert-success alert-dismissable">
- -                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
- -                        <strong>Request Sent Successfully</strong>
- -                     </div>';
- -          if($messageBody!=""){
- -            updateDB($msgsql);
+           $info=
+                     '<div class="alert alert-success alert-dismissable">
+                         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                         <strong>Request Sent Successfully</strong>
+                      </div>';
+           if($messageBody!=""){
+             updateDB($msgsql);
           }
         }
       }
       else{
           $info=
- -                    '<div class="alert alert-danger alert-dismissable">
- -                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
- -                        <strong>Request Sending was Unsuccessfull</strong>
- -                     </div>';
+                     '<div class="alert alert-danger alert-dismissable">
+                         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                         <strong>Request Sending was Unsuccessfull</strong>
+                      </div>';
       }
       
     }
