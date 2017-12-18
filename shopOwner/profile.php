@@ -45,7 +45,7 @@
     }
 
     if(isset($_POST['addanothersubmit']) && $_POST['Addservicename']!="" && $_POST['Addservicecost']!="" && $_SERVER["REQUEST_METHOD"] == "POST"){
-        $addserviceid=date("md")+time();
+        $addserviceid="service"+$ShopEmail;
         $addservicename=$_POST['Addservicename'];
         $addcost=$_POST['Addservicecost'];
         
